@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/PacMan.dir/pacman.cpp.o  -o PacMan  -lSDL2 
