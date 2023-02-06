@@ -62,8 +62,8 @@ void init()
 void draw()
 {
     SDL_SetColorKey(plancheSprites, false, 0);
-    // SDL_BlitScaled(plancheSprites, &src_bg, win_surf, &bg);
-    SDL_BlitScaled(plancheSprites, &intersection40, win_surf, &bg);
+    SDL_BlitScaled(plancheSprites, &src_bg, win_surf, &bg);
+    // SDL_BlitScaled(plancheSprites, &intersection40, win_surf, &bg);
 
     // petit truc pour faire tourner le fantome
     SDL_Rect *ghost_in = nullptr;
@@ -86,6 +86,16 @@ void draw()
         ghost.y--;
         break;
     }
+
+    if(ghost.x == 34 && ghost.y == 34)
+        puts("intersection 00");
+    if(ghost.x == 162 && ghost.y == 34)
+        puts("intersection 04");
+    if(ghost.x == 162 && ghost.y == 162)
+        puts("intersection 44");
+    if(ghost.x == 34 && ghost.y == 162)
+        puts("intersection 40");
+    // std::cout<<"x : "<<ghost.x<<" y : "<<ghost.y<<"\n";
     count = (count + 1) % (512);
 
     // ici on change entre les 2 sprites sources pour une jolie animation.
