@@ -1,4 +1,6 @@
-#include <SDL.h>
+// #include <SDL.h>
+
+#include "include/Window.h"
 
 #include <iostream>
 
@@ -162,13 +164,16 @@ void draw()
 
 int main(int argc, char **argv)
 {
+    // à rajouter dans class Window
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         std::cerr << "Echec de l'initialisation de la SDL " << SDL_GetError() << std::endl;
         return 1;
     }
 
+    // Window* window = new Window();
     init();
+
     // BOUCLE PRINCIPALE
     bool quit = false;
     while (!quit)
@@ -214,6 +219,9 @@ int main(int argc, char **argv)
 
         // AFFICHAGE
         draw();
+        // window->update();
+
+        // SDL_UpdateWindowSurface(window->get_pWindow());
         SDL_UpdateWindowSurface(pWindow);
         // LIMITE A 60 FPS
         SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions
