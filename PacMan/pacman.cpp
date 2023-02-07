@@ -49,6 +49,11 @@ SDL_Rect intersection47 = {270, 41, 12, 12};
 
 int count;
 
+int last_pressed_key = 0;
+int current_direction = last_pressed_key;
+
+bool intersection_detected = false;
+
 void init()
 {
     pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN);
@@ -67,34 +72,80 @@ void draw()
 
     // petit truc pour faire tourner le fantome
     SDL_Rect *ghost_in = nullptr;
-    switch (count / 128)
+    // switch (count / 128)
+    // {
+    // case 0:
+    //     ghost_in = &(ghost_r);
+    //     ghost.x++;
+    //     break;
+    // case 1:
+    //     ghost_in = &(ghost_d);
+    //     ghost.y++;
+    //     break;
+    // case 2:
+    //     ghost_in = &(ghost_l);
+    //     ghost.x--;
+    //     break;
+    // case 3:
+    //     ghost_in = &(ghost_u);
+    //     ghost.y--;
+    //     break;
+    // }
+    if(intersection_detected)
     {
-    case 0:
-        ghost_in = &(ghost_r);
-        ghost.x++;
-        break;
-    case 1:
-        ghost_in = &(ghost_d);
-        ghost.y++;
-        break;
-    case 2:
-        ghost_in = &(ghost_l);
-        ghost.x--;
-        break;
-    case 3:
-        ghost_in = &(ghost_u);
-        ghost.y--;
-        break;
+        current_direction = last_pressed_key;
+        intersection_detected = false;
+    }
+    else
+        intersection_detected = false;
+    switch(current_direction)
+    {
+        case 0:
+                ghost_in = &(ghost_r);
+                ghost.x++;
+            break;
+        case 1:
+                ghost_in = &(ghost_d);
+                ghost.y++;
+            break;
+        case 2:
+                ghost_in = &(ghost_l);
+                ghost.x--;
+            break;
+        case 3:
+                ghost_in = &(ghost_u);
+                ghost.y--;
+            break;
     }
 
     if(ghost.x == 34 && ghost.y == 34)
-        puts("intersection 00");
+        {puts("intersection 00");
+        intersection_detected = true;}
     if(ghost.x == 162 && ghost.y == 34)
+    {
         puts("intersection 04");
+        intersection_detected = true;
+    }
     if(ghost.x == 162 && ghost.y == 162)
-        puts("intersection 44");
+        {puts("intersection 44");
+        intersection_detected = true;}
     if(ghost.x == 34 && ghost.y == 162)
-        puts("intersection 40");
+        {puts("intersection 40");
+        intersection_detected = true;}
+    if(ghost.x == 34 && ghost.y == 162)
+        {puts("intersection 40");
+        intersection_detected = true;}
+    if(ghost.x == 34 && ghost.y == 162)
+        {puts("intersection 40");
+        intersection_detected = true;}
+    if(ghost.x == 34 && ghost.y == 162)
+        {puts("intersection 40");
+        intersection_detected = true;}
+    if(ghost.x == 34 && ghost.y == 162)
+        {puts("intersection 40");
+        intersection_detected = true;}
+    
+
     // std::cout<<"x : "<<ghost.x<<" y : "<<ghost.y<<"\n";
     count = (count + 1) % (512);
 
@@ -142,11 +193,23 @@ int main(int argc, char **argv)
             quit = true;
         if (keys[SDL_SCANCODE_LEFT])
         {
+            last_pressed_key = 2;
             puts("LEFT");
         }
         if (keys[SDL_SCANCODE_RIGHT])
         {
+            last_pressed_key = 0;
             puts("RIGHT");
+        }
+        if (keys[SDL_SCANCODE_UP])
+        {
+            last_pressed_key = 3;
+            puts("UP");
+        }
+        if (keys[SDL_SCANCODE_DOWN])
+        {
+            last_pressed_key = 1;
+            puts("DOWN");
         }
 
         // AFFICHAGE
