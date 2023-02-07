@@ -57,30 +57,90 @@ include CMakeFiles/PacMan.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/PacMan.dir/flags.make
 
-CMakeFiles/PacMan.dir/pacman.cpp.o: CMakeFiles/PacMan.dir/flags.make
-CMakeFiles/PacMan.dir/pacman.cpp.o: pacman.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/PacMan.dir/pacman.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PacMan.dir/pacman.cpp.o -c /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/pacman.cpp
+CMakeFiles/PacMan.dir/src/pacman.cpp.o: CMakeFiles/PacMan.dir/flags.make
+CMakeFiles/PacMan.dir/src/pacman.cpp.o: src/pacman.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/PacMan.dir/src/pacman.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PacMan.dir/src/pacman.cpp.o -c /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/pacman.cpp
 
-CMakeFiles/PacMan.dir/pacman.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PacMan.dir/pacman.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/pacman.cpp > CMakeFiles/PacMan.dir/pacman.cpp.i
+CMakeFiles/PacMan.dir/src/pacman.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PacMan.dir/src/pacman.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/pacman.cpp > CMakeFiles/PacMan.dir/src/pacman.cpp.i
 
-CMakeFiles/PacMan.dir/pacman.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PacMan.dir/pacman.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/pacman.cpp -o CMakeFiles/PacMan.dir/pacman.cpp.s
+CMakeFiles/PacMan.dir/src/pacman.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PacMan.dir/src/pacman.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/pacman.cpp -o CMakeFiles/PacMan.dir/src/pacman.cpp.s
+
+CMakeFiles/PacMan.dir/main.cpp.o: CMakeFiles/PacMan.dir/flags.make
+CMakeFiles/PacMan.dir/main.cpp.o: main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/PacMan.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PacMan.dir/main.cpp.o -c /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/main.cpp
+
+CMakeFiles/PacMan.dir/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PacMan.dir/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/main.cpp > CMakeFiles/PacMan.dir/main.cpp.i
+
+CMakeFiles/PacMan.dir/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PacMan.dir/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/main.cpp -o CMakeFiles/PacMan.dir/main.cpp.s
+
+CMakeFiles/PacMan.dir/src/Zone.cpp.o: CMakeFiles/PacMan.dir/flags.make
+CMakeFiles/PacMan.dir/src/Zone.cpp.o: src/Zone.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/PacMan.dir/src/Zone.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PacMan.dir/src/Zone.cpp.o -c /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/Zone.cpp
+
+CMakeFiles/PacMan.dir/src/Zone.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PacMan.dir/src/Zone.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/Zone.cpp > CMakeFiles/PacMan.dir/src/Zone.cpp.i
+
+CMakeFiles/PacMan.dir/src/Zone.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PacMan.dir/src/Zone.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/Zone.cpp -o CMakeFiles/PacMan.dir/src/Zone.cpp.s
+
+CMakeFiles/PacMan.dir/src/Intersection.cpp.o: CMakeFiles/PacMan.dir/flags.make
+CMakeFiles/PacMan.dir/src/Intersection.cpp.o: src/Intersection.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/PacMan.dir/src/Intersection.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PacMan.dir/src/Intersection.cpp.o -c /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/Intersection.cpp
+
+CMakeFiles/PacMan.dir/src/Intersection.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PacMan.dir/src/Intersection.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/Intersection.cpp > CMakeFiles/PacMan.dir/src/Intersection.cpp.i
+
+CMakeFiles/PacMan.dir/src/Intersection.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PacMan.dir/src/Intersection.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/Intersection.cpp -o CMakeFiles/PacMan.dir/src/Intersection.cpp.s
+
+CMakeFiles/PacMan.dir/src/Window.cpp.o: CMakeFiles/PacMan.dir/flags.make
+CMakeFiles/PacMan.dir/src/Window.cpp.o: src/Window.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/PacMan.dir/src/Window.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PacMan.dir/src/Window.cpp.o -c /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/Window.cpp
+
+CMakeFiles/PacMan.dir/src/Window.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PacMan.dir/src/Window.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/Window.cpp > CMakeFiles/PacMan.dir/src/Window.cpp.i
+
+CMakeFiles/PacMan.dir/src/Window.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PacMan.dir/src/Window.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/src/Window.cpp -o CMakeFiles/PacMan.dir/src/Window.cpp.s
 
 # Object files for target PacMan
 PacMan_OBJECTS = \
-"CMakeFiles/PacMan.dir/pacman.cpp.o"
+"CMakeFiles/PacMan.dir/src/pacman.cpp.o" \
+"CMakeFiles/PacMan.dir/main.cpp.o" \
+"CMakeFiles/PacMan.dir/src/Zone.cpp.o" \
+"CMakeFiles/PacMan.dir/src/Intersection.cpp.o" \
+"CMakeFiles/PacMan.dir/src/Window.cpp.o"
 
 # External object files for target PacMan
 PacMan_EXTERNAL_OBJECTS =
 
-PacMan: CMakeFiles/PacMan.dir/pacman.cpp.o
+PacMan: CMakeFiles/PacMan.dir/src/pacman.cpp.o
+PacMan: CMakeFiles/PacMan.dir/main.cpp.o
+PacMan: CMakeFiles/PacMan.dir/src/Zone.cpp.o
+PacMan: CMakeFiles/PacMan.dir/src/Intersection.cpp.o
+PacMan: CMakeFiles/PacMan.dir/src/Window.cpp.o
 PacMan: CMakeFiles/PacMan.dir/build.make
 PacMan: CMakeFiles/PacMan.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable PacMan"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/flo/prog_avancee/programmation-avancee-projet-pacman/PacMan/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable PacMan"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/PacMan.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
