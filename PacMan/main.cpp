@@ -56,21 +56,11 @@ int current_direction = last_pressed_key;
 
 bool intersection_detected = false;
 
-void init()
-{
-    pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN);
-    win_surf = SDL_GetWindowSurface(pWindow);
-
-    plancheSprites = SDL_LoadBMP("./pacman_sprites.bmp");
-    count = 0;
-}
-
 // fonction qui met à jour la surface de la fenetre "win_surf"
 void draw()
 {
     SDL_SetColorKey(plancheSprites, false, 0);
     SDL_BlitScaled(plancheSprites, &src_bg, win_surf, &bg);
-    // SDL_BlitScaled(plancheSprites, &intersection40, win_surf, &bg);
 
     // petit truc pour faire tourner le fantome
     SDL_Rect *ghost_in = nullptr;
@@ -164,15 +154,14 @@ void draw()
 
 int main(int argc, char **argv)
 {
-    // à rajouter dans class Window
+    // à inclure dans la classs Window
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         std::cerr << "Echec de l'initialisation de la SDL " << SDL_GetError() << std::endl;
         return 1;
     }
 
-    // Window* window = new Window();
-    init();
+    Window* window = new Window{};
 
     // BOUCLE PRINCIPALE
     bool quit = false;
@@ -218,13 +207,14 @@ int main(int argc, char **argv)
         }
 
         // AFFICHAGE
-        draw();
-        // window->update();
+        // draw();
+        window->update();
 
-        // SDL_UpdateWindowSurface(window->get_pWindow());
-        SDL_UpdateWindowSurface(pWindow);
+        // SDL_UpdateWindowSurface(pWindow);
+        // SDL_UpdateWindowSurface(window->get_pWindow());     
+
         // LIMITE A 60 FPS
-        SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions
+        // SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions
     }
     SDL_Quit(); // ON SORT
     return 0;
