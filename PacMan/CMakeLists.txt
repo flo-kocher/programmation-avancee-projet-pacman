@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 
-project(PacMan LANGUAGES CXX)
+project(PacManGame LANGUAGES CXX)
 
 
 find_package(SDL2 REQUIRED)

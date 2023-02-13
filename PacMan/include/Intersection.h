@@ -1,3 +1,6 @@
+#ifndef __INTERSECTION_H__
+#define __INTERSECTION_H__
+
 #include "Zone.h"
 
 class Intersection: public Zone
@@ -14,3 +17,5 @@ class Intersection: public Zone
     ~Intersection();
 
 };
+
+#endif

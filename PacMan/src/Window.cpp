@@ -4,7 +4,7 @@
 Window::Window()
 {
     std::cout<<"Window constructor\n";
-    if((pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN)) == NULL)
+    if((pWindow = SDL_CreateWindow("PacManGame", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN)) == NULL)
         std::cerr<<"Echec de la création de la fenêtre "<<SDL_GetError()<<std::endl;
     if((win_surf = SDL_GetWindowSurface(pWindow)) == NULL)
         std::cerr<<"Echec de la récupération de la surface de la fenêtre "<<SDL_GetError()<<std::endl;
