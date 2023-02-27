@@ -2,6 +2,7 @@
 #define __WINDOW_H__
 
 #include <SDL.h>
+#include "Character.h"
 
 class Window
 {
@@ -12,6 +13,8 @@ class Window
     int count;
     SDL_Rect src_bg;
     SDL_Rect bg;
+    Character* ghost;
+    int direction_tmp;
 
     public:
     Window();
@@ -26,13 +29,6 @@ class Window
     int get_count();
     SDL_Rect get_src_bg();
     SDL_Rect get_bg();
-
-    // protected:
-    
-
-    // Getters
-    
-
     
 };
 
