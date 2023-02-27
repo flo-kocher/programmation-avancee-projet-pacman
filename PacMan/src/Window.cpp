@@ -17,6 +17,8 @@ Window::Window()
     bg = {4, 4, 672, 864};       // ici scale x4
     ghost = new Character{};
     direction_tmp = 0;
+    intersection_detected = false;
+    last_pressed_key = 0;
 }
 
 Window::Window(SDL_Window *new_pWindow, SDL_Surface *new_win_surf, SDL_Surface *new_plancheSprites, int new_count)
@@ -49,6 +51,14 @@ void Window::update()
     
     // ghost->turn_right();
 
+    if(intersection_detected)
+    {
+        direction_tmp = last_pressed_key;
+        intersection_detected = false;
+    }
+    else
+        intersection_detected = false;
+
     switch(direction_tmp)
     {
         case 0:
@@ -65,6 +75,32 @@ void Window::update()
             break;
     }
 
+    if(ghost->ghost.x == 34 && ghost->ghost.y == 34)
+        {puts("intersection 00");
+        intersection_detected = true;}
+    if(ghost->ghost.x == 162 && ghost->ghost.y == 34)
+    {
+        puts("intersection 04");
+        intersection_detected = true;
+    }
+    if(ghost->ghost.x == 162 && ghost->ghost.y == 162)
+        {puts("intersection 44");
+        intersection_detected = true;}
+    if(ghost->ghost.x == 34 && ghost->ghost.y == 162)
+        {puts("intersection 40");
+        intersection_detected = true;}
+    if(ghost->ghost.x == 34 && ghost->ghost.y == 162)
+        {puts("intersection 40");
+        intersection_detected = true;}
+    if(ghost->ghost.x == 34 && ghost->ghost.y == 162)
+        {puts("intersection 40");
+        intersection_detected = true;}
+    if(ghost->ghost.x == 34 && ghost->ghost.y == 162)
+        {puts("intersection 40");
+        intersection_detected = true;}
+    if(ghost->ghost.x == 34 && ghost->ghost.y == 162)
+        {puts("intersection 40");
+        intersection_detected = true;}
 
 
     //couelur transparente
@@ -106,4 +142,24 @@ SDL_Rect Window::get_src_bg()
 SDL_Rect Window::get_bg()
 {
     return bg;
+}
+
+void Window::set_direction_right()
+{
+    last_pressed_key = 0;
+}
+
+void Window::set_direction_down()
+{
+    last_pressed_key = 1;
+}
+
+void Window::set_direction_left()
+{
+    last_pressed_key = 2;
+}
+
+void Window::set_direction_up()
+{
+    last_pressed_key = 3;
 }
