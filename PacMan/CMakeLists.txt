@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.7)
 
-project(PacMan LANGUAGES CXX)
+project(PacManGame LANGUAGES CXX)
 
 
 find_package(SDL2 REQUIRED)
 
 add_executable(${PROJECT_NAME} "")
-target_sources(${PROJECT_NAME} PRIVATE src/pacman.cpp main.cpp include/Zone.h src/Zone.cpp include/Intersection.h src/Intersection.cpp include/Window.h src/Window.cpp)
+target_sources(${PROJECT_NAME} PRIVATE main.cpp include/Zone.h src/Zone.cpp include/Intersection.h src/Intersection.cpp include/Window.h src/Window.cpp include/Character.h src/Character.cpp)
 target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS})
 target_compile_definitions(${PROJECT_NAME} PRIVATE "SDL_MAIN_HANDLED")
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES})

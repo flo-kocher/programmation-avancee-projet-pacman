@@ -1,3 +1,6 @@
+#ifndef __ZONE_H__
+#define __ZONE_H__
+
 class Zone
 {
     protected:
@@ -12,3 +15,5 @@ class Zone
     ~Zone();
     
 };
+
+#endif
