@@ -20,10 +20,26 @@ class Character
     Character(int coord_x, int coord_y, bool has_pellet);
     ~Character();
     
-    void turn_right();
-    void turn_down();
-    void turn_left();
-    void turn_up();
+    void turnRight()
+    {
+        ghost_in = &(ghost_r);
+        ghost.x++;
+    };
+    void turnDown()
+    {
+        ghost_in = &(ghost_d);
+        ghost.y++;
+    };
+    void turnLeft()
+    {
+        ghost_in = &(ghost_l);
+        ghost.x--;
+    };
+    void turnUp()
+    {
+        ghost_in = &(ghost_u);
+        ghost.y--;
+    };
 
     inline SDL_Rect* getGhost()
     {

@@ -6,12 +6,19 @@
 Window::Window()
 {
     std::cout<<"Window constructor\n";
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    {
+        std::cerr << "Echec de l'initialisation de la SDL " << SDL_GetError() << std::endl;
+        // exit il faut peut être faire autrement
+        exit;
+    }
     if((pWindow = SDL_CreateWindow("PacManGame", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN)) == NULL)
         std::cerr<<"Echec de la création de la fenêtre "<<SDL_GetError()<<std::endl;
     if((win_surf = SDL_GetWindowSurface(pWindow)) == NULL)
         std::cerr<<"Echec de la récupération de la surface de la fenêtre "<<SDL_GetError()<<std::endl;
     if((plancheSprites = SDL_LoadBMP("./pacman_sprites.bmp")) == NULL)
         std::cerr<<"Echec du chargement du bmp "<<SDL_GetError()<<std::endl;
+    // count pour l'instant non utilisé
     count = 0;
     src_bg = {200, 3, 168, 216}; // x,y, w,h (0,0) en haut a gauche
     bg = {4, 4, 672, 864};       // ici scale x4
@@ -23,16 +30,18 @@ Window::Window()
 
 Window::Window(SDL_Window *new_pWindow, SDL_Surface *new_win_surf, SDL_Surface *new_plancheSprites, int new_count)
 {
-    std::cout<<"Window constructor\n";
-    if((pWindow = new_pWindow) == NULL)
-        std::cerr<<"Echec de la création de la fenêtre "<<SDL_GetError()<<std::endl;
-    if((win_surf = new_win_surf) == NULL)
-        std::cerr<<"Echec de la récupération de la surface de la fenêtre "<<SDL_GetError()<<std::endl;
-    if((plancheSprites = new_plancheSprites) == NULL)
-        std::cerr<<"Echec du chargement du bmp "<<SDL_GetError()<<std::endl;
-    count = new_count;
-    src_bg = {200, 3, 168, 216}; // x,y, w,h (0,0) en haut a gauche
-    bg = {4, 4, 672, 864};       // ici scale x4
+    // constructeur non utilisé pour le moment
+
+    // std::cout<<"Window constructor\n";
+    // if((pWindow = new_pWindow) == NULL)
+    //     std::cerr<<"Echec de la création de la fenêtre "<<SDL_GetError()<<std::endl;
+    // if((win_surf = new_win_surf) == NULL)
+    //     std::cerr<<"Echec de la récupération de la surface de la fenêtre "<<SDL_GetError()<<std::endl;
+    // if((plancheSprites = new_plancheSprites) == NULL)
+    //     std::cerr<<"Echec du chargement du bmp "<<SDL_GetError()<<std::endl;
+    // count = new_count;
+    // src_bg = {200, 3, 168, 216}; // x,y, w,h (0,0) en haut a gauche
+    // bg = {4, 4, 672, 864};       // ici scale x4
 }
 
 Window::~Window()
@@ -49,8 +58,6 @@ void Window::update()
     // SDL_Rect ghost = {34, 34, 32, 32}; // ici scale x2
     // SDL_Rect ghost_in2 = {3, 123, 16, 16};
     
-    // ghost->turn_right();
-
     if(intersection_detected)
     {
         direction_tmp = last_pressed_key;
@@ -62,16 +69,16 @@ void Window::update()
     switch(direction_tmp)
     {
         case 0:
-                ghost->turn_right();
+                ghost->turnRight();
             break;
         case 1:
-                ghost->turn_down();
+                ghost->turnDown();
             break;
         case 2:
-                ghost->turn_left();
+                ghost->turnLeft();
             break;
         case 3:
-                ghost->turn_up();
+                ghost->turnUp();
             break;
     }
 
@@ -102,6 +109,12 @@ void Window::update()
         {puts("intersection 40");
         intersection_detected = true;}
 
+    // count = (count + 1) % (512);
+
+    // // ici on change entre les 2 sprites sources pour une jolie animation.
+    // SDL_Rect ghost_in2 = *ghost_in;
+    // if ((count / 4) % 2)
+    //     ghost_in2.x += 17;
 
     //couelur transparente
     SDL_SetColorKey(plancheSprites, true, 0);
@@ -111,55 +124,7 @@ void Window::update()
     SDL_BlitScaled(plancheSprites, &ghost_in2, win_surf, ghost->getGhost());
 
     SDL_UpdateWindowSurface(pWindow);
+
+    // LIMITE A 60 FPS
     SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions
-}
-
-SDL_Window* Window::get_pWindow()
-{
-    return pWindow;
-}
-
-SDL_Surface* Window::get_win_surf()
-{
-    return win_surf;
-}
-
-SDL_Surface* Window::get_plancheSprites()
-{
-    return plancheSprites;
-}
-
-int Window::get_count()
-{
-    return count;
-}
-
-SDL_Rect Window::get_src_bg()
-{
-    return src_bg;
-}
-
-SDL_Rect Window::get_bg()
-{
-    return bg;
-}
-
-void Window::set_direction_right()
-{
-    last_pressed_key = 0;
-}
-
-void Window::set_direction_down()
-{
-    last_pressed_key = 1;
-}
-
-void Window::set_direction_left()
-{
-    last_pressed_key = 2;
-}
-
-void Window::set_direction_up()
-{
-    last_pressed_key = 3;
 }

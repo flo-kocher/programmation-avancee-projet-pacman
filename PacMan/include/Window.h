@@ -56,16 +56,53 @@ class Window
 
     void update();
 
-    SDL_Window* get_pWindow();
-    SDL_Surface* get_win_surf();
-    SDL_Surface* get_plancheSprites();
-    int get_count();
-    SDL_Rect get_src_bg();
-    SDL_Rect get_bg();
-    void set_direction_right();
-    void set_direction_down();
-    void set_direction_left();
-    void set_direction_up();
+    inline const SDL_Window* getPWindow()
+    {
+        return pWindow;
+    };
+    inline const SDL_Surface* getWinSurf()
+    {
+        return win_surf;
+    };
+    inline const SDL_Surface* getPlanchesSprites()
+    {
+        return plancheSprites;
+    };
+    inline const int getCount()
+    {
+        return count;
+    };
+    inline const SDL_Rect getSrcBg()
+    {
+        return src_bg;
+    };
+    inline const SDL_Rect getBg()
+    {
+        return bg;
+    };
+
+    inline void setDirectionRight()
+    {
+        last_pressed_key = 0;
+    };
+    inline void setDirectionDown()
+    {
+        last_pressed_key = 1;
+    };
+    inline void setDirectionLeft()
+    {
+        last_pressed_key = 2;
+    };
+    inline void setDirectionUp()
+    {
+        last_pressed_key = 3;
+    };
+
+
+    // inline void setCurrentCourse(std::string new_course)
+        // {
+            // course = new_course;
+        // };
     
 };
 
