@@ -1,18 +1,16 @@
 #ifndef __ZONE_H__
 #define __ZONE_H__
 
+#include <SDL.h>
+
 class Zone
 {
-    protected:
-    int x;
-    int y;
-    bool pellet;
-    // w & h
+    private:
+        SDL_Rect initial;
 
     protected:
-    Zone();
-    Zone(int coord_x, int coord_y, bool has_pellet);
-    ~Zone();
+        Zone();
+        ~Zone();
     
 };
 
