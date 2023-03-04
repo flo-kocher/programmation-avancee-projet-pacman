@@ -9,8 +9,8 @@ class Pellet: public Zone
         SDL_Rect passed;
         bool has_pellet;
 
-    protected:
-        Pellet();
+    public:
+        Pellet(SDL_Rect init_initial, std::string init_name, SDL_Rect init_passed, bool init_has_pellet);
         ~Pellet();
     
 };

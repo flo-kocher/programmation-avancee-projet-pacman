@@ -26,6 +26,7 @@ Window::Window()
     direction_tmp = 0;
     intersection_detected = false;
     last_pressed_key = 0;
+    // fonctionne : test = new Pellet{{206, 9, 12, 12}, "Intersection 00", {207, 9, 12, 12}, true};
 }
 
 Window::Window(SDL_Window *new_pWindow, SDL_Surface *new_win_surf, SDL_Surface *new_plancheSprites, int new_count)
@@ -51,6 +52,7 @@ Window::~Window()
 
 void Window::update()
 {
+    // fonctione :: std::cout<<test->name;
     SDL_SetColorKey(plancheSprites, false, 0);
     SDL_BlitScaled(plancheSprites, &src_bg, win_surf, &bg);
 

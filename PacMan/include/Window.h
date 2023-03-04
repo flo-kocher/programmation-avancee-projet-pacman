@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include "Character.h"
+#include "Pellet.h"
 
 class Window
 {
@@ -17,6 +18,7 @@ class Window
     int direction_tmp;
     bool intersection_detected;
     int last_pressed_key;
+    // fonctionne : Pellet* test;
 
     // intersections
     SDL_Rect intersection00 = {206, 9, 12, 12};

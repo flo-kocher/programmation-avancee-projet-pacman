@@ -5,9 +5,9 @@
 
 class BigPellet: public Pellet
 {
-    protected:
-        BigPellet();
-        ~BigPellet();
+    // protected:
+    //     BigPellet();
+    //     ~BigPellet();
     
 };
 
