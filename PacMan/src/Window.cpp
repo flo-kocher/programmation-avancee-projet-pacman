@@ -34,25 +34,12 @@ Window::Window()
     // et dans Windows, on va appeler genre Manager->initArea()
     // puis Manager->updateArea() etc...
     // dans Windows on va juste appeler des 'évènements', sans utiliser de "vrais" données 
-    // PacManArea.zones.insert({"Zone 1", new Zone{{206, 9, 12, 12}, "Zone 1"}});
-    // PacManArea.zones.insert({"Zone 2", new Zone{{207, 9, 12, 12}, "Zone 2"}});
-    // PacManArea.zones.insert({"Zone 3", new Zone{{208, 9, 12, 12}, "Zone 3"}});
+    gameManager = new GameManager{};
 }
 
 Window::Window(SDL_Window *new_pWindow, SDL_Surface *new_win_surf, SDL_Surface *new_plancheSprites, int new_count)
 {
     // constructeur non utilisé pour le moment
-
-    // std::cout<<"Window constructor\n";
-    // if((pWindow = new_pWindow) == NULL)
-    //     std::cerr<<"Echec de la création de la fenêtre "<<SDL_GetError()<<std::endl;
-    // if((win_surf = new_win_surf) == NULL)
-    //     std::cerr<<"Echec de la récupération de la surface de la fenêtre "<<SDL_GetError()<<std::endl;
-    // if((plancheSprites = new_plancheSprites) == NULL)
-    //     std::cerr<<"Echec du chargement du bmp "<<SDL_GetError()<<std::endl;
-    // count = new_count;
-    // src_bg = {200, 3, 168, 216}; // x,y, w,h (0,0) en haut a gauche
-    // bg = {4, 4, 672, 864};       // ici scale x4
 }
 
 Window::~Window()
@@ -62,7 +49,6 @@ Window::~Window()
 
 void Window::update()
 {
-    // fonctione :: std::cout<<test->name;
     SDL_SetColorKey(plancheSprites, false, 0);
     SDL_BlitScaled(plancheSprites, &src_bg, win_surf, &bg);
 

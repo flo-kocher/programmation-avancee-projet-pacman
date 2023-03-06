@@ -1,19 +1,14 @@
-// #include "../include/Intersection.h"
+#include "../include/Intersection.h"
 
-// Intersection::Intersection()
-// {
+Intersection::Intersection(SDL_Rect init_initial, std::string init_name, SDL_Rect init_passed, bool init_path_right, bool init_path_down, bool init_path_left, bool init_path_up): Pellet(init_initial, init_name, init_passed)
+{
+    path_right = init_path_right;
+    path_down = init_path_down;
+    path_left = init_path_left;
+    path_up = init_path_up;
+}
 
-// }
+Intersection::~Intersection()
+{
 
-// Intersection::Intersection(bool path_right_available, bool path_down_available, bool path_left_available, bool path_up_available)
-// {
-//     path_right = path_right_available;
-//     path_down = path_down_available;
-//     path_left = path_left_available;
-//     path_up = path_up_available;
-// }
-
-// Intersection::~Intersection()
-// {
-
-// }
+}

@@ -6,16 +6,17 @@
 #include "Zone.h"
 #include "Pellet.h"
 #include "BigPellet.h"
+#include "Intersection.h"
 #include <map>
-
-// struct playArea {
-//         std::map<std::string, Zone*> zones;
-//         std::map<std::string, Pellet*> pellets;
-//         std::map<std::string, BigPellet*> big_pellets;
-// };
 
 class GameManager
 {
+    private:
+        std::map<std::string, Zone*> zones;
+        std::map<std::string, Pellet*> pellets;
+        std::map<std::string, BigPellet*> big_pellets;
+        std::map<std::string, Intersection*> intersections;
+
     public:
         GameManager();
         ~GameManager();
