@@ -10,7 +10,7 @@ class Zone
         SDL_Rect initial;
         std::string name;
 
-    protected:
+    public:
         Zone(SDL_Rect init_initial, std::string init_name);
         ~Zone();
     

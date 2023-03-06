@@ -3,7 +3,6 @@
 
 #include <SDL.h>
 #include "Character.h"
-#include "Pellet.h"
 
 class Window
 {
@@ -19,6 +18,7 @@ class Window
     bool intersection_detected;
     int last_pressed_key;
     // fonctionne : Pellet* test;
+    // init le GameManager ici
 
     // intersections
     SDL_Rect intersection00 = {206, 9, 12, 12};
@@ -99,12 +99,6 @@ class Window
     {
         last_pressed_key = 3;
     };
-
-
-    // inline void setCurrentCourse(std::string new_course)
-        // {
-            // course = new_course;
-        // };
     
 };
 
