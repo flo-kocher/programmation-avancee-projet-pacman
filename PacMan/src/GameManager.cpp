@@ -60,17 +60,23 @@ GameManager::GameManager()
     zones.insert({"Zone 4", new Zone{{206, 9, 12, 12}, "Zone 4", 0, 0}});
     zones.insert({"Zone 5", new Zone{{206, 9, 12, 12}, "Zone 5", 0, 0}});
 
-    pellets.insert({"Pellet 1", new Pellet{{206, 9, 12, 12}, "Pellet 1", 0, 0, {200, 9, 12, 12}}});
-    pellets.insert({"Pellet 2", new Pellet{{206, 9, 12, 12}, "Pellet 2", 0, 0, {200, 9, 12, 12}}});
-    pellets.insert({"Pellet 3", new Pellet{{206, 9, 12, 12}, "Pellet 3", 0, 0, {200, 9, 12, 12}}});
-    pellets.insert({"Pellet 4", new Pellet{{206, 9, 12, 12}, "Pellet 4", 0, 0, {200, 9, 12, 12}}});
+    pellets.insert({"Pellet 00_01", new Pellet{{206, 9, 12, 12}, "Pellet 00_01", 66, 34, {200, 9, 12, 12}}});
+    pellets.insert({"Pellet 00_02", new Pellet{{206, 9, 12, 12}, "Pellet 00_02", 98, 34, {200, 9, 12, 12}}});
+    pellets.insert({"Pellet 00_03", new Pellet{{206, 9, 12, 12}, "Pellet 00_03", 130, 34, {200, 9, 12, 12}}});
+    pellets.insert({"Pellet 01_00", new Pellet{{206, 9, 12, 12}, "Pellet 01_00", 34, 66, {200, 9, 12, 12}}});
+    pellets.insert({"Pellet 02_00", new Pellet{{206, 9, 12, 12}, "Pellet 02_00", 34, 98, {200, 9, 12, 12}}});
+    pellets.insert({"Pellet 03_00", new Pellet{{206, 9, 12, 12}, "Pellet 03_00", 34, 130, {200, 9, 12, 12}}});
 
     // big_pellets.insert({"BiPellet 1", new BigPellet{{206, 9, 12, 12}, "BigPellet 1", {200, 9, 12, 12}}});
 
-    intersections.insert({"Intersection 1", new Intersection{{206, 9, 12, 12}, "Intersection 1", 34, 34, {1, 1, 1, 11}, true, true, true, true}});
-    intersections.insert({"Intersection 2", new Intersection{{214, 9, 12, 12}, "Intersection 2", 162, 34, {1, 1, 1, 11}, true, true, true, true}});
-    intersections.insert({"Intersection 3", new Intersection{{222, 9, 12, 12}, "Intersection 3", 0, 0, {1, 1, 1, 11}, true, true, true, true}});
-    intersections.insert({"Intersection 4", new Intersection{{230, 9, 12, 12}, "Intersection 4", 0, 0, {1, 1, 1, 11}, true, true, true, true}});
+    intersections.insert({"Intersection 00_00", new Intersection{{206, 9, 12, 12}, "Intersection 00_00", 34, 34, {1, 1, 1, 11}, true, true, false, false}});
+    intersections.insert({"Intersection 00_04", new Intersection{{214, 9, 12, 12}, "Intersection 00_04", 162, 34, {1, 1, 1, 11}, true, true, true, false}});
+    intersections.insert({"Intersection 00_08", new Intersection{{222, 9, 12, 12}, "Intersection 00_08", 290, 34, {1, 1, 1, 11}, false, true, true, false}});
+    intersections.insert({"Intersection 04_00", new Intersection{{230, 9, 12, 12}, "Intersection 04_00", 34, 162, {1, 1, 1, 11}, true, true, false, true}});
+    // intersections.insert({"Intersection 08_00", new Intersection{{230, 9, 12, 12}, "Intersection 08_00", 34, 290, {1, 1, 1, 11}, true, true, true, true}});
+    intersections.insert({"Intersection 04_04", new Intersection{{230, 9, 12, 12}, "Intersection 04_04", 162, 162, {1, 1, 1, 11}, true, true, true, true}});
+    intersections.insert({"Intersection 04_08", new Intersection{{230, 9, 12, 12}, "Intersection 04_08", 290, 162, {1, 1, 1, 11}, true, false, true, true}});
+
 }
 
 
@@ -92,7 +98,7 @@ void GameManager::checkForZone(int x, int y)
         // std::cout<<"key : "<<it->first<<" with data : "<<it->second.first<<", "<<it->second.second<<"\n";
         if(it->second->x == x && it->second->y == y)
         {
-            std::cout<<"is a Zone"<<std::endl;
+            std::cout<<it->first<<std::endl;
         }
     }
 }
@@ -103,7 +109,7 @@ void GameManager::checkForPellet(int x, int y)
         // std::cout<<"key : "<<it->first<<" with data : "<<it->second.first<<", "<<it->second.second<<"\n";
         if(it->second->x == x && it->second->y == y)
         {
-            std::cout<<"is a Pellet"<<std::endl;
+            std::cout<<it->first<<std::endl;
             // uodate le is_passed et mettre le fond à jour
         }
     }
@@ -115,7 +121,7 @@ void GameManager::checkForIntersection(int x, int y)
         // std::cout<<"key : "<<it->first<<" with data : "<<it->second.first<<", "<<it->second.second<<"\n";
         if(it->second->x == x && it->second->y == y)
         {
-            std::cout<<"is a Intersection"<<std::endl;
+            std::cout<<it->first<<std::endl;
             // update le is_passed et mettre à jour le fond
             // prendre en compte les orientations possibles et 
             // mettre cette orientation en place (jsp comment encore)

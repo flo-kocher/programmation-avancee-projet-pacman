@@ -92,31 +92,21 @@ void Window::update()
 
     // ghost.x et ghost.y : position en temps réel du ghost
     if(ghost->ghost.x == 34 && ghost->ghost.y == 34)
-        {puts("intersection 00");
-        intersection_detected = true;}
-    if(ghost->ghost.x == 162 && ghost->ghost.y == 34)
-    {
-        puts("intersection 04");
         intersection_detected = true;
-    }
+    if(ghost->ghost.x == 162 && ghost->ghost.y == 34)
+        intersection_detected = true;
     if(ghost->ghost.x == 162 && ghost->ghost.y == 162)
-        {puts("intersection 44");
-        intersection_detected = true;}
+        intersection_detected = true;
     if(ghost->ghost.x == 34 && ghost->ghost.y == 162)
-        {puts("intersection 40");
-        intersection_detected = true;}
+        intersection_detected = true;
     if(ghost->ghost.x == 34 && ghost->ghost.y == 162)
-        {puts("intersection 40");
-        intersection_detected = true;}
+        intersection_detected = true;
     if(ghost->ghost.x == 34 && ghost->ghost.y == 162)
-        {puts("intersection 40");
-        intersection_detected = true;}
+        intersection_detected = true;
     if(ghost->ghost.x == 34 && ghost->ghost.y == 162)
-        {puts("intersection 40");
-        intersection_detected = true;}
+        intersection_detected = true;
     if(ghost->ghost.x == 34 && ghost->ghost.y == 162)
-        {puts("intersection 40");
-        intersection_detected = true;}
+        intersection_detected = true;
 
     // count = (count + 1) % (512);
 
@@ -135,5 +125,6 @@ void Window::update()
     SDL_UpdateWindowSurface(pWindow);
 
     // LIMITE A 60 FPS
-    SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions
+    SDL_Delay(32); // SDL_Delay(16); de base
+    // utiliser SDL_GetTicks64() pour plus de precisions
 }

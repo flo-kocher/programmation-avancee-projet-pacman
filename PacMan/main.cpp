@@ -32,22 +32,18 @@ int main(int argc, char **argv)
             quit = true;
         if (keys[SDL_SCANCODE_LEFT])
         {
-            // puts("LEFT");
             window->setDirectionLeft();
         }
         if (keys[SDL_SCANCODE_RIGHT])
         {
-            // puts("RIGHT");
             window->setDirectionRight();
         }
         if (keys[SDL_SCANCODE_UP])
         {
-            // puts("UP");
             window->setDirectionUp();
         }
         if (keys[SDL_SCANCODE_DOWN])
         {
-            // puts("DOWN");
             window->setDirectionDown();
         }
 
