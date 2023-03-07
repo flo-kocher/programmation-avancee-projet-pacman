@@ -10,7 +10,7 @@ class Pellet: public Zone
         bool has_pellet;
 
     public:
-        Pellet(SDL_Rect init_initial, std::string init_name, SDL_Rect init_passed);
+        Pellet(SDL_Rect init_initial, std::string init_name, int init_x, int init_y, SDL_Rect init_passed);
         ~Pellet();
     
 };

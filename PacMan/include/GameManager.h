@@ -20,6 +20,10 @@ class GameManager
     public:
         GameManager();
         ~GameManager();
+
+        void checkForZone(int x, int y);
+        void checkForPellet(int x, int y);
+        void checkForIntersection(int x, int y);
     
 };
 

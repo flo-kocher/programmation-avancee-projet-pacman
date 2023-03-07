@@ -80,6 +80,17 @@ void Window::update()
             break;
     }
 
+    // on récupère à chaque instant (ou toutes les X frames) les coord,
+    // on va chercher dans le GameManager si on trouve ces coord, sur une des maps
+    // et on va faire les choses qu'il faut :
+    // - activer les changements de directions
+    // - mettre les points
+    // - actualiser le fond ...
+    gameManager->checkForZone(ghost->ghost.x, ghost->ghost.y);
+    gameManager->checkForPellet(ghost->ghost.x, ghost->ghost.y);
+    gameManager->checkForIntersection(ghost->ghost.x, ghost->ghost.y);
+
+    // ghost.x et ghost.y : position en temps réel du ghost
     if(ghost->ghost.x == 34 && ghost->ghost.y == 34)
         {puts("intersection 00");
         intersection_detected = true;}

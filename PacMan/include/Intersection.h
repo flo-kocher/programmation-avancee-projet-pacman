@@ -12,7 +12,7 @@ class Intersection: public Pellet
         bool path_up;
 
     public:
-        Intersection(SDL_Rect init_initial, std::string init_name, SDL_Rect init_passed, bool path_right_available, bool path_down_available, bool path_left_available, bool path_up_available);
+        Intersection(SDL_Rect init_initial, std::string init_name, int init_x, int init_y, SDL_Rect init_passed, bool path_right_available, bool path_down_available, bool path_left_available, bool path_up_available);
         ~Intersection();
 
 };
