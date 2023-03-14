@@ -4,6 +4,7 @@ Pellet::Pellet(SDL_Rect init_initial, std::string init_name, int init_x, int ini
 {
     passed = init_passed;
     has_pellet = true;
+    got_threw = true;
 }
 
 Pellet::~Pellet()

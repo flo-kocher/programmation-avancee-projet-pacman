@@ -122,18 +122,7 @@ void GameManager::checkForPellet(int x, int y)
         if(it->second->x == x && it->second->y == y)
         {
             std::cout<<it->first<<std::endl;
-            // SDL_Rect init = {376, 10, 10, 10};
-            // init -> il faudra le mettre soit en global,
-            // soit en resultat lorsque le Pellet est passé
-            // setColorAndBlitScaled(false, &init, it->second->getPassed());
-
-
-            // mettre à jour le fond dès qu'on a passé la case
-            // // SDL_SetColorKey(plancheSprites, false, 0);
-            // // SDL_Rect init = {376, 10, 10, 10}; // où on trouve le rectagle noir
-            // // SDL_Rect cp = it->second->getPassed();
-            // // SDL_BlitScaled(plancheSprites, &init, win_surf, &cp);
-            // il faut mettre la même planche, là c'est des différentes
+            it->second->setGotThrew(false);
         }
     }
 }
@@ -148,6 +137,18 @@ void GameManager::checkForIntersection(int x, int y)
             // update le is_passed et mettre à jour le fond
             // prendre en compte les orientations possibles et 
             // mettre cette orientation en place (jsp comment encore)
+        }
+    }
+}
+
+void GameManager::updatePellets()
+{
+    for (auto it = pellets.begin(); it != pellets.end(); ++it) {
+        if(!it->second->getGotThrew())
+        {
+            SDL_Rect init = {376, 10, 10, 10};
+            // SDL_Rect test = it->second->getPassed();
+            setColorAndBlitScaled(false, &init, it->second->getPassed());
         }
     }
 }
@@ -173,12 +174,14 @@ void GameManager::updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in)
     // POUR QUE CA SE METTE A JOUR SINON CA MARCHE PAS
     count = (count + 1) % (512);
     if(0 <= count and count <= 250)
-        setColorAndBlitScaled(false, &init, &case_10);
+        setColorAndBlitScaled(false, &init, &case_20);
 
     // // ici on change entre les 2 sprites sources pour une jolie animation.
     // SDL_Rect ghost_in2 = *ghost_in;
     // if ((count / 4) % 2)
     //     ghost_in2.x += 17;
+    
+    updatePellets();
 
     SDL_Rect ghost_in2 = ghost_rect_in;
     setColorAndBlitScaled(true, &ghost_in2, ghost_rect);

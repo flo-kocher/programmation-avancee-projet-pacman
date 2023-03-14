@@ -7,6 +7,7 @@ class Pellet: public Zone
 {
     private:
         SDL_Rect passed;
+        bool got_threw;
         bool has_pellet;
 
     public:
@@ -16,6 +17,16 @@ class Pellet: public Zone
         inline SDL_Rect* getPassed()
         {
             return &passed;
+        };
+
+        inline bool getGotThrew()
+        {
+            return got_threw;
+        };
+
+        inline void setGotThrew(bool res)
+        {
+            got_threw = res;
         };
     
 };
