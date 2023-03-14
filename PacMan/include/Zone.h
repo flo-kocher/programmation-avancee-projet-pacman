@@ -1,19 +1,25 @@
 #ifndef __ZONE_H__
 #define __ZONE_H__
 
+#include <SDL.h>
+#include <iostream>
+
 class Zone
 {
-    protected:
-    int x;
-    int y;
-    bool pellet;
-    // w & h
+    private:
+        // la zone de base
+        SDL_Rect initial;
+        std::string name;
+        // positions de cette zone
+        // int x;
+        // int y;
 
-    protected:
-    Zone();
-    Zone(int coord_x, int coord_y, bool has_pellet);
-    ~Zone();
-    
+    public:
+        Zone(SDL_Rect init_initial, std::string init_name, int init_x, int init_y);
+        ~Zone();
+        int x; // tmp ici !
+        int y; // tmp ici !
+
 };
 
 #endif

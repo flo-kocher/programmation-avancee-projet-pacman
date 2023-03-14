@@ -1,15 +1,11 @@
 #include "../include/Zone.h"
 
-Zone::Zone()
+Zone::Zone(SDL_Rect init_initial, std::string init_name, int init_x, int init_y)
 {
-
-}
-
-Zone::Zone(int coord_x, int coord_y, bool has_pellet)
-{
-    x = coord_x;
-    y = coord_y;
-    pellet = has_pellet;
+    initial = init_initial;
+    name = init_name;
+    x = init_x;
+    y = init_y;
 }
 
 Zone::~Zone()
