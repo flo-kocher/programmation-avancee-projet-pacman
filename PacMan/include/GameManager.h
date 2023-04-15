@@ -30,10 +30,12 @@ class GameManager
 
         void checkForZone(int x, int y);
         void checkForPellet(int x, int y);
-        void checkForIntersection(int x, int y);
+        bool checkForIntersection(int x, int y);
 
         void updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in);
         void updatePellets();
+        void initPellets();
+        void initIntersections();
 
         inline void setColorAndBlitScaled(const bool transparence, const SDL_Rect* src_rect, SDL_Rect* dst_rect)
         {
