@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 #include <iostream>
+#include <memory>
+
 class Character
 {
     private:
@@ -12,6 +14,7 @@ class Character
         SDL_Rect ghost_u = {71, 123, 16, 16};
     
     public:
+        // std::unique_ptr<SDL_Rect> ghost_in;
         SDL_Rect *ghost_in;
         SDL_Rect ghost = {34, 34, 32, 32}; // ici scale x2
 
@@ -22,21 +25,25 @@ class Character
     
     void turnRight()
     {
+        // ghost_in.reset(&(ghost_r));
         ghost_in = &(ghost_r);
         ghost.x++;
     };
     void turnDown()
     {
+        // ghost_in.reset(&(ghost_d));
         ghost_in = &(ghost_d);
         ghost.y++;
     };
     void turnLeft()
     {
+        // ghost_in.reset(&(ghost_l));
         ghost_in = &(ghost_l);
         ghost.x--;
     };
     void turnUp()
     {
+        // ghost_in.reset(&(ghost_u));
         ghost_in = &(ghost_u);
         ghost.y--;
     };

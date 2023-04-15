@@ -4,17 +4,18 @@
 #include <SDL.h>
 #include "Character.h"
 #include "GameManager.h"
+#include <memory>
+// using namespace std;
 
 class Window
 {
     private:
-        Character* ghost;
+        std::unique_ptr<Character> ghost;
         int direction_tmp;
         bool intersection_detected;
         int last_pressed_key;
-        // init le GameManager ici
-        GameManager* gameManager;
-    
+        // GameManager* gameManager; // Ancienne manière de déclarer gameManager
+        std::unique_ptr<GameManager> gameManager;// = std::make_unique<GameManager>();
     public:
         Window();
         ~Window();

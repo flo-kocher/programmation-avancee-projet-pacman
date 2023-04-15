@@ -3,17 +3,19 @@
 
 #include <SDL.h>
 
-Window::Window()
-{
-    ghost = new Character{};
-    direction_tmp = 0;
-    intersection_detected = false;
-    last_pressed_key = 0;
     // et dans Windows, on va appeler genre Manager->initArea()
     // puis Manager->updateArea() etc...
     // dans Windows on va juste appeler des 'évènements', sans utiliser de "vrais" données 
-    gameManager = new GameManager{};
-}
+
+    // gameManager = new GameManager{}; // Ancienne manière d'init gameManager
+
+Window::Window()
+: gameManager(std::make_unique<GameManager>())
+, ghost (std::make_unique<Character>())
+, direction_tmp (0)
+, intersection_detected (false)
+, last_pressed_key(0)
+{}
 
 Window::~Window()
 {
@@ -38,11 +40,6 @@ void Window::update()
         case 1:
         {
                 ghost->turnDown();
-                // // // // fonctionnel
-                // // // SDL_SetColorKey(plancheSprites, false, 0);
-                // // // SDL_Rect init = {376, 10, 10, 10}; // où on trouve le rectagle noir
-                // // // SDL_Rect cp = {64, 32, 32, 32};
-                // // // SDL_BlitScaled(plancheSprites, &init, win_surf, &cp);
             break;
         }
         case 2:
