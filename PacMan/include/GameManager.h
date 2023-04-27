@@ -34,6 +34,7 @@ class GameManager
 
         void updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in);
         void updatePellets();
+        void updateIntersections();
         void initPellets();
         void initIntersections();
 
