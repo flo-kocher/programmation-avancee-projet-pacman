@@ -100,22 +100,90 @@ void GameManager::initIntersections()
     // Première ligne d'intersections
     intersections.insert({"Intersection 00_00", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, false}}); x += space;
     intersections.insert({"Intersection 00_04", new Intersection{{214, 9, 12, 12}, x, y, {160, 32, 32, 32}, true, true, true, false}}); x += space;
-    intersections.insert({"Intersection 00_08", new Intersection{{222, 9, 12, 12}, x, y, {1, 1, 1, 11}, false, true, true, false}});
+    intersections.insert({"Intersection 00_08", new Intersection{{222, 9, 12, 12}, x, y, {1, 1, 1, 11}, false, true, true, false}}); x += space/2;
     // On se décale pour passer à la partie droite
-    x = 354;
+    // x = 354;
     intersections.insert({"Intersection 00_10", new Intersection{{222, 9, 12, 12}, x, y, {1, 1, 1, 11}, true, true, false, false}}); x += space;
     intersections.insert({"Intersection 00_14", new Intersection{{214, 9, 12, 12}, x, y, {160, 32, 32, 32}, true, true, true, false}}); x += space;
     intersections.insert({"Intersection 00_18", new Intersection{{222, 9, 12, 12}, x, y, {1, 1, 1, 11}, false, true, true, false}});
 
     // Deuxième ligne
     x = 34; y = 162;
-    intersections.insert({"Intersection 04_00", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, false}}); x += space;
-    intersections.insert({"Intersection 04_04", new Intersection{{214, 9, 12, 12}, x, y, {160, 32, 32, 32}, true, true, true, false}}); x += space;
-    intersections.insert({"Intersection 04_08", new Intersection{{222, 9, 12, 12}, x, y, {1, 1, 1, 11}, false, true, true, false}});
-    x = 354;
-    intersections.insert({"Intersection 04_10", new Intersection{{222, 9, 12, 12}, x, y, {1, 1, 1, 11}, true, true, false, false}}); x += space;
-    intersections.insert({"Intersection 04_14", new Intersection{{214, 9, 12, 12}, x, y, {160, 32, 32, 32}, true, true, true, false}}); x += space;
-    intersections.insert({"Intersection 04_18", new Intersection{{222, 9, 12, 12}, x, y, {1, 1, 1, 11}, false, true, true, false}});
+    intersections.insert({"Intersection 04_00", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, true}}); x += space;
+    intersections.insert({"Intersection 04_04", new Intersection{{214, 9, 12, 12}, x, y, {160, 32, 32, 32}, true, true, true, true}}); x += space/2;
+    intersections.insert({"Intersection 04_06", new Intersection{{214, 9, 12, 12}, x, y, {160, 32, 32, 32}, true, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 04_08", new Intersection{{222, 9, 12, 12}, x, y, {1, 1, 1, 11}, true, false, true, true}}); x += space/2;
+    // x = 354;
+    intersections.insert({"Intersection 04_10", new Intersection{{222, 9, 12, 12}, x, y, {1, 1, 1, 11}, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 04_12", new Intersection{{222, 9, 12, 12}, x, y, {1, 1, 1, 11}, true, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 04_14", new Intersection{{214, 9, 12, 12}, x, y, {160, 32, 32, 32}, true, true, true, true}}); x += space;
+    intersections.insert({"Intersection 04_18", new Intersection{{222, 9, 12, 12}, x, y, {1, 1, 1, 11}, false, true, true, true}});
+
+    x = 34; y = 258;
+    intersections.insert({"Intersection 07_00", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, false, true}}); x += space;
+    intersections.insert({"Intersection 07_04", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, true, true, true}}); x += space/2;
+    intersections.insert({"Intersection 07_06", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, false, true}}); x += space/2;
+    intersections.insert({"Intersection 07_08", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 07_10", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, false}}); x += space/2;
+    intersections.insert({"Intersection 07_12", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 07_14", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, true}}); x += space;
+    intersections.insert({"Intersection 07_18", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, false, true, true}});
+
+    x = 226; y = 322;
+    intersections.insert({"Intersection 09_06", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, false}}); x += space/2;
+    intersections.insert({"Intersection 09_08", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 09_10", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 09_12", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, true, true, false}});
+
+    x = 162; y = 418;
+    intersections.insert({"Intersection 12_04", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, true, true}});x += space/2;
+    intersections.insert({"Intersection 12_06", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, true, true, true}});x += space/2*3;
+    intersections.insert({"Intersection 12_12", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, true}});x += space/2;
+    intersections.insert({"Intersection 12_14", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, true, true}});
+
+    x = 226; y = 482;
+    intersections.insert({"Intersection 14_12", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, true}});x += space/2*3;
+    intersections.insert({"Intersection 14_14", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, true, true, true}});
+
+    x = 34; y = 578;
+    intersections.insert({"Intersection 17_00", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, false}}); x += space;
+    intersections.insert({"Intersection 17_04", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, true, true}}); x += space/2;
+    intersections.insert({"Intersection 17_06", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 17_08", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 17_10", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, false}}); x += space/2;
+    intersections.insert({"Intersection 17_12", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 17_14", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, true, true}}); x += space;
+    intersections.insert({"Intersection 17_18", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, true, true, false}});
+
+    x = 34; y = 642;
+    intersections.insert({"Intersection 19_00", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, false, true}}); x += space/2;
+    intersections.insert({"Intersection 19_02", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 19_04", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, true}}); x += space/2;
+    intersections.insert({"Intersection 19_06", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 19_08", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 19_10", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 19_12", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 19_14", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, true, true, true}}); x += space/2;
+    intersections.insert({"Intersection 19_16", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, false}}); x += space/2;
+    intersections.insert({"Intersection 19_18", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, false, true, true}});
+
+    x = 34; y = 738;
+    intersections.insert({"Intersection 22_00", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, false}}); x += space/2;
+    intersections.insert({"Intersection 22_02", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 22_04", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 22_06", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, false, true}}); x += space/2;
+    intersections.insert({"Intersection 22_08", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 22_10", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, true, false, false}}); x += space/2;
+    intersections.insert({"Intersection 22_12", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 22_14", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, false, true}}); x += space/2;
+    intersections.insert({"Intersection 22_16", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 22_18", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, true, true, false}});
+
+    x = 34; y = 802;
+    intersections.insert({"Intersection 24_00", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, false, true}}); x += space/2*4;
+    intersections.insert({"Intersection 24_08", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 24_10", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, true, false, true, true}}); x += space/2*4;
+    intersections.insert({"Intersection 24_18", new Intersection{{206, 9, 12, 12}, x, y, {32, 32, 32, 32}, false, false, true, true}});
 }
 
 // faire une méthode pour la détection comme ici,
@@ -146,14 +214,23 @@ void GameManager::checkForPellet(int x, int y)
     }
 }
 
-bool GameManager::checkForIntersection(int x, int y)
+bool GameManager::checkForIntersection(int x, int y, int last_pressed_key)
 {
     bool isIntersection = false;
     for (auto it = intersections.begin(); it != intersections.end(); ++it) {
         if(it->second->x == x && it->second->y == y)
         {
             std::cout<<it->first<<std::endl;
-            isIntersection = !isIntersection;
+            if(last_pressed_key == 0 && it->second->canGoRight())
+                return true;
+            if(last_pressed_key == 1 && it->second->canGoDown())
+                return true;
+            if(last_pressed_key == 2 && it->second->canGoLeft())
+                return true;
+            if(last_pressed_key == 3 && it->second->canGoUp())
+                return true;
+            // Mettre un else qui stop les mouvemnts du PacMan tant que on donne pas de bonne direction
+
             // update le is_passed et mettre à jour le fond
             // prendre en compte les orientations possibles et 
             // mettre cette orientation en place (jsp comment encore)

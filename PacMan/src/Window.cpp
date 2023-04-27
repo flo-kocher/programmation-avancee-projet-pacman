@@ -53,7 +53,7 @@ void Window::update()
     // ghost.x et ghost.y : position en temps réel du ghost
     gameManager->checkForZone(ghost->ghost.x, ghost->ghost.y);
     gameManager->checkForPellet(ghost->ghost.x, ghost->ghost.y);
-    if(gameManager->checkForIntersection(ghost->ghost.x, ghost->ghost.y))
+    if(gameManager->checkForIntersection(ghost->ghost.x, ghost->ghost.y, last_pressed_key))
         intersection_detected = true;
     
     gameManager->updateInterface(ghost->getGhost(), ghost->getGhostIn());

@@ -15,6 +15,23 @@ class Intersection: public Pellet
         Intersection(SDL_Rect init_initial, int init_x, int init_y, SDL_Rect init_passed, bool path_right_available, bool path_down_available, bool path_left_available, bool path_up_available);
         ~Intersection();
 
+        inline bool canGoRight()
+        {
+            return path_right;
+        };
+        inline bool canGoDown()
+        {
+            return path_down;
+        };
+        inline bool canGoLeft()
+        {
+            return path_left;
+        };
+        inline bool canGoUp()
+        {
+            return path_up;
+        };
+
 };
 
 #endif
