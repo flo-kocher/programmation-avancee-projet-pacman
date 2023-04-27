@@ -214,21 +214,18 @@ void GameManager::checkForPellet(int x, int y)
     }
 }
 
-bool GameManager::checkForIntersection(int x, int y, int last_pressed_key)
+int GameManager::checkForIntersection(int x, int y, int last_pressed_key)
 {
     bool isIntersection = false;
     for (auto it = intersections.begin(); it != intersections.end(); ++it) {
         if(it->second->x == x && it->second->y == y)
         {
             std::cout<<it->first<<std::endl;
-            if(last_pressed_key == 0 && it->second->canGoRight())
-                return true;
-            if(last_pressed_key == 1 && it->second->canGoDown())
-                return true;
-            if(last_pressed_key == 2 && it->second->canGoLeft())
-                return true;
-            if(last_pressed_key == 3 && it->second->canGoUp())
-                return true;
+            if(last_pressed_key == 0 && it->second->canGoRight() || last_pressed_key == 1 && it->second->canGoDown()
+            || last_pressed_key == 2 && it->second->canGoLeft() || last_pressed_key == 3 && it->second->canGoUp())
+                return 1;
+            else
+                return 2;
             // Mettre un else qui stop les mouvemnts du PacMan tant que on donne pas de bonne direction
 
             // update le is_passed et mettre à jour le fond
@@ -236,7 +233,7 @@ bool GameManager::checkForIntersection(int x, int y, int last_pressed_key)
             // mettre cette orientation en place (jsp comment encore)
         }
     }
-    return isIntersection;
+    return 0;
 }
 
 void GameManager::updatePellets()

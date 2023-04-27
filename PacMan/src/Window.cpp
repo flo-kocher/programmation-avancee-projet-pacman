@@ -35,26 +35,29 @@ void Window::update()
     switch(direction_tmp)
     {
         case 0:
-                ghost->turnRight();
+            ghost->turnRight();
             break;
         case 1:
-        {
-                ghost->turnDown();
+            ghost->turnDown();
             break;
-        }
         case 2:
-                ghost->turnLeft();
+            ghost->turnLeft();
             break;
         case 3:
-                ghost->turnUp();
+            ghost->turnUp();
+            break;
+        case -1:
+            ghost->standStill();
             break;
     }
 
     // ghost.x et ghost.y : position en temps réel du ghost
     gameManager->checkForZone(ghost->ghost.x, ghost->ghost.y);
     gameManager->checkForPellet(ghost->ghost.x, ghost->ghost.y);
-    if(gameManager->checkForIntersection(ghost->ghost.x, ghost->ghost.y, last_pressed_key))
+    if(gameManager->checkForIntersection(ghost->ghost.x, ghost->ghost.y, last_pressed_key) == 1)
         intersection_detected = true;
+    else if(gameManager->checkForIntersection(ghost->ghost.x, ghost->ghost.y, last_pressed_key) == 2)
+        direction_tmp = -1;
     
     gameManager->updateInterface(ghost->getGhost(), ghost->getGhostIn());
 }

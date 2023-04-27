@@ -30,7 +30,7 @@ class GameManager
 
         void checkForZone(int x, int y);
         void checkForPellet(int x, int y);
-        bool checkForIntersection(int x, int y, int last_pressed_key);
+        int checkForIntersection(int x, int y, int last_pressed_key);
 
         void updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in);
         void updatePellets();

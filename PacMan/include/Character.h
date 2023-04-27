@@ -47,6 +47,10 @@ class Character
         ghost_in = &(ghost_u);
         ghost.y--;
     };
+    void standStill()
+    {
+        
+    };
 
     inline SDL_Rect* getGhost()
     {
