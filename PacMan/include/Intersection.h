@@ -2,8 +2,10 @@
 #define __INTERSECTION_H__
 
 #include "Pellet.h"
+#include "BigPellet.h"
 
-class Intersection: public Pellet
+template <class T>
+class Intersection: public T
 {
     private:
         bool path_right;
@@ -12,7 +14,7 @@ class Intersection: public Pellet
         bool path_up;
 
     public:
-        Intersection(int init_x, int init_y, bool init_has_pellet, bool path_right_available, bool path_down_available, bool path_left_available, bool path_up_available);
+        Intersection(int init_x, int init_y, bool init_has_pellet, bool init_path_right, bool init_path_down, bool init_path_left, bool init_path_up);
         ~Intersection();
 
         inline bool canGoRight()

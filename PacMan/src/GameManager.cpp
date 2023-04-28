@@ -279,92 +279,92 @@ void GameManager::initIntersections()
     int x = 34, y = 34;
     int space = 128;
     // Première ligne d'intersections
-    intersections.insert({"Intersection 00_00", new IntersectionTemplate<Pellet>{x, y, true, true, true, false, false}}); x += space;
-    intersections.insert({"Intersection 00_04", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, false}}); x += space;
-    intersections.insert({"Intersection 00_08", new IntersectionTemplate<Pellet>{x, y, true, false, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 00_00", new Intersection<Pellet>{x, y, true, true, true, false, false}}); x += space;
+    intersections.insert({"Intersection 00_04", new Intersection<Pellet>{x, y, true, true, true, true, false}}); x += space;
+    intersections.insert({"Intersection 00_08", new Intersection<Pellet>{x, y, true, false, true, true, false}}); x += space/2;
     // On se décale pour passer à la partie droite
     // x = 354;
-    intersections.insert({"Intersection 00_10", new IntersectionTemplate<Pellet>{x, y, true, true, true, false, false}}); x += space;
-    intersections.insert({"Intersection 00_14", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, false}}); x += space;
-    intersections.insert({"Intersection 00_18", new IntersectionTemplate<Pellet>{x, y, true, false, true, true, false}});
+    intersections.insert({"Intersection 00_10", new Intersection<Pellet>{x, y, true, true, true, false, false}}); x += space;
+    intersections.insert({"Intersection 00_14", new Intersection<Pellet>{x, y, true, true, true, true, false}}); x += space;
+    intersections.insert({"Intersection 00_18", new Intersection<Pellet>{x, y, true, false, true, true, false}});
 
     // Deuxième ligne
     x = 34; y = 162;
-    intersections.insert({"Intersection 04_00", new IntersectionTemplate<Pellet>{x, y, true, true, true, false, true}}); x += space;
-    intersections.insert({"Intersection 04_04", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, true}}); x += space/2;
-    intersections.insert({"Intersection 04_06", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, false}}); x += space/2;
-    intersections.insert({"Intersection 04_08", new IntersectionTemplate<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 04_00", new Intersection<Pellet>{x, y, true, true, true, false, true}}); x += space;
+    intersections.insert({"Intersection 04_04", new Intersection<Pellet>{x, y, true, true, true, true, true}}); x += space/2;
+    intersections.insert({"Intersection 04_06", new Intersection<Pellet>{x, y, true, true, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 04_08", new Intersection<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
     // x = 354;
-    intersections.insert({"Intersection 04_10", new IntersectionTemplate<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 04_12", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, false}}); x += space/2;
-    intersections.insert({"Intersection 04_14", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, true}}); x += space;
-    intersections.insert({"Intersection 04_18", new IntersectionTemplate<Pellet>{x, y, true, false, true, true, true}});
+    intersections.insert({"Intersection 04_10", new Intersection<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 04_12", new Intersection<Pellet>{x, y, true, true, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 04_14", new Intersection<Pellet>{x, y, true, true, true, true, true}}); x += space;
+    intersections.insert({"Intersection 04_18", new Intersection<Pellet>{x, y, true, false, true, true, true}});
 
     x = 34; y = 258;
-    intersections.insert({"Intersection 07_00", new IntersectionTemplate<Pellet>{x, y, true, true, false, false, true}}); x += space;
-    intersections.insert({"Intersection 07_04", new IntersectionTemplate<Pellet>{x, y, true, false, true, true, true}}); x += space/2;
-    intersections.insert({"Intersection 07_06", new IntersectionTemplate<Pellet>{x, y, true, true, false, false, true}}); x += space/2;
-    intersections.insert({"Intersection 07_08", new IntersectionTemplate<Pellet>{x, y, true, false, true, true, false}}); x += space/2;
-    intersections.insert({"Intersection 07_10", new IntersectionTemplate<Pellet>{x, y, true, true, true, false, false}}); x += space/2;
-    intersections.insert({"Intersection 07_12", new IntersectionTemplate<Pellet>{x, y, true, false, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 07_14", new IntersectionTemplate<Pellet>{x, y, true, true, true, false, true}}); x += space;
-    intersections.insert({"Intersection 07_18", new IntersectionTemplate<Pellet>{x, y, true, false, false, true, true}});
+    intersections.insert({"Intersection 07_00", new Intersection<Pellet>{x, y, true, true, false, false, true}}); x += space;
+    intersections.insert({"Intersection 07_04", new Intersection<Pellet>{x, y, true, false, true, true, true}}); x += space/2;
+    intersections.insert({"Intersection 07_06", new Intersection<Pellet>{x, y, true, true, false, false, true}}); x += space/2;
+    intersections.insert({"Intersection 07_08", new Intersection<Pellet>{x, y, true, false, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 07_10", new Intersection<Pellet>{x, y, true, true, true, false, false}}); x += space/2;
+    intersections.insert({"Intersection 07_12", new Intersection<Pellet>{x, y, true, false, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 07_14", new Intersection<Pellet>{x, y, true, true, true, false, true}}); x += space;
+    intersections.insert({"Intersection 07_18", new Intersection<Pellet>{x, y, true, false, false, true, true}});
 
     x = 226; y = 322;
-    intersections.insert({"Intersection 09_06", new IntersectionTemplate<Pellet>{x, y, false, true, true, false, false}}); x += space/2;
-    intersections.insert({"Intersection 09_08", new IntersectionTemplate<Pellet>{x, y, false, true, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 09_10", new IntersectionTemplate<Pellet>{x, y, false, true, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 09_12", new IntersectionTemplate<Pellet>{x, y, false, false, true, true, false}});
+    intersections.insert({"Intersection 09_06", new Intersection<Pellet>{x, y, false, true, true, false, false}}); x += space/2;
+    intersections.insert({"Intersection 09_08", new Intersection<Pellet>{x, y, false, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 09_10", new Intersection<Pellet>{x, y, false, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 09_12", new Intersection<Pellet>{x, y, false, false, true, true, false}});
 
     x = 162; y = 418;
-    intersections.insert({"Intersection 12_04", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, true}});x += space/2;
-    intersections.insert({"Intersection 12_06", new IntersectionTemplate<Pellet>{x, y, false, false, true, true, true}});x += space/2*3;
-    intersections.insert({"Intersection 12_12", new IntersectionTemplate<Pellet>{x, y, false, true, true, false, true}});x += space/2;
-    intersections.insert({"Intersection 12_14", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, true}});
+    intersections.insert({"Intersection 12_04", new Intersection<Pellet>{x, y, true, true, true, true, true}});x += space/2;
+    intersections.insert({"Intersection 12_06", new Intersection<Pellet>{x, y, false, false, true, true, true}});x += space/2*3;
+    intersections.insert({"Intersection 12_12", new Intersection<Pellet>{x, y, false, true, true, false, true}});x += space/2;
+    intersections.insert({"Intersection 12_14", new Intersection<Pellet>{x, y, true, true, true, true, true}});
 
     x = 226; y = 482;
-    intersections.insert({"Intersection 14_06", new IntersectionTemplate<Pellet>{x, y, false, true, true, false, true}});x += space/2*3;
-    intersections.insert({"Intersection 14_14", new IntersectionTemplate<Pellet>{x, y, false, false, true, true, true}});
+    intersections.insert({"Intersection 14_06", new Intersection<Pellet>{x, y, false, true, true, false, true}});x += space/2*3;
+    intersections.insert({"Intersection 14_14", new Intersection<Pellet>{x, y, false, false, true, true, true}});
 
     x = 34; y = 578;
-    intersections.insert({"Intersection 17_00", new IntersectionTemplate<Pellet>{x, y, true, true, true, false, false}}); x += space;
-    intersections.insert({"Intersection 17_04", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, true}}); x += space/2;
-    intersections.insert({"Intersection 17_06", new IntersectionTemplate<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 17_08", new IntersectionTemplate<Pellet>{x, y, true, false, true, true, false}}); x += space/2;
-    intersections.insert({"Intersection 17_10", new IntersectionTemplate<Pellet>{x, y, true, true, true, false, false}}); x += space/2;
-    intersections.insert({"Intersection 17_12", new IntersectionTemplate<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 17_14", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, true}}); x += space;
-    intersections.insert({"Intersection 17_18", new IntersectionTemplate<Pellet>{x, y, true, false, true, true, false}});
+    intersections.insert({"Intersection 17_00", new Intersection<Pellet>{x, y, true, true, true, false, false}}); x += space;
+    intersections.insert({"Intersection 17_04", new Intersection<Pellet>{x, y, true, true, true, true, true}}); x += space/2;
+    intersections.insert({"Intersection 17_06", new Intersection<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 17_08", new Intersection<Pellet>{x, y, true, false, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 17_10", new Intersection<Pellet>{x, y, true, true, true, false, false}}); x += space/2;
+    intersections.insert({"Intersection 17_12", new Intersection<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 17_14", new Intersection<Pellet>{x, y, true, true, true, true, true}}); x += space;
+    intersections.insert({"Intersection 17_18", new Intersection<Pellet>{x, y, true, false, true, true, false}});
 
     x = 34; y = 642;
-    intersections_big.insert({"BigIntersection 19_00", new IntersectionTemplate<BigPellet>{x, y, true, true, false, false, true}}); x += space/2;
-    intersections.insert({"Intersection 19_02", new IntersectionTemplate<Pellet>{x, y, true, false, true, true, false}}); x += space/2;
-    intersections.insert({"Intersection 19_04", new IntersectionTemplate<Pellet>{x, y, true, true, true, false, true}}); x += space/2;
-    intersections.insert({"Intersection 19_06", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, false}}); x += space/2;
-    intersections.insert({"Intersection 19_08", new IntersectionTemplate<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 19_10", new IntersectionTemplate<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 19_12", new IntersectionTemplate<Pellet>{x, y, true, true, true, true, false}}); x += space/2;
-    intersections.insert({"Intersection 19_14", new IntersectionTemplate<Pellet>{x, y, true, false, true, true, true}}); x += space/2;
-    intersections.insert({"Intersection 19_16", new IntersectionTemplate<Pellet>{x, y, true, true, true, false, false}}); x += space/2;
-    intersections_big.insert({"BigIntersection 19_18", new IntersectionTemplate<BigPellet>{x, y, true, false, false, true, true}});
+    intersections_big.insert({"BigIntersection 19_00", new Intersection<BigPellet>{x, y, true, true, false, false, true}}); x += space/2;
+    intersections.insert({"Intersection 19_02", new Intersection<Pellet>{x, y, true, false, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 19_04", new Intersection<Pellet>{x, y, true, true, true, false, true}}); x += space/2;
+    intersections.insert({"Intersection 19_06", new Intersection<Pellet>{x, y, true, true, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 19_08", new Intersection<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 19_10", new Intersection<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 19_12", new Intersection<Pellet>{x, y, true, true, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 19_14", new Intersection<Pellet>{x, y, true, false, true, true, true}}); x += space/2;
+    intersections.insert({"Intersection 19_16", new Intersection<Pellet>{x, y, true, true, true, false, false}}); x += space/2;
+    intersections_big.insert({"BigIntersection 19_18", new Intersection<BigPellet>{x, y, true, false, false, true, true}});
 
     x = 34; y = 738;
-    intersections.insert({"Intersection 22_00", new IntersectionTemplate<Pellet>{x, y, true, true, true, false, false}}); x += space/2;
-    intersections.insert({"Intersection 22_02", new IntersectionTemplate<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 22_04", new IntersectionTemplate<Pellet>{x, y, true, false, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 22_06", new IntersectionTemplate<Pellet>{x, y, true, true, false, false, true}}); x += space/2;
-    intersections.insert({"Intersection 22_08", new IntersectionTemplate<Pellet>{x, y, true, false, true, true, false}}); x += space/2;
-    intersections.insert({"Intersection 22_10", new IntersectionTemplate<Pellet>{x, y, true, true, true, false, false}}); x += space/2;
-    intersections.insert({"Intersection 22_12", new IntersectionTemplate<Pellet>{x, y, true, false, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 22_14", new IntersectionTemplate<Pellet>{x, y, true, true, false, false, true}}); x += space/2;
-    intersections.insert({"Intersection 22_16", new IntersectionTemplate<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 22_18", new IntersectionTemplate<Pellet>{x, y, true, false, true, true, false}});
+    intersections.insert({"Intersection 22_00", new Intersection<Pellet>{x, y, true, true, true, false, false}}); x += space/2;
+    intersections.insert({"Intersection 22_02", new Intersection<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 22_04", new Intersection<Pellet>{x, y, true, false, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 22_06", new Intersection<Pellet>{x, y, true, true, false, false, true}}); x += space/2;
+    intersections.insert({"Intersection 22_08", new Intersection<Pellet>{x, y, true, false, true, true, false}}); x += space/2;
+    intersections.insert({"Intersection 22_10", new Intersection<Pellet>{x, y, true, true, true, false, false}}); x += space/2;
+    intersections.insert({"Intersection 22_12", new Intersection<Pellet>{x, y, true, false, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 22_14", new Intersection<Pellet>{x, y, true, true, false, false, true}}); x += space/2;
+    intersections.insert({"Intersection 22_16", new Intersection<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 22_18", new Intersection<Pellet>{x, y, true, false, true, true, false}});
 
     x = 34; y = 802;
-    intersections.insert({"Intersection 24_00", new IntersectionTemplate<Pellet>{x, y, true, true, false, false, true}}); x += space/2*4;
-    intersections.insert({"Intersection 24_08", new IntersectionTemplate<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
-    intersections.insert({"Intersection 24_10", new IntersectionTemplate<Pellet>{x, y, true, true, false, true, true}}); x += space/2*4;
-    intersections.insert({"Intersection 24_18", new IntersectionTemplate<Pellet>{x, y, true, false, false, true, true}});
+    intersections.insert({"Intersection 24_00", new Intersection<Pellet>{x, y, true, true, false, false, true}}); x += space/2*4;
+    intersections.insert({"Intersection 24_08", new Intersection<Pellet>{x, y, true, true, false, true, true}}); x += space/2;
+    intersections.insert({"Intersection 24_10", new Intersection<Pellet>{x, y, true, true, false, true, true}}); x += space/2*4;
+    intersections.insert({"Intersection 24_18", new Intersection<Pellet>{x, y, true, false, false, true, true}});
 }
 
 void GameManager::checkForZone(int x, int y)

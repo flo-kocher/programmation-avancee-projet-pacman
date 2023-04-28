@@ -6,7 +6,7 @@ project(PacManGame LANGUAGES CXX)
 find_package(SDL2 REQUIRED)
 
 add_executable(${PROJECT_NAME} "")
-target_sources(${PROJECT_NAME} PRIVATE main.cpp include/Zone.h src/Zone.cpp include/Intersection.h src/Intersection.cpp include/IntersectionTemplate.h src/IntersectionTemplate.cpp include/Window.h src/Window.cpp include/Character.h src/Character.cpp include/Pellet.h src/Pellet.cpp include/BigPellet.h src/BigPellet.cpp include/GameManager.h src/GameManager.cpp)
+target_sources(${PROJECT_NAME} PRIVATE main.cpp include/Zone.h src/Zone.cpp include/Intersection.h src/Intersection.cpp include/Window.h src/Window.cpp include/Character.h src/Character.cpp include/Pellet.h src/Pellet.cpp include/BigPellet.h src/BigPellet.cpp include/GameManager.h src/GameManager.cpp)
 target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS})
 target_compile_definitions(${PROJECT_NAME} PRIVATE "SDL_MAIN_HANDLED")
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES})
