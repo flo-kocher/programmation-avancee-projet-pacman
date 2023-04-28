@@ -7,7 +7,14 @@
 #include "Pellet.h"
 #include "BigPellet.h"
 #include "Intersection.h"
+#include "IntersectionTemplate.h"
 #include <map>
+
+template<typename T>
+struct Wrapper
+{
+    typedef std::map<std::string, T> map_type;
+};
 
 class GameManager
 {
@@ -15,7 +22,14 @@ class GameManager
         std::map<std::string, Zone*> zones;
         std::map<std::string, Pellet*> pellets;
         std::map<std::string, BigPellet*> big_pellets;
-        std::map<std::string, Intersection*> intersections;
+        // std::map<std::string, Intersection*> intersections;
+        std::map<std::string, IntersectionTemplate<Pellet>*> intersections;
+        std::map<std::string, IntersectionTemplate<BigPellet>*> intersections_big;
+
+        // Wrapper<Intersection*>::map_type intersections;
+        // Wrapper<IntersectionTemplate<Pellet>::map_type intersections_big_pellets;
+
+        // my_wrapped_map[1] = "Foo";
 
         SDL_Window *pWindow = nullptr;
         SDL_Surface *win_surf = nullptr;
@@ -25,16 +39,24 @@ class GameManager
         SDL_Rect bg;
 
     public:
+        int score;
+
         GameManager();
         ~GameManager();
 
         void checkForZone(int x, int y);
         void checkForPellet(int x, int y);
+        template <typename T>
+        void checkForPelletTemplate(int x, int y, T map);
         int checkForIntersection(int x, int y, int last_pressed_key);
+        template <typename T>
+        int checkForIntersectionTemplate(int x, int y, int last_pressed_key, T map);
 
         void updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in);
-        void updatePellets();
-        void updateIntersections();
+        template <typename T>
+        void updatePellets(T map);
+        template <typename T>
+        void updateIntersections(T map);
         void initPellets();
         void initIntersections();
 
