@@ -7,14 +7,8 @@
 #include "Pellet.h"
 #include "BigPellet.h"
 #include "Intersection.h"
-#include "IntersectionTemplate.h"
+#include "Intersection.h"
 #include <map>
-
-template<typename T>
-struct Wrapper
-{
-    typedef std::map<std::string, T> map_type;
-};
 
 class GameManager
 {
@@ -22,14 +16,8 @@ class GameManager
         std::map<std::string, Zone*> zones;
         std::map<std::string, Pellet*> pellets;
         std::map<std::string, BigPellet*> big_pellets;
-        // std::map<std::string, Intersection*> intersections;
-        std::map<std::string, IntersectionTemplate<Pellet>*> intersections;
-        std::map<std::string, IntersectionTemplate<BigPellet>*> intersections_big;
-
-        // Wrapper<Intersection*>::map_type intersections;
-        // Wrapper<IntersectionTemplate<Pellet>::map_type intersections_big_pellets;
-
-        // my_wrapped_map[1] = "Foo";
+        std::map<std::string, Intersection<Pellet>*> intersections;
+        std::map<std::string, Intersection<BigPellet>*> intersections_big;
 
         SDL_Window *pWindow = nullptr;
         SDL_Surface *win_surf = nullptr;
