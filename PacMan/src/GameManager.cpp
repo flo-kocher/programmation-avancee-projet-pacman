@@ -62,20 +62,20 @@ void GameManager::initPellets()
     pellets.insert({"Pellet 00_17", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}});
     // Ligne 2
     x = 34; y = 66;
-    big_pellets.insert({"Pellet 01_00", new BigPellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
+    pellets.insert({"Pellet 01_00", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
     pellets.insert({"Pellet 01_04", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
     pellets.insert({"Pellet 01_08", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*2;
     pellets.insert({"Pellet 01_10", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
     pellets.insert({"Pellet 01_14", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
-    big_pellets.insert({"Pellet 01_18", new BigPellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}});
+    pellets.insert({"Pellet 01_18", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}});
     // Ligne 3
     x = 34; y = 98;
-    pellets.insert({"Pellet 02_00", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
+    big_pellets.insert({"BigPellet 02_00", new BigPellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
     pellets.insert({"Pellet 02_04", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
     pellets.insert({"Pellet 02_08", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*2;
     pellets.insert({"Pellet 02_10", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
     pellets.insert({"Pellet 02_14", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
-    pellets.insert({"Pellet 02_18", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}});
+    big_pellets.insert({"BigPellet 02_18", new BigPellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}});
     // Ligne 4
     x = 34; y = 130;
     pellets.insert({"Pellet 03_00", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
@@ -173,8 +173,8 @@ void GameManager::initPellets()
     // Ligne 14
     x = 162; y = 450;
     pellets.insert({"Pellet 13_04", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*2;
-    pellets.insert({"Pellet 13_06", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*6;
-    pellets.insert({"Pellet 13_12", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*2;
+    pellets.insert({"Pellet 13_06", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, false}}); x+=space*6;
+    pellets.insert({"Pellet 13_12", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, false}}); x+=space*2;
     pellets.insert({"Pellet 13_14", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}});
     // Ligne 15
     x = 162; y = 482;
@@ -222,7 +222,7 @@ void GameManager::initPellets()
     pellets.insert({"Pellet 19_01", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
     pellets.insert({"Pellet 19_05", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*2;
     pellets.insert({"Pellet 19_07", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*2;
-    pellets.insert({"Pellet 19_09", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*2;
+    pellets.insert({"Pellet 19_09", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, false}}); x+=space*2;
     pellets.insert({"Pellet 19_11", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*2;
     pellets.insert({"Pellet 19_13", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}}); x+=space*4;
     pellets.insert({"Pellet 19_17", new Pellet{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true}});
@@ -337,7 +337,7 @@ void GameManager::initIntersections()
     intersections.insert({"Intersection 17_18", new IntersectionTemplate<Pellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, false, true, true, false}});
 
     x = 34; y = 642;
-    intersections_big.insert({"Intersection 19_00", new IntersectionTemplate<BigPellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, true, false, false, true}}); x += space/2;
+    intersections_big.insert({"BigIntersection 19_00", new IntersectionTemplate<BigPellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, true, false, false, true}}); x += space/2;
     intersections.insert({"Intersection 19_02", new IntersectionTemplate<Pellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, false, true, true, false}}); x += space/2;
     intersections.insert({"Intersection 19_04", new IntersectionTemplate<Pellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, true, true, false, true}}); x += space/2;
     intersections.insert({"Intersection 19_06", new IntersectionTemplate<Pellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, true, true, true, false}}); x += space/2;
@@ -346,7 +346,7 @@ void GameManager::initIntersections()
     intersections.insert({"Intersection 19_12", new IntersectionTemplate<Pellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, true, true, true, false}}); x += space/2;
     intersections.insert({"Intersection 19_14", new IntersectionTemplate<Pellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, false, true, true, true}}); x += space/2;
     intersections.insert({"Intersection 19_16", new IntersectionTemplate<Pellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, true, true, false, false}}); x += space/2;
-    intersections_big.insert({"Intersection 19_18", new IntersectionTemplate<BigPellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, false, false, true, true}});
+    intersections_big.insert({"BigIntersection 19_18", new IntersectionTemplate<BigPellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, false, false, true, true}});
 
     x = 34; y = 738;
     intersections.insert({"Intersection 22_00", new IntersectionTemplate<Pellet>{{206, 9, 12, 12}, x, y, {x, y, 32, 32}, true, true, true, false, false}}); x += space/2;
@@ -473,8 +473,15 @@ void GameManager::updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in)
 
     // IL FAUT QUE LES setColorAndBlitScaled SOIT DANS CETTE FONCTION
     // POUR QUE CA SE METTE A JOUR SINON CA MARCHE PAS
-    count = (count + 1) % (512);
-    // if(0 <= count and count <= 250)
+    count = (count + 1) % (250);
+    if(0 <= count and count <= 125)
+    {
+        // std::cout<<intersections_big.at("BigIntersection 19_00")->getInitialRect()<<std::endl;
+        setColorAndBlitScaled(false, &init, intersections_big.at("BigIntersection 19_00")->getPassed());
+        setColorAndBlitScaled(false, &init, intersections_big.at("BigIntersection 19_18")->getPassed());
+        setColorAndBlitScaled(false, &init, big_pellets.at("BigPellet 02_00")->getPassed());
+        setColorAndBlitScaled(false, &init, big_pellets.at("BigPellet 02_18")->getPassed());
+    }
     //     setColorAndBlitScaled(false, &init, &case_20);
 
     // // ici on change entre les 2 sprites sources pour une jolie animation.
