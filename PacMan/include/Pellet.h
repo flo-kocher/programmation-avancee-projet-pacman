@@ -14,13 +14,8 @@ class Pellet: public Zone
         int points_earned;
 
     public:
-        Pellet(SDL_Rect init_initial, int init_x, int init_y, SDL_Rect init_passed, bool init_has_pellet);
+        Pellet(int init_x, int init_y, bool init_has_pellet);
         ~Pellet();
-
-        inline SDL_Rect* getPassed()
-        {
-            return &passed;
-        };
 
         inline bool getGotThrew()
         {
