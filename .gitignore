@@ -3,4 +3,5 @@
 /PacMan/Makefile
 /PacMan/cmake_install.cmake
 /PacMan/PacManGame
+/PacMan/build/
 /.vscode/
