@@ -14,13 +14,13 @@ class Window
         int direction_tmp;
         bool intersection_detected;
         int last_pressed_key;
-        // GameManager* gameManager; // Ancienne manière de déclarer gameManager
-        std::unique_ptr<GameManager> gameManager;// = std::make_unique<GameManager>();
+        std::unique_ptr<GameManager> gameManager;
+        
     public:
         Window();
         ~Window();
 
-        void update();
+        bool update();
 
         inline void setDirectionRight()
         {

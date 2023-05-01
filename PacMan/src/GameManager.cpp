@@ -267,6 +267,7 @@ void GameManager::initPellets()
     pellets.insert({"Pellet 24_07", new Pellet{x, y, true}}); x+=space*2;
     pellets.insert({"Pellet 24_09", new Pellet{x, y, true}}); x+=space*2;
     pellets.insert({"Pellet 24_11", new Pellet{x, y, true}}); x+=space;
+    pellets.insert({"Pellet 24_12", new Pellet{x, y, true}}); x+=space;
     pellets.insert({"Pellet 24_13", new Pellet{x, y, true}}); x+=space;
     pellets.insert({"Pellet 24_14", new Pellet{x, y, true}}); x+=space;
     pellets.insert({"Pellet 24_15", new Pellet{x, y, true}}); x+=space;
@@ -367,6 +368,13 @@ void GameManager::initIntersections()
     intersections.insert({"Intersection 24_18", new Intersection<Pellet>{x, y, true, false, false, true, true}});
 }
 
+bool GameManager::isGameOver()
+{
+    if(score == 2100)
+        return true;
+    return false;
+}
+
 void GameManager::checkForZone(int x, int y)
 {
     for (auto it = zones.begin(); it != zones.end(); ++it) {
@@ -457,44 +465,26 @@ void GameManager::updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in)
 {
     setColorAndBlitScaled(false, &src_bg, &bg);
     std::cout<<score<<std::endl;
-    
-    // met la toute première intersection à jour en mettant son
-    // fond noir de droite
 
-    // mise à jour d'une case (par exemple les cases : case_01, 10 et 20)
-    SDL_Rect init = {376, 10, 10, 10}; // où on trouve le rectagle noir
-    // SDL_Rect case_00 = {32, 32, 32, 32}; // la position de la première case
-    SDL_Rect case_01 = {64, 32, 32, 32}; // la position de la case 01
-    SDL_Rect case_10 = {32, 64, 32, 32};
-    SDL_Rect case_20 = {32, 96, 32, 32};
-    // setColorAndBlitScaled(false, &init, &case_20);
-    // setColorAndBlitScaled(false, &init, &case_10);
+    SDL_Rect black_rect = {376, 10, 10, 10}; // Position d'un rectangle noir
 
-
-    // IL FAUT QUE LES setColorAndBlitScaled SOIT DANS CETTE FONCTION
-    // POUR QUE CA SE METTE A JOUR SINON CA MARCHE PAS
     count = (count + 1) % (250);
     if(0 <= count and count <= 125)
     {
-        // std::cout<<intersections_big.at("BigIntersection 19_00")->getInitialRect()<<std::endl;
-        setColorAndBlitScaled(false, &init, intersections_big.at("BigIntersection 19_00")->getRectangle());
-        setColorAndBlitScaled(false, &init, intersections_big.at("BigIntersection 19_18")->getRectangle());
-        setColorAndBlitScaled(false, &init, big_pellets.at("BigPellet 02_00")->getRectangle());
-        setColorAndBlitScaled(false, &init, big_pellets.at("BigPellet 02_18")->getRectangle());
+        setColorAndBlitScaled(false, &black_rect, intersections_big.at("BigIntersection 19_00")->getRectangle());
+        setColorAndBlitScaled(false, &black_rect, intersections_big.at("BigIntersection 19_18")->getRectangle());
+        setColorAndBlitScaled(false, &black_rect, big_pellets.at("BigPellet 02_00")->getRectangle());
+        setColorAndBlitScaled(false, &black_rect, big_pellets.at("BigPellet 02_18")->getRectangle());
     }
-    //     setColorAndBlitScaled(false, &init, &case_20);
 
-    // // ici on change entre les 2 sprites sources pour une jolie animation.
-    // SDL_Rect ghost_in2 = *ghost_in;
-    // if ((count / 4) % 2)
-    //     ghost_in2.x += 17;
-    
     updatePellets(pellets);
     updatePellets(big_pellets);
     updateIntersections(intersections);
     updateIntersections(intersections_big);
 
     SDL_Rect ghost_in2 = ghost_rect_in;
+    if ((count / 4) % 2)
+        ghost_in2.x += 17;
     setColorAndBlitScaled(true, &ghost_in2, ghost_rect);
 
     SDL_UpdateWindowSurface(pWindow);

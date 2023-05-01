@@ -47,6 +47,7 @@ class GameManager
         void updateIntersections(T map);
         void initPellets();
         void initIntersections();
+        bool isGameOver();
 
         inline void setColorAndBlitScaled(const bool transparence, const SDL_Rect* src_rect, SDL_Rect* dst_rect)
         {
