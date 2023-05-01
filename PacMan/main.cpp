@@ -1,12 +1,15 @@
 // #include <SDL.h>
 
 #include "include/Window.h"
+#include "include/KeyboardManager.h"
 
 #include <iostream>
 
 int main(int argc, char **argv)
 {
     Window* window = new Window{};
+    KeyboardManager* kb_manager = new KeyboardManager{};
+    int keyboard_event;
 
     // BOUCLE PRINCIPALE
     bool quit = false;
@@ -25,30 +28,32 @@ int main(int argc, char **argv)
             }
         }
 
-        // Gestion du clavier
-        int nbk;
-        const Uint8 *keys = SDL_GetKeyboardState(&nbk);
-        if (keys[SDL_SCANCODE_ESCAPE])
+        keyboard_event = kb_manager->waitForEvent();
+        switch (keyboard_event)
+        {
+        case -1:
             quit = true;
-        if (keys[SDL_SCANCODE_LEFT])
-        {
+            break;
+        case 0:
             window->setDirectionLeft();
-        }
-        if (keys[SDL_SCANCODE_RIGHT])
-        {
+            break;
+        case 1:
             window->setDirectionRight();
-        }
-        if (keys[SDL_SCANCODE_UP])
-        {
+            break;
+        case 2:
             window->setDirectionUp();
-        }
-        if (keys[SDL_SCANCODE_DOWN])
-        {
+            break;
+        case 3:
             window->setDirectionDown();
+            break;
+        default:
+            // Do nothing
+            break;
         }
 
         // AFFICHAGE
-        window->update();
+        if(window->update())
+            quit = true;
     }
     SDL_Quit(); // ON SORT
     return 0;
