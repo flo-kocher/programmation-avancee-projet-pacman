@@ -3,6 +3,14 @@
 
 #include <SDL.h>
 
+#ifdef __unix__
+    #define OS_Windows 0
+    #define SPRITE_PATH "./pacman_sprites.bmp"
+#elif defined(_WIN32) || defined(WIN32)
+    #define OS_Windows 1
+    #define SPRITE_PATH "../pacman_sprites.bmp"
+#endif
+
 GameManager::GameManager()
 : count(0)
 , src_bg({200, 3, 168, 216})
@@ -28,7 +36,7 @@ GameManager::GameManager()
         std::cerr<<"Echec de la création de la fenêtre "<<SDL_GetError()<<std::endl;
     if((win_surf = SDL_GetWindowSurface(pWindow)) == NULL)
         std::cerr<<"Echec de la récupération de la surface de la fenêtre "<<SDL_GetError()<<std::endl;
-    if((plancheSprites = SDL_LoadBMP("../pacman_sprites.bmp")) == NULL)
+    if((plancheSprites = SDL_LoadBMP(SPRITE_PATH)) == NULL)
         std::cerr<<"Echec du chargement du bmp "<<SDL_GetError()<<std::endl;
 
     // big_pellets.insert({"BiPellet 1", std::make_shared<BigPellet>({"BigPellet 1", {200, 9, 12, 12})});
