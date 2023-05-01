@@ -41,16 +41,16 @@ bool Window::update()
     switch(direction_tmp)
     {
         case 0:
-            ghost->turnRight();
+            ghost->turnRight(gameManager->getCount());
             break;
         case 1:
-            ghost->turnDown();
+            ghost->turnDown(gameManager->getCount());
             break;
         case 2:
-            ghost->turnLeft();
+            ghost->turnLeft(gameManager->getCount());
             break;
         case 3:
-            ghost->turnUp();
+            ghost->turnUp(gameManager->getCount());
             break;
         case -1:
             ghost->standStill();

@@ -483,8 +483,8 @@ void GameManager::updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in)
     updateIntersections(intersections_big);
 
     SDL_Rect ghost_in2 = ghost_rect_in;
-    if ((count / 4) % 2)
-        ghost_in2.x += 17;
+    // if ((count / 8) % 2)
+        // ghost_in2.x += 20;
     setColorAndBlitScaled(true, &ghost_in2, ghost_rect);
 
     SDL_UpdateWindowSurface(pWindow);
