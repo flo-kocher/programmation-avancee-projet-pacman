@@ -1,0 +1,10 @@
+^D:\COURS MASTER\PROGRAMMATION AVANCÉE\PROGRAMMATION-AVANCEE-PROJET-PACMAN\PACMAN\BUILD\CMAKEFILES\4A66E58EFC8A97EAC6E8A2D140F00FEE\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SD:/Cours MASTER/Programmation avancée/programmation-avancee-projet-pacman/PacMan" "-BD:/Cours MASTER/Programmation avancée/programmation-avancee-projet-pacman/PacMan/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "D:/Cours MASTER/Programmation avancée/programmation-avancee-projet-pacman/PacMan/build/PacManGame.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

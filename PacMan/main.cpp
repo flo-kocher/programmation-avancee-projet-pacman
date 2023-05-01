@@ -6,7 +6,7 @@
 
 int main(int argc, char **argv)
 {
-    Window* window = new Window{};
+    std::unique_ptr<Window> window = std::make_unique<Window>();
 
     // BOUCLE PRINCIPALE
     bool quit = false;

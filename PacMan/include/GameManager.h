@@ -13,11 +13,11 @@
 class GameManager
 {
     private:
-        std::map<std::string, Zone*> zones;
-        std::map<std::string, Pellet*> pellets;
-        std::map<std::string, BigPellet*> big_pellets;
-        std::map<std::string, Intersection<Pellet>*> intersections;
-        std::map<std::string, Intersection<BigPellet>*> intersections_big;
+        std::map<std::string, std::shared_ptr<Zone>> zones;
+        std::map<std::string, std::shared_ptr<Pellet>> pellets;
+        std::map<std::string, std::shared_ptr<BigPellet>> big_pellets;
+        std::map<std::string, std::shared_ptr<Intersection<Pellet>>> intersections;
+        std::map<std::string, std::shared_ptr<Intersection<BigPellet>>> intersections_big;
 
         SDL_Window *pWindow = nullptr;
         SDL_Surface *win_surf = nullptr;
