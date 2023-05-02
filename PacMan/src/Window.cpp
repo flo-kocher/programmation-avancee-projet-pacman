@@ -58,7 +58,6 @@ bool Window::update()
     }
 
     // ghost.x et ghost.y : position en temps réel du ghost
-    gameManager->checkForZone(ghost->ghost.x, ghost->ghost.y);
     int pellet_number = gameManager->checkForPellet(ghost->ghost.x, ghost->ghost.y);
     if(pellet_number == 0)
         ghost->teleportRight();

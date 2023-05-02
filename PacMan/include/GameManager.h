@@ -3,17 +3,12 @@
 
 #include <SDL.h>
 #include "Character.h"
-#include "Zone.h"
-#include "Pellet.h"
-#include "BigPellet.h"
-#include "Intersection.h"
-#include "Intersection.h"
+#include "MapInitialization.h"
 #include <map>
 
 class GameManager
 {
     private:
-        std::map<std::string, std::shared_ptr<Zone>> zones;
         std::map<std::string, std::shared_ptr<Pellet>> pellets;
         std::map<std::string, std::shared_ptr<BigPellet>> big_pellets;
         std::map<std::string, std::shared_ptr<Intersection<Pellet>>> intersections;
@@ -32,7 +27,6 @@ class GameManager
         GameManager();
         ~GameManager();
 
-        void checkForZone(int x, int y);
         int checkForPellet(int x, int y);
         template <typename T>
         int checkForPelletTemplate(int x, int y, T map);
@@ -45,8 +39,6 @@ class GameManager
         void updatePellets(T map);
         template <typename T>
         void updateIntersections(T map);
-        void initPellets();
-        void initIntersections();
         bool isGameOver();
 
         inline void setColorAndBlitScaled(const bool transparence, const SDL_Rect* src_rect, SDL_Rect* dst_rect)
