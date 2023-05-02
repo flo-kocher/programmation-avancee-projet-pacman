@@ -33,9 +33,9 @@ class GameManager
         ~GameManager();
 
         void checkForZone(int x, int y);
-        void checkForPellet(int x, int y);
+        int checkForPellet(int x, int y);
         template <typename T>
-        void checkForPelletTemplate(int x, int y, T map);
+        int checkForPelletTemplate(int x, int y, T map);
         int checkForIntersection(int x, int y, int last_pressed_key);
         template <typename T>
         int checkForIntersectionTemplate(int x, int y, int last_pressed_key, T map);

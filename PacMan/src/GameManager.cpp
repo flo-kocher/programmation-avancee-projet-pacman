@@ -163,7 +163,8 @@ void GameManager::initPellets()
     pellets.insert({"Pellet 11_12", std::make_shared<Pellet>(x, y, false)}); x+=space*2;
     pellets.insert({"Pellet 11_14", std::make_shared<Pellet>(x, y, true)});
     // Ligne 13
-    x = 34; y = 418;
+    x = 2; y = 418;
+    pellets.insert({"Pellet 12_left", std::make_shared<Pellet>(x, y, false)}); x+=space;
     pellets.insert({"Pellet 12_00", std::make_shared<Pellet>(x, y, false)}); x+=space;
     pellets.insert({"Pellet 12_01", std::make_shared<Pellet>(x, y, false)}); x+=space;
     pellets.insert({"Pellet 12_02", std::make_shared<Pellet>(x, y, false)}); x+=space;
@@ -177,7 +178,8 @@ void GameManager::initPellets()
     pellets.insert({"Pellet 12_15", std::make_shared<Pellet>(x, y, false)}); x+=space;
     pellets.insert({"Pellet 12_16", std::make_shared<Pellet>(x, y, false)}); x+=space;
     pellets.insert({"Pellet 12_17", std::make_shared<Pellet>(x, y, false)}); x+=space;
-    pellets.insert({"Pellet 12_18", std::make_shared<Pellet>(x, y, false)});
+    pellets.insert({"Pellet 12_18", std::make_shared<Pellet>(x, y, false)}); x+=space;
+    pellets.insert({"Pellet 12_right", std::make_shared<Pellet>(x, y, false)});
     // Ligne 14
     x = 162; y = 450;
     pellets.insert({"Pellet 13_04", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
@@ -394,7 +396,7 @@ void GameManager::checkForZone(int x, int y)
 }
 
 template <typename T>
-void GameManager::checkForPelletTemplate(int x, int y, T map)
+int GameManager::checkForPelletTemplate(int x, int y, T map)
 {
     for (auto it = map.begin(); it != map.end(); ++it) {
         if(it->second->x == x && it->second->y == y)
@@ -406,14 +408,19 @@ void GameManager::checkForPelletTemplate(int x, int y, T map)
                 score += it->second->addPoints();
                 it->second->setHasPellet();
             }
+            if(it->first == "Pellet 12_left")
+                {std::cout<<it->second->x<<std::endl;std::cout<<it->second->y<<std::endl;return 0;}
+            if(it->first == "Pellet 12_right")
+                {std::cout<<it->second->x<<std::endl;std::cout<<it->second->y<<std::endl;return 18;}
         }
     }
+    return -1;
 }
 
-void GameManager::checkForPellet(int x, int y)
+int GameManager::checkForPellet(int x, int y)
 {
-    checkForPelletTemplate(x, y, pellets);
     checkForPelletTemplate(x, y, big_pellets);
+    return checkForPelletTemplate(x, y, pellets);
 }
 
 template <typename T>
