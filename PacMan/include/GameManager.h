@@ -9,6 +9,7 @@
 #include "Intersection.h"
 #include "Intersection.h"
 #include <map>
+#include <array>
 
 class GameManager
 {
@@ -18,6 +19,7 @@ class GameManager
         std::map<std::string, std::shared_ptr<BigPellet>> big_pellets;
         std::map<std::string, std::shared_ptr<Intersection<Pellet>>> intersections;
         std::map<std::string, std::shared_ptr<Intersection<BigPellet>>> intersections_big;
+        //std::map<std::string, std::shared_ptr<Character>> characters;
 
         SDL_Window *pWindow = nullptr;
         SDL_Surface *win_surf = nullptr;
@@ -28,6 +30,7 @@ class GameManager
 
     public:
         int score;
+        std::array<std::shared_ptr<Character>, 5> characters;
 
         GameManager();
         ~GameManager();
@@ -40,13 +43,16 @@ class GameManager
         template <typename T>
         int checkForIntersectionTemplate(int x, int y, int last_pressed_key, T map);
 
-        void updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in);
+        void updateInterface();
         template <typename T>
         void updatePellets(T map);
         template <typename T>
         void updateIntersections(T map);
+        void updateCharacters(std::array<std::shared_ptr<Character>, 5> map);
         void initPellets();
         void initIntersections();
+        void initCharacters();
+        void initCharacter(CharacterName name, SDL_Rect position, std::shared_ptr<SDL_Rect> image);
         bool isGameOver();
 
         inline void setColorAndBlitScaled(const bool transparence, const SDL_Rect* src_rect, SDL_Rect* dst_rect)

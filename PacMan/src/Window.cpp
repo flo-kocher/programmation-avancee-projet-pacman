@@ -11,7 +11,7 @@
 
 Window::Window()
 : gameManager(std::make_unique<GameManager>())
-, ghost (std::make_unique<Character>())
+// , characters ({std::make_unique<Pacman>(), std::make_shared<Ghost>(), std::make_shared<Ghost>(), std::make_shared<Ghost>(), std::make_shared<Ghost>()})
 , direction_tmp (0)
 , intersection_detected (false)
 , last_pressed_key(0)
@@ -41,35 +41,35 @@ bool Window::update()
     switch(direction_tmp)
     {
         case 0:
-            ghost->turnRight(gameManager->getCount());
+            gameManager->characters[0]->turnRight(gameManager->getCount());
             break;
         case 1:
-            ghost->turnDown(gameManager->getCount());
+            gameManager->characters[0]->turnDown(gameManager->getCount());
             break;
         case 2:
-            ghost->turnLeft(gameManager->getCount());
+            gameManager->characters[0]->turnLeft(gameManager->getCount());
             break;
         case 3:
-            ghost->turnUp(gameManager->getCount());
+            gameManager->characters[0]->turnUp(gameManager->getCount());
             break;
         case -1:
-            ghost->standStill();
+            gameManager->characters[0]->standStill();
             break;
     }
 
-    // ghost.x et ghost.y : position en temps réel du ghost
-    gameManager->checkForZone(ghost->ghost.x, ghost->ghost.y);
-    int pellet_number = gameManager->checkForPellet(ghost->ghost.x, ghost->ghost.y);
+    // position_.x et position_.y : position en temps réel du gameManager->characters[0]
+    gameManager->checkForZone(gameManager->characters[0]->position_.x, gameManager->characters[0]->position_.y);
+    int pellet_number = gameManager->checkForPellet(gameManager->characters[0]->position_.x, gameManager->characters[0]->position_.y);
     if(pellet_number == 0)
-        ghost->teleportRight();
+        gameManager->characters[0]->teleportRight();
     if(pellet_number == 18)
-        ghost->teleportLeft();
-    if(gameManager->checkForIntersection(ghost->ghost.x, ghost->ghost.y, last_pressed_key) == 1)
+        gameManager->characters[0]->teleportLeft();
+    if(gameManager->checkForIntersection(gameManager->characters[0]->position_.x, gameManager->characters[0]->position_.y, last_pressed_key) == 1)
         intersection_detected = true;
-    else if(gameManager->checkForIntersection(ghost->ghost.x, ghost->ghost.y, last_pressed_key) == 2)
+    else if(gameManager->checkForIntersection(gameManager->characters[0]->position_.x, gameManager->characters[0]->position_.y, last_pressed_key) == 2)
         direction_tmp = -1;
     
-    gameManager->updateInterface(ghost->getGhost(), ghost->getGhostIn());
+    gameManager->updateInterface();
 
     return false;
 }

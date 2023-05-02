@@ -1,15 +1,12 @@
 #include "../include/GameManager.h"
+#include "../include/Constante.h"
+#include "../include/Pacman.h"
+#include "../include/Ghost.h"
+// #include "../include/Character.h"
+
 #include <iostream>
 
 #include <SDL.h>
-
-#ifdef __unix__
-    #define OS_Windows 0
-    #define SPRITE_PATH "./pacman_sprites.bmp"
-#elif defined(_WIN32) || defined(WIN32)
-    #define OS_Windows 1
-    #define SPRITE_PATH "../pacman_sprites.bmp"
-#endif
 
 GameManager::GameManager()
 : count(0)
@@ -36,12 +33,13 @@ GameManager::GameManager()
         std::cerr<<"Echec de la création de la fenêtre "<<SDL_GetError()<<std::endl;
     if((win_surf = SDL_GetWindowSurface(pWindow)) == NULL)
         std::cerr<<"Echec de la récupération de la surface de la fenêtre "<<SDL_GetError()<<std::endl;
-    if((plancheSprites = SDL_LoadBMP(SPRITE_PATH)) == NULL)
+    if((plancheSprites = SDL_LoadBMP(SPRITES_PATH)) == NULL)
         std::cerr<<"Echec du chargement du bmp "<<SDL_GetError()<<std::endl;
 
     // big_pellets.insert({"BiPellet 1", std::make_shared<BigPellet>({"BigPellet 1", {200, 9, 12, 12})});
     initPellets();
     initIntersections();
+    initCharacters();
 }
 
 
@@ -378,6 +376,29 @@ void GameManager::initIntersections()
     intersections.insert({"Intersection 24_18", std::make_shared<Intersection<Pellet>>(x, y, true, false, false, true, true)});
 }
 
+void GameManager::initCharacters()
+{
+    initCharacter(PACMAN, {34, 34, 32, 32}, PACMAN_IMAGES.find("RIGHT")->second);
+    initCharacter(RED_GHOST, {322, 322, 32, 32}, PACMAN_IMAGES.find("LEFT")->second);
+    initCharacter(PINK_GHOST, {322, 386, 32, 32}, PACMAN_IMAGES.find("DOWN")->second);
+    initCharacter(BLUE_GHOST, {288, 386, 32, 32}, PACMAN_IMAGES.find("UP")->second);
+    initCharacter(YELLOW_GHOST, {358, 386, 32, 32}, PACMAN_IMAGES.find("UP")->second);
+}
+
+void GameManager::initCharacter(CharacterName name, SDL_Rect start_position, std::shared_ptr<SDL_Rect> image){
+    std::shared_ptr<Character> character;
+    if(name == PACMAN){
+        character = std::make_unique<Pacman>(name, start_position, image);
+    }
+    else{
+        character = std::make_shared<Ghost>(name, start_position, image);
+    }
+    characters[name] = character;
+    //Ghost* yellow_ghost = new Ghost(name, position, image);
+    // SDL_Rect ghost_ = {358, 386, 32, 32}; // ici scale x2
+    setColorAndBlitScaled(true, (SDL_Rect*)&character->character_image_, &character->position_);
+}
+
 bool GameManager::isGameOver()
 {
     if(score == 2100)
@@ -456,7 +477,7 @@ template <typename T>
 void GameManager::updatePellets(T map)
 {
     for (auto it = map.begin(); it != map.end(); ++it) {
-        if(!it->second->getGotThrew())
+        if(!it->second->getGotThrough())
         {
             SDL_Rect init = {376, 10, 10, 10};
             setColorAndBlitScaled(false, &init, it->second->getRectangle());
@@ -468,7 +489,7 @@ template <typename T>
 void GameManager::updateIntersections(T map)
 {
     for (auto it = map.begin(); it != map.end(); ++it) {
-        if(!it->second->getGotThrew())
+        if(!it->second->getGotThrough())
         {
             SDL_Rect init = {376, 10, 10, 10};
             setColorAndBlitScaled(false, &init, it->second->getRectangle());
@@ -476,7 +497,18 @@ void GameManager::updateIntersections(T map)
     }
 }
 
-void GameManager::updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in)
+void GameManager::updateCharacters(std::array<std::shared_ptr<Character>, 5> array)
+{
+    for (auto it = array.begin(); it != array.end(); ++it) {
+        if(it->get()->GetCharacterName() == PACMAN){
+            std::shared_ptr<SDL_Rect> image = it->get()->character_image_;
+            SDL_Rect position = it->get()->position_;
+            setColorAndBlitScaled(true, (SDL_Rect*)&image, &position);
+        }
+    }
+}
+
+void GameManager::updateInterface()
 {
     setColorAndBlitScaled(false, &src_bg, &bg);
     std::cout<<score<<std::endl;
@@ -496,16 +528,17 @@ void GameManager::updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in)
     updatePellets(big_pellets);
     updateIntersections(intersections);
     updateIntersections(intersections_big);
-
-    SDL_Rect ghost_in2 = ghost_rect_in;
+    updateCharacters(characters);
+    
+    //SDL_Rect ghost_in2 = ghost_rect_in;
     // if ((count / 8) % 2)
         // ghost_in2.x += 20;
-    setColorAndBlitScaled(true, &ghost_in2, ghost_rect);
+    //setColorAndBlitScaled(true, &ghost_in2, ghost_rect);
 
     SDL_UpdateWindowSurface(pWindow);
 
     // LIMITE A 60 FPS
-    SDL_Delay(4); // SDL_Delay(16); de base
+    SDL_Delay(0); // SDL_Delay(16); de base
     // utiliser SDL_GetTicks64() pour plus de precisions
 
 }

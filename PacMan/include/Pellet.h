@@ -17,7 +17,7 @@ class Pellet: public Zone
         Pellet(int init_x, int init_y, bool init_has_pellet);
         ~Pellet();
 
-        inline bool getGotThrew()
+        inline bool getGotThrough()
         {
             return got_threw;
         };

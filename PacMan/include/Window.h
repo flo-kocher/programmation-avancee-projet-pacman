@@ -2,7 +2,8 @@
 #define __WINDOW_H__
 
 #include <SDL.h>
-#include "Character.h"
+#include "Pacman.h"
+#include "Ghost.h"
 #include "GameManager.h"
 #include <memory>
 // using namespace std;
@@ -10,7 +11,13 @@
 class Window
 {
     private:
-        std::unique_ptr<Character> ghost;
+        // std::unique_ptr<Pacman> pacman;
+        // std::shared_ptr<Ghost> ghost_red;
+        // std::shared_ptr<Ghost> ghost_pink;
+        // std::shared_ptr<Ghost> ghost_blue;
+        // std::shared_ptr<Ghost> ghost_yellow;
+        //std::array<std::shared_ptr<Character>, 5> characters;
+
         int direction_tmp;
         bool intersection_detected;
         int last_pressed_key;
