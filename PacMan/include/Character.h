@@ -28,6 +28,9 @@ class Character
         SDL_Rect *ghost_in;
         SDL_Rect ghost = {34, 34, 32, 32}; // ici scale x2
 
+        void teleportRight();
+        void teleportLeft();
+
     Character();
     Character(int coord_x, int coord_y, bool has_pellet);
     ~Character();

@@ -59,7 +59,11 @@ bool Window::update()
 
     // ghost.x et ghost.y : position en temps réel du ghost
     gameManager->checkForZone(ghost->ghost.x, ghost->ghost.y);
-    gameManager->checkForPellet(ghost->ghost.x, ghost->ghost.y);
+    int pellet_number = gameManager->checkForPellet(ghost->ghost.x, ghost->ghost.y);
+    if(pellet_number == 0)
+        ghost->teleportRight();
+    if(pellet_number == 18)
+        ghost->teleportLeft();
     if(gameManager->checkForIntersection(ghost->ghost.x, ghost->ghost.y, last_pressed_key) == 1)
         intersection_detected = true;
     else if(gameManager->checkForIntersection(ghost->ghost.x, ghost->ghost.y, last_pressed_key) == 2)
