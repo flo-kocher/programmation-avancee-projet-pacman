@@ -19,19 +19,19 @@ int KeyboardManager::waitForEvent()
         return -1;
     if (keys[SDL_SCANCODE_LEFT])
     {
-        return 0;
+        return LEFT;
     }
     if (keys[SDL_SCANCODE_RIGHT])
     {
-        return 1;
+        return RIGHT;
     }
     if (keys[SDL_SCANCODE_UP])
     {
-        return 2;
+        return UP;
     }
     if (keys[SDL_SCANCODE_DOWN])
     {
-        return 3;
+        return DOWN;
     }
 
     return 10;

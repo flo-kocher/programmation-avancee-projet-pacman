@@ -30,7 +30,7 @@ bool Window::update()
         return true;
     }
 
-    if(intersection_detected)
+    if(intersection_detected || last_pressed_key == 0 && direction_tmp == 2 || last_pressed_key == 2 && direction_tmp == 0 || last_pressed_key == 1 && direction_tmp == 3 || last_pressed_key == 3 && direction_tmp == 1)
     {
         direction_tmp = last_pressed_key;
         intersection_detected = false;
@@ -40,16 +40,16 @@ bool Window::update()
 
     switch(direction_tmp)
     {
-        case 0:
+        case RIGHT:
             ghost->turnRight(gameManager->getCount());
             break;
-        case 1:
+        case DOWN:
             ghost->turnDown(gameManager->getCount());
             break;
-        case 2:
+        case LEFT:
             ghost->turnLeft(gameManager->getCount());
             break;
-        case 3:
+        case UP:
             ghost->turnUp(gameManager->getCount());
             break;
         case -1:
