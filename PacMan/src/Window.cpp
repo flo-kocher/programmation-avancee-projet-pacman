@@ -22,8 +22,14 @@ Window::~Window()
 
 }
 
-void Window::update()
+bool Window::update()
 {
+    if(gameManager->isGameOver())
+    {
+        std::cout<<"FINITO"<<std::endl;
+        return true;
+    }
+
     if(intersection_detected)
     {
         direction_tmp = last_pressed_key;
@@ -35,16 +41,16 @@ void Window::update()
     switch(direction_tmp)
     {
         case 0:
-            ghost->turnRight();
+            ghost->turnRight(gameManager->getCount());
             break;
         case 1:
-            ghost->turnDown();
+            ghost->turnDown(gameManager->getCount());
             break;
         case 2:
-            ghost->turnLeft();
+            ghost->turnLeft(gameManager->getCount());
             break;
         case 3:
-            ghost->turnUp();
+            ghost->turnUp(gameManager->getCount());
             break;
         case -1:
             ghost->standStill();
@@ -60,4 +66,6 @@ void Window::update()
         direction_tmp = -1;
     
     gameManager->updateInterface(ghost->getGhost(), ghost->getGhostIn());
+
+    return false;
 }

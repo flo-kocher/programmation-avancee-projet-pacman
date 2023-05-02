@@ -20,7 +20,7 @@ class Window
         Window();
         ~Window();
 
-        void update();
+        bool update();
 
         inline void setDirectionRight()
         {
