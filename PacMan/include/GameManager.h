@@ -18,16 +18,16 @@ class GameManager
         std::map<std::string, std::shared_ptr<BigPellet>> big_pellets;
         std::map<std::string, std::shared_ptr<Intersection<Pellet>>> intersections;
         std::map<std::string, std::shared_ptr<Intersection<BigPellet>>> intersections_big;
-
-        SDL_Window *pWindow = nullptr;
-        SDL_Surface *win_surf = nullptr;
-        SDL_Surface *plancheSprites = nullptr;
-        int count;
-        SDL_Rect src_bg;
-        SDL_Rect bg;
+        
+        int count_;
+        SDL_Rect src_bg_;
+        SDL_Rect bg_;
+        int score_;
 
     public:
-        int score;
+        SDL_Window *pWindow_ = nullptr;
+        SDL_Surface *win_surf_ = nullptr;
+        SDL_Surface *plancheSprites_ = nullptr;
 
         GameManager();
         ~GameManager();
@@ -38,7 +38,6 @@ class GameManager
         int checkForIntersection(int x, int y, int last_pressed_key);
         template <typename T>
         int checkForIntersectionTemplate(int x, int y, int last_pressed_key, T map);
-
         void updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in);
         template <typename T>
         void updatePellets(T map);
@@ -53,36 +52,30 @@ class GameManager
             //                const SDL_Rect* srcrect,
             //                SDL_Surface*    dst,
             //                SDL_Rect*       dstrect)
-            SDL_SetColorKey(plancheSprites, transparence, 0);
-            SDL_BlitScaled(plancheSprites, src_rect, win_surf, dst_rect);
+            SDL_SetColorKey(plancheSprites_, transparence, 0);
+            SDL_BlitScaled(plancheSprites_, src_rect, win_surf_, dst_rect);
         }
 
-        inline const SDL_Window* getPWindow()
-        {
-            return pWindow;
-        };
-        inline SDL_Surface* getWinSurf()
-        {
-            return win_surf;
-        };
-        inline SDL_Surface* getPlanchesSprites()
-        {
-            return plancheSprites;
-        };
         inline const int getCount()
         {
-            return count;
-        };
-        inline const SDL_Rect getSrcBg()
-        {
-            return src_bg;
-        };
-        inline const SDL_Rect getBg()
-        {
-            return bg;
+            return count_;
         };
 
-    
+        inline const int getScore()
+        {
+            return score_;
+        };
+
+        inline const void AddToScore(int to_add)
+        {
+            score_ += to_add;
+        };
+
+        inline void IncrementCount()
+        {
+            count_ = (count_ + 1) % (250);
+        };
+
 };
 
 #endif

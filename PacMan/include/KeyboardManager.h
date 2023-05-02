@@ -16,7 +16,6 @@ class KeyboardManager
 
         int waitForEvent();
 
-    
 };
 
 #endif

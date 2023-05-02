@@ -12,19 +12,11 @@
 #endif
 
 GameManager::GameManager()
-: count(0)
-, src_bg({200, 3, 168, 216})
-, bg({4, 4, 672, 864})
-, score(0)
+: count_(0)
+, src_bg_({200, 3, 168, 216})
+, bg_({4, 4, 672, 864})
+, score_(0)
 {
-    // on fait une variable coordonnées{X, X, X, X}, qu'on va augmenter en faisant des x+=4 etc...
-    // et pour a la version updaté, quand on passe sur la case, on a juste à prendre
-    // la même valeur mais avec un y+= 100 par exemple (on a juste un décalage sur une coord sur le Sprite)
-
-    // ------------>>>>>>>>>>>
-    // en fait on a même pas besoin de données la valeur, il peut la calculer lui
-    // même en prenant la valeur de la case de base !!!!!
-
     std::cout<<"Window constructor\n";
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -32,11 +24,11 @@ GameManager::GameManager()
         // exit il faut peut être faire autrement
         exit(0);
     }
-    if((pWindow = SDL_CreateWindow("PacManGame", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN)) == NULL)
+    if((pWindow_ = SDL_CreateWindow("PacManGame", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN)) == NULL)
         std::cerr<<"Echec de la création de la fenêtre "<<SDL_GetError()<<std::endl;
-    if((win_surf = SDL_GetWindowSurface(pWindow)) == NULL)
+    if((win_surf_ = SDL_GetWindowSurface(pWindow_)) == NULL)
         std::cerr<<"Echec de la récupération de la surface de la fenêtre "<<SDL_GetError()<<std::endl;
-    if((plancheSprites = SDL_LoadBMP(SPRITE_PATH)) == NULL)
+    if((plancheSprites_ = SDL_LoadBMP(SPRITE_PATH)) == NULL)
         std::cerr<<"Echec du chargement du bmp "<<SDL_GetError()<<std::endl;
 
     initPellets(&pellets, &big_pellets);
@@ -51,7 +43,7 @@ GameManager::~GameManager()
 
 bool GameManager::isGameOver()
 {
-    if(score == 2100)
+    if(this->getScore() == 2100)
         return true;
     return false;
 }
@@ -60,19 +52,19 @@ template <typename T>
 int GameManager::checkForPelletTemplate(int x, int y, T map)
 {
     for (auto it = map.begin(); it != map.end(); ++it) {
-        if(it->second->x == x && it->second->y == y)
+        if(it->second->getX() == x && it->second->getY() == y)
         {
             // std::cout<<it->first<<std::endl;
             it->second->setGotThrew(false);
             if(it->second->hasPellet())
             {
-                score += it->second->addPoints();
+                this->AddToScore(it->second->addPoints());
                 it->second->setHasPellet();
             }
             if(it->first == "Pellet 12_left")
-                {std::cout<<it->second->x<<std::endl;std::cout<<it->second->y<<std::endl;return 0;}
+                {std::cout<<it->second->getX()<<std::endl;std::cout<<it->second->getY()<<std::endl;return 0;}
             if(it->first == "Pellet 12_right")
-                {std::cout<<it->second->x<<std::endl;std::cout<<it->second->y<<std::endl;return 18;}
+                {std::cout<<it->second->getX()<<std::endl;std::cout<<it->second->getY()<<std::endl;return 18;}
         }
     }
     return -1;
@@ -89,13 +81,13 @@ int GameManager::checkForIntersectionTemplate(int x, int y, int last_pressed_key
 {
     bool isIntersection = false;
     for (auto it = map.begin(); it != map.end(); ++it) {
-        if(it->second->x == x && it->second->y == y)
+        if(it->second->getX() == x && it->second->getY() == y)
         {
             // std::cout<<it->first<<std::endl;
             it->second->setGotThrew(false);
             if(it->second->hasPellet())
             {
-                score += it->second->addPoints();
+                this->AddToScore(it->second->addPoints());
                 it->second->setHasPellet();
             }
             if(last_pressed_key == 0 && it->second->canGoRight() || last_pressed_key == 1 && it->second->canGoDown()
@@ -139,13 +131,13 @@ void GameManager::updateIntersections(T map)
 
 void GameManager::updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in)
 {
-    setColorAndBlitScaled(false, &src_bg, &bg);
-    std::cout<<score<<std::endl;
+    setColorAndBlitScaled(false, &src_bg_, &bg_);
+    std::cout<<this->getScore()<<std::endl;
 
     SDL_Rect black_rect = {376, 10, 10, 10}; // Position d'un rectangle noir
 
-    count = (count + 1) % (250);
-    if(0 <= count && count <= 125)
+    this->IncrementCount();
+    if(0 <= this->getCount() && this->getCount() <= 125)
     {
         setColorAndBlitScaled(false, &black_rect, intersections_big.at("BigIntersection 19_00")->getRectangle());
         setColorAndBlitScaled(false, &black_rect, intersections_big.at("BigIntersection 19_18")->getRectangle());
@@ -163,7 +155,7 @@ void GameManager::updateInterface(SDL_Rect* ghost_rect, SDL_Rect ghost_rect_in)
         // ghost_in2.x += 20;
     setColorAndBlitScaled(true, &ghost_in2, ghost_rect);
 
-    SDL_UpdateWindowSurface(pWindow);
+    SDL_UpdateWindowSurface(pWindow_);
 
     // LIMITE A 60 FPS
     SDL_Delay(4); // SDL_Delay(16); de base

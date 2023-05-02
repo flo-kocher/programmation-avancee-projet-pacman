@@ -8,21 +8,39 @@ class Zone
 {
     private:
         // la zone de base
-        SDL_Rect rect;
-        // positions de cette zone
-        // int x;
-        // int y;
+        SDL_Rect rect_;
+        int x_;
+        int y_;
 
     public:
-        inline SDL_Rect* getRectangle()
-        {
-            return &rect;
-        };
 
         Zone(int init_x, int init_y);
         ~Zone();
-        int x; // tmp ici !
-        int y; // tmp ici !
+
+        inline SDL_Rect* getRectangle()
+        {
+            return &rect_;
+        };
+
+        inline int getX()
+        {
+            return x_;
+        };
+
+        inline int getY()
+        {
+            return y_;
+        };
+
+        inline void setX(int x)
+        {
+            x_ = x;
+        };
+
+        inline void setY(int y)
+        {
+            y_ = y;
+        };
 
 };
 
