@@ -14,8 +14,8 @@ class Window
         int direction_tmp;
         bool intersection_detected;
         int last_pressed_key;
-        std::unique_ptr<GameManager> gameManager;
-        
+        // GameManager* gameManager; // Ancienne manière de déclarer gameManager
+        std::unique_ptr<GameManager> gameManager = std::make_unique<GameManager>();
     public:
         Window();
         ~Window();

@@ -7,8 +7,8 @@
 
 int main(int argc, char **argv)
 {
-    Window* window = new Window{};
-    KeyboardManager* kb_manager = new KeyboardManager{};
+    std::unique_ptr<Window> window = std::make_unique<Window>();
+    std::unique_ptr<KeyboardManager> kb_manager = std::make_unique<KeyboardManager>();
     int keyboard_event;
 
     // BOUCLE PRINCIPALE
