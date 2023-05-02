@@ -11,12 +11,12 @@ Character::~Character()
 
 void Character::teleportRight()
 {
-    ghost.x = 610;
+    ghost.x = 642;
     ghost.y = 418;
 }
 
 void Character::teleportLeft()
 {
-    ghost.x = 34;
+    ghost.x = 2;
     ghost.y = 418;
 }
