@@ -1,4 +1,5 @@
 #include "../include/GameManager.h"
+#include "../include/KeyboardManager.h"
 #include "../include/Constante.h"
 #include "../include/Pacman.h"
 #include "../include/Ghost.h"
@@ -10,27 +11,13 @@
 
 GameManager::GameManager()
 : count_(0)
-, src_bg_({200, 3, 168, 216})
-, bg_({4, 4, 672, 864})
 , score_(0)
+, direction_tmp_ (0)
+, intersection_detected_ (false)
+, last_pressed_key_(0)
+, gameInterface_(std::make_unique<GameInterface>())
 {
-    std::cout<<"Window constructor\n";
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    {
-        std::cerr << "Echec de l'initialisation de la SDL " << SDL_GetError() << std::endl;
-        // exit il faut peut être faire autrement
-        exit(0);
-    }
-    if((pWindow_ = SDL_CreateWindow("PacManGame", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN)) == NULL)
-        std::cerr<<"Echec de la création de la fenêtre "<<SDL_GetError()<<std::endl;
-    if((win_surf_ = SDL_GetWindowSurface(pWindow_)) == NULL)
-        std::cerr<<"Echec de la récupération de la surface de la fenêtre "<<SDL_GetError()<<std::endl;
-    if((plancheSprites_ = SDL_LoadBMP(SPRITES_PATH)) == NULL)
-        std::cerr<<"Echec du chargement du bmp "<<SDL_GetError()<<std::endl;
-
-    initPellets(&pellets, &big_pellets);
-    initIntersections(&intersections, &intersections_big);
-    initCharacters();
+    std::cout<<"GameInterface constructor\n";
 }
 
 
@@ -57,7 +44,134 @@ void GameManager::initCharacter(CharacterName name, SDL_Rect start_position, SDL
         character = std::make_shared<Ghost>(name, start_position, image);
     }
     characters[name] = character;
-    setColorAndBlitScaled(true, character->character_image_, &character->position_);
+    // setColorAndBlitScaled(true, character->character_image_, &character->position_);
+}
+
+void GameManager::runGame()
+{
+    std::cout<<"runGame"<<std::endl;
+    initPellets(&pellets, &big_pellets);
+    initIntersections(&intersections, &intersections_big);
+    initCharacters();
+
+    std::unique_ptr<KeyboardManager> kb_manager = std::make_unique<KeyboardManager>();
+
+    int keyboard_event;
+
+    // BOUCLE PRINCIPALE
+    bool quit = false;
+    while (!quit)
+    {
+        // Créer une fonction eventHandler pour tout ça
+
+        SDL_Event event;
+        while (!quit && SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+            case SDL_QUIT:
+                quit = true;
+                break;
+            default:
+                break;
+            }
+        }
+
+        keyboard_event = kb_manager->waitForEvent();
+
+        switch (keyboard_event)
+        {
+        case -1:
+            quit = true;
+            break;
+        case LEFT:
+            setDirectionLeft();
+            break;
+        case RIGHT:
+            setDirectionRight();
+            break;
+        case UP:
+            setDirectionUp();
+            break;
+        case DOWN:
+            setDirectionDown();
+            break;
+        default:
+            // Do nothing
+            break;
+        }
+
+        // AFFICHAGE
+        // if(window->update())
+            // quit = true;
+        if(updateGame())
+            quit = true;
+    }
+    SDL_Quit(); // ON SORT
+
+}
+
+bool GameManager::updateGame()
+{
+    std::cout<<this->getScore()<<std::endl;
+    IncrementCount();
+
+    if(isGameOver())
+    {
+        std::cout<<"FINITO"<<std::endl;
+        return true;
+    }
+
+    if(intersection_detected_ || last_pressed_key_ == 0 && direction_tmp_ == 2 || last_pressed_key_ == 2 && direction_tmp_ == 0 || last_pressed_key_ == 1 && direction_tmp_ == 3 || last_pressed_key_ == 3 && direction_tmp_ == 1)
+    {
+        direction_tmp_ = last_pressed_key_;
+        intersection_detected_ = false;
+    }
+    else
+        intersection_detected_ = false;
+
+    switch(direction_tmp_)
+    {
+        case 0:
+            characters[0]->turnRight(getCount());
+            break;
+        case 1:
+            characters[0]->turnDown(getCount());
+            break;
+        case 2:
+            characters[0]->turnLeft(getCount());
+            break;
+        case 3:
+            characters[0]->turnUp(getCount());
+            break;
+        case -1:
+            characters[0]->standStill();
+            break;
+    }
+
+    int character_position;
+    if(character_position = collisionWithGhost() > 0)
+    {
+        // Donner à chaque Ghost une zone où laquelle respawn
+        characters[character_position]->position_.x = 250;
+        characters[character_position]->position_.y = 34;
+    }
+
+    int pellet_number = checkForPellet(characters[0]->position_.x, characters[0]->position_.y);
+    if(pellet_number == 0)
+        characters[0]->teleportRight();
+    if(pellet_number == 18)
+        characters[0]->teleportLeft();
+    if(checkForIntersection(characters[0]->position_.x, characters[0]->position_.y, last_pressed_key_) == 1)
+        intersection_detected_ = true;
+    else if(checkForIntersection(characters[0]->position_.x, characters[0]->position_.y, last_pressed_key_) == 2)
+        direction_tmp_ = -1;
+
+    // gère tout l'affichage dans le GameInterface en fonction des events qui sont catch juste au dessus (impossible de faire des appels en plusieurs fonctions)
+    gameInterface_->updateGameInterface(getCount(), characters, pellets, big_pellets, intersections, intersections_big);
+
+    return false;
+
 }
 
 bool GameManager::isGameOver()
@@ -124,68 +238,6 @@ int GameManager::checkForIntersection(int x, int y, int last_pressed_key)
     return checkForIntersectionTemplate(x, y, last_pressed_key, intersections) + checkForIntersectionTemplate(x, y, last_pressed_key, intersections_big);
 }
 
-template <typename T>
-void GameManager::updatePellets(T map)
-{
-    for (auto it = map.begin(); it != map.end(); ++it) {
-        if(!it->second->getGotThrough())
-        {
-            SDL_Rect init = {376, 10, 10, 10};
-            setColorAndBlitScaled(false, &init, it->second->getRectangle());
-        }
-    }
-}
-
-template <typename T>
-void GameManager::updateIntersections(T map)
-{
-    for (auto it = map.begin(); it != map.end(); ++it) {
-        if(!it->second->getGotThrough())
-        {
-            SDL_Rect init = {376, 10, 10, 10};
-            setColorAndBlitScaled(false, &init, it->second->getRectangle());
-        }
-    }
-}
-
-void GameManager::updateCharacters(std::array<std::shared_ptr<Character>, 5> array)
-{
-    for (auto it = array.begin(); it != array.end(); ++it) {
-        SDL_Rect* image = it->get()->character_image_;
-        SDL_Rect position = it->get()->position_;
-        setColorAndBlitScaled(true, image, &position);
-    }
-}
-
-void GameManager::updateInterface()
-{
-    setColorAndBlitScaled(false, &src_bg_, &bg_);
-    std::cout<<this->getScore()<<std::endl;
-
-    SDL_Rect black_rect = {376, 10, 10, 10}; // Position d'un rectangle noir
-
-    this->IncrementCount();
-    if(0 <= this->getCount() && this->getCount() <= 125)
-    {
-        setColorAndBlitScaled(false, &black_rect, intersections_big.at("BigIntersection 19_00")->getRectangle());
-        setColorAndBlitScaled(false, &black_rect, intersections_big.at("BigIntersection 19_18")->getRectangle());
-        setColorAndBlitScaled(false, &black_rect, big_pellets.at("BigPellet 02_00")->getRectangle());
-        setColorAndBlitScaled(false, &black_rect, big_pellets.at("BigPellet 02_18")->getRectangle());
-    }
-
-    updatePellets(pellets);
-    updatePellets(big_pellets);
-    updateIntersections(intersections);
-    updateIntersections(intersections_big);
-    updateCharacters(characters);
-
-    SDL_UpdateWindowSurface(pWindow_);
-
-    // LIMITE A 60 FPS
-    SDL_Delay(10); // SDL_Delay(16); de base
-    // utiliser SDL_GetTicks64() pour plus de precisions
-
-}
 
 int GameManager::collisionWithGhost()
 {
