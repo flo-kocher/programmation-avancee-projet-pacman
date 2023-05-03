@@ -9,13 +9,13 @@ Character::~Character()
 
 void Character::teleportRight()
 {
-    position_.x = 610;
+    position_.x = 642;
     position_.y = 418;
 }
 
 void Character::teleportLeft()
 {
-    position_.x = 34;
+    position_.x = 2;
     position_.y = 418;
 }
 
