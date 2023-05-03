@@ -2,7 +2,8 @@
 #define __WINDOW_H__
 
 #include <SDL.h>
-#include "Character.h"
+#include "Pacman.h"
+#include "Ghost.h"
 #include "GameManager.h"
 #include <memory>
 // using namespace std;
@@ -10,7 +11,6 @@
 class Window
 {
     private:
-        std::unique_ptr<Character> ghost;
         int direction_tmp;
         bool intersection_detected;
         int last_pressed_key;
