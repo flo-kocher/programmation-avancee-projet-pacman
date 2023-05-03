@@ -56,10 +56,14 @@ bool Window::update()
             break;
     }
 
-    if(gameManager_->collisionWithGhost())
-        std::cout<<"Collision"<<std::endl;
+    int character_position;
+    if(character_position = gameManager_->collisionWithGhost() > 0)
+    {
+        // Donner à chaque Ghost une zone où laquelle respawn
+        gameManager_->characters[character_position]->position_.x = 250;
+        gameManager_->characters[character_position]->position_.y = 34;
+    }
 
-    // position_.x et position_.y : position en temps réel du gameManager_->characters[0]
     int pellet_number = gameManager_->checkForPellet(gameManager_->characters[0]->position_.x, gameManager_->characters[0]->position_.y);
     if(pellet_number == 0)
         gameManager_->characters[0]->teleportRight();

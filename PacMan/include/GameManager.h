@@ -55,8 +55,7 @@ class GameManager
         void initCharacters();
         void initCharacter(CharacterName name, SDL_Rect position, SDL_Rect* image);
         bool isGameOver();
-        bool collisionWithGhost();
-
+        int collisionWithGhost();
 
         inline void setColorAndBlitScaled(const bool transparence, const SDL_Rect* src_rect, SDL_Rect* dst_rect)
         {
