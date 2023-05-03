@@ -182,7 +182,20 @@ void GameManager::updateInterface()
     SDL_UpdateWindowSurface(pWindow_);
 
     // LIMITE A 60 FPS
-    SDL_Delay(0); // SDL_Delay(16); de base
+    SDL_Delay(10); // SDL_Delay(16); de base
     // utiliser SDL_GetTicks64() pour plus de precisions
 
+}
+
+bool GameManager::collisionWithGhost()
+{
+    for (int i = 1; i < 5; i++) {
+        int pos_diff_x = abs(characters[0]->position_.x-characters[i]->position_.x);
+        int pos_diff_y = abs(characters[0]->position_.y-characters[i]->position_.y);
+        if(0 <= pos_diff_x && pos_diff_x <= HITBOX && 0 <= pos_diff_y  && pos_diff_y <= HITBOX)
+        {
+            return true;
+        }
+    }
+    return false;
 }

@@ -56,6 +56,9 @@ bool Window::update()
             break;
     }
 
+    if(gameManager_->collisionWithGhost())
+        std::cout<<"Collision"<<std::endl;
+
     // position_.x et position_.y : position en temps réel du gameManager_->characters[0]
     int pellet_number = gameManager_->checkForPellet(gameManager_->characters[0]->position_.x, gameManager_->characters[0]->position_.y);
     if(pellet_number == 0)
