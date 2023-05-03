@@ -8,10 +8,10 @@ template <class T>
 class Intersection: public T
 {
     private:
-        bool path_right;
-        bool path_down;
-        bool path_left;
-        bool path_up;
+        bool path_right_;
+        bool path_down_;
+        bool path_left_;
+        bool path_up_;
 
     public:
         Intersection(int init_x, int init_y, bool init_has_pellet, bool init_path_right, bool init_path_down, bool init_path_left, bool init_path_up);
@@ -19,19 +19,19 @@ class Intersection: public T
 
         inline bool canGoRight()
         {
-            return path_right;
+            return path_right_;
         };
         inline bool canGoDown()
         {
-            return path_down;
+            return path_down_;
         };
         inline bool canGoLeft()
         {
-            return path_left;
+            return path_left_;
         };
         inline bool canGoUp()
         {
-            return path_up;
+            return path_up_;
         };
 
 };

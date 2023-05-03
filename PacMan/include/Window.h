@@ -6,17 +6,18 @@
 #include "Ghost.h"
 #include "GameManager.h"
 #include <memory>
-// using namespace std;
 
 class Window
 {
     private:
-        int direction_tmp;
-        bool intersection_detected;
-        int last_pressed_key;
-        // GameManager* gameManager; // Ancienne manière de déclarer gameManager
-        std::unique_ptr<GameManager> gameManager = std::make_unique<GameManager>();
+
+        int direction_tmp_;
+        bool intersection_detected_;
+        int last_pressed_key_;
+        std::unique_ptr<GameManager> gameManager_ = std::make_unique<GameManager>();
+
     public:
+
         Window();
         ~Window();
 
@@ -24,19 +25,22 @@ class Window
 
         inline void setDirectionRight()
         {
-            last_pressed_key = 0;
+            last_pressed_key_ = 0;
         };
+
         inline void setDirectionDown()
         {
-            last_pressed_key = 1;
+            last_pressed_key_ = 1;
         };
+
         inline void setDirectionLeft()
         {
-            last_pressed_key = 2;
+            last_pressed_key_ = 2;
         };
+
         inline void setDirectionUp()
         {
-            last_pressed_key = 3;
+            last_pressed_key_ = 3;
         };
     
 };

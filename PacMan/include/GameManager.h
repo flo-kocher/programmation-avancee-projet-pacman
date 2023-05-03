@@ -3,39 +3,40 @@
 
 #include <SDL.h>
 #include "Character.h"
-#include "Zone.h"
-#include "Pellet.h"
-#include "BigPellet.h"
-#include "Intersection.h"
-#include "Intersection.h"
+#include "MapInitialization.h"
 #include <map>
 #include <array>
+
+#define RIGHT 0
+#define DOWN 1
+#define LEFT 2
+#define UP 3
 
 class GameManager
 {
     private:
-        std::map<std::string, std::shared_ptr<Zone>> zones;
         std::map<std::string, std::shared_ptr<Pellet>> pellets;
         std::map<std::string, std::shared_ptr<BigPellet>> big_pellets;
         std::map<std::string, std::shared_ptr<Intersection<Pellet>>> intersections;
         std::map<std::string, std::shared_ptr<Intersection<BigPellet>>> intersections_big;
         //std::map<std::string, std::shared_ptr<Character>> characters;
 
-        SDL_Window *pWindow = nullptr;
-        SDL_Surface *win_surf = nullptr;
-        SDL_Surface *plancheSprites = nullptr;
-        int count;
-        SDL_Rect src_bg;
-        SDL_Rect bg;
+        
+        int count_;
+        SDL_Rect src_bg_;
+        SDL_Rect bg_;
+        int score_;
 
     public:
-        int score;
+    SDL_Window *pWindow_ = nullptr;
+        SDL_Surface *win_surf_ = nullptr;
+        SDL_Surface *plancheSprites_ = nullptr;
+       
         std::array<std::shared_ptr<Character>, 5> characters;
 
         GameManager();
         ~GameManager();
 
-        void checkForZone(int x, int y);
         int checkForPellet(int x, int y);
         template <typename T>
         int checkForPelletTemplate(int x, int y, T map);
@@ -49,8 +50,6 @@ class GameManager
         template <typename T>
         void updateIntersections(T map);
         void updateCharacters(std::array<std::shared_ptr<Character>, 5> map);
-        void initPellets();
-        void initIntersections();
         void initCharacters();
         void initCharacter(CharacterName name, SDL_Rect position, SDL_Rect* image);
         bool isGameOver();
@@ -62,36 +61,30 @@ class GameManager
             //                const SDL_Rect* srcrect,
             //                SDL_Surface*    dst,
             //                SDL_Rect*       dstrect)
-            SDL_SetColorKey(plancheSprites, transparence, 0);
-            SDL_BlitScaled(plancheSprites, src_rect, win_surf, dst_rect);
+            SDL_SetColorKey(plancheSprites_, transparence, 0);
+            SDL_BlitScaled(plancheSprites_, src_rect, win_surf_, dst_rect);
         }
 
-        inline const SDL_Window* getPWindow()
-        {
-            return pWindow;
-        };
-        inline SDL_Surface* getWinSurf()
-        {
-            return win_surf;
-        };
-        inline SDL_Surface* getPlanchesSprites()
-        {
-            return plancheSprites;
-        };
         inline const int getCount()
         {
-            return count;
-        };
-        inline const SDL_Rect getSrcBg()
-        {
-            return src_bg;
-        };
-        inline const SDL_Rect getBg()
-        {
-            return bg;
+            return count_;
         };
 
-    
+        inline const int getScore()
+        {
+            return score_;
+        };
+
+        inline const void AddToScore(int to_add)
+        {
+            score_ += to_add;
+        };
+
+        inline void IncrementCount()
+        {
+            count_ = (count_ + 1) % (250);
+        };
+
 };
 
 #endif

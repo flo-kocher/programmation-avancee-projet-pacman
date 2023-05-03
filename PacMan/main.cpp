@@ -34,16 +34,16 @@ int main(int argc, char **argv)
         case -1:
             quit = true;
             break;
-        case 0:
+        case LEFT:
             window->setDirectionLeft();
             break;
-        case 1:
+        case RIGHT:
             window->setDirectionRight();
             break;
-        case 2:
+        case UP:
             window->setDirectionUp();
             break;
-        case 3:
+        case DOWN:
             window->setDirectionDown();
             break;
         default:

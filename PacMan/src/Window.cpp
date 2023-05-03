@@ -7,14 +7,13 @@
     // puis Manager->updateArea() etc...
     // dans Windows on va juste appeler des 'évènements', sans utiliser de "vrais" données 
 
-    // gameManager = new GameManager{}; // Ancienne manière d'init gameManager
+    // gameManager_ = new gameManager_{}; // Ancienne manière d'init gameManager_
 
 Window::Window()
-: gameManager(std::make_unique<GameManager>())
-// , characters ({std::make_unique<Pacman>(), std::make_shared<Ghost>(), std::make_shared<Ghost>(), std::make_shared<Ghost>(), std::make_shared<Ghost>()})
-, direction_tmp (0)
-, intersection_detected (false)
-, last_pressed_key(0)
+: gameManager_(std::make_unique<GameManager>())
+, direction_tmp_ (0)
+, intersection_detected_ (false)
+, last_pressed_key_(0)
 {}
 
 Window::~Window()
@@ -24,52 +23,51 @@ Window::~Window()
 
 bool Window::update()
 {
-    if(gameManager->isGameOver())
+    if(gameManager_->isGameOver())
     {
         std::cout<<"FINITO"<<std::endl;
         return true;
     }
 
-    if(intersection_detected)
+    if(intersection_detected_ || last_pressed_key_ == 0 && direction_tmp_ == 2 || last_pressed_key_ == 2 && direction_tmp_ == 0 || last_pressed_key_ == 1 && direction_tmp_ == 3 || last_pressed_key_ == 3 && direction_tmp_ == 1)
     {
-        direction_tmp = last_pressed_key;
-        intersection_detected = false;
+        direction_tmp_ = last_pressed_key_;
+        intersection_detected_ = false;
     }
     else
-        intersection_detected = false;
+        intersection_detected_ = false;
 
-    switch(direction_tmp)
+    switch(direction_tmp_)
     {
         case 0:
-            gameManager->characters[0]->turnRight(gameManager->getCount());
+            gameManager_->characters[0]->turnRight(gameManager_->getCount());
             break;
         case 1:
-            gameManager->characters[0]->turnDown(gameManager->getCount());
+            gameManager_->characters[0]->turnDown(gameManager_->getCount());
             break;
         case 2:
-            gameManager->characters[0]->turnLeft(gameManager->getCount());
+            gameManager_->characters[0]->turnLeft(gameManager_->getCount());
             break;
         case 3:
-            gameManager->characters[0]->turnUp(gameManager->getCount());
+            gameManager_->characters[0]->turnUp(gameManager_->getCount());
             break;
         case -1:
-            gameManager->characters[0]->standStill();
+            gameManager_->characters[0]->standStill();
             break;
     }
 
-    // position_.x et position_.y : position en temps réel du gameManager->characters[0]
-    gameManager->checkForZone(gameManager->characters[0]->position_.x, gameManager->characters[0]->position_.y);
-    int pellet_number = gameManager->checkForPellet(gameManager->characters[0]->position_.x, gameManager->characters[0]->position_.y);
+    // position_.x et position_.y : position en temps réel du gameManager_->characters[0]
+    int pellet_number = gameManager_->checkForPellet(gameManager_->characters[0]->position_.x, gameManager_->characters[0]->position_.y);
     if(pellet_number == 0)
-        gameManager->characters[0]->teleportRight();
+        gameManager_->characters[0]->teleportRight();
     if(pellet_number == 18)
-        gameManager->characters[0]->teleportLeft();
-    if(gameManager->checkForIntersection(gameManager->characters[0]->position_.x, gameManager->characters[0]->position_.y, last_pressed_key) == 1)
-        intersection_detected = true;
-    else if(gameManager->checkForIntersection(gameManager->characters[0]->position_.x, gameManager->characters[0]->position_.y, last_pressed_key) == 2)
-        direction_tmp = -1;
+        gameManager_->characters[0]->teleportLeft();
+    if(gameManager_->checkForIntersection(gameManager_->characters[0]->position_.x, gameManager_->characters[0]->position_.y, last_pressed_key_) == 1)
+        intersection_detected_ = true;
+    else if(gameManager_->checkForIntersection(gameManager_->characters[0]->position_.x, gameManager_->characters[0]->position_.y, last_pressed_key_) == 2)
+        direction_tmp_ = -1;
     
-    gameManager->updateInterface();
+    gameManager_->updateInterface();
 
     return false;
 }

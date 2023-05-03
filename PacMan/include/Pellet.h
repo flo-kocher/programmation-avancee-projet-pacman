@@ -6,12 +6,11 @@
 class Pellet: public Zone
 {
     private:
-        SDL_Rect passed;
-        bool got_threw;
-        bool has_pellet;
+        bool got_threw_;
+        bool has_pellet_;
     
     protected:
-        int points_earned;
+        int points_earned_;
 
     public:
         Pellet(int init_x, int init_y, bool init_has_pellet);
@@ -19,27 +18,27 @@ class Pellet: public Zone
 
         inline bool getGotThrough()
         {
-            return got_threw;
+            return got_threw_;
         };
 
         inline void setGotThrew(bool res)
         {
-            got_threw = res;
+            got_threw_ = res;
         };
 
         inline bool hasPellet()
         {
-            return has_pellet;
+            return has_pellet_;
         };
 
         inline void setHasPellet()
         {
-            has_pellet = false;
+            has_pellet_ = false;
         };
 
         inline int addPoints()
         {
-            return points_earned;
+            return points_earned_;
         };
     
 };
