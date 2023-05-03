@@ -52,7 +52,7 @@ class GameManager
         void initPellets();
         void initIntersections();
         void initCharacters();
-        void initCharacter(CharacterName name, SDL_Rect position, std::shared_ptr<SDL_Rect> image);
+        void initCharacter(CharacterName name, SDL_Rect position, SDL_Rect* image);
         bool isGameOver();
 
         inline void setColorAndBlitScaled(const bool transparence, const SDL_Rect* src_rect, SDL_Rect* dst_rect)

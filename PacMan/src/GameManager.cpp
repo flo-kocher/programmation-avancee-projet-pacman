@@ -379,24 +379,22 @@ void GameManager::initIntersections()
 void GameManager::initCharacters()
 {
     initCharacter(PACMAN, {34, 34, 32, 32}, PACMAN_IMAGES.find("RIGHT")->second);
-    initCharacter(RED_GHOST, {322, 322, 32, 32}, PACMAN_IMAGES.find("LEFT")->second);
-    initCharacter(PINK_GHOST, {322, 386, 32, 32}, PACMAN_IMAGES.find("DOWN")->second);
-    initCharacter(BLUE_GHOST, {288, 386, 32, 32}, PACMAN_IMAGES.find("UP")->second);
-    initCharacter(YELLOW_GHOST, {358, 386, 32, 32}, PACMAN_IMAGES.find("UP")->second);
+    initCharacter(RED_GHOST, {322, 322, 32, 32}, RED_GHOST_IMAGES.find("LEFT")->second);
+    initCharacter(PINK_GHOST, {322, 402, 32, 32}, PINK_GHOST_IMAGES.find("DOWN")->second);
+    initCharacter(BLUE_GHOST, {288, 402, 32, 32}, BLUE_GHOST_IMAGES.find("UP")->second);
+    initCharacter(YELLOW_GHOST, {358, 402, 32, 32}, YELLOW_GHOST_IMAGES.find("UP")->second);
 }
 
-void GameManager::initCharacter(CharacterName name, SDL_Rect start_position, std::shared_ptr<SDL_Rect> image){
+void GameManager::initCharacter(CharacterName name, SDL_Rect start_position, SDL_Rect* image){
     std::shared_ptr<Character> character;
     if(name == PACMAN){
-        character = std::make_unique<Pacman>(name, start_position, image);
+        character = std::make_shared<Pacman>(name, start_position, image);
     }
     else{
         character = std::make_shared<Ghost>(name, start_position, image);
     }
     characters[name] = character;
-    //Ghost* yellow_ghost = new Ghost(name, position, image);
-    // SDL_Rect ghost_ = {358, 386, 32, 32}; // ici scale x2
-    setColorAndBlitScaled(true, (SDL_Rect*)&character->character_image_, &character->position_);
+    setColorAndBlitScaled(true, character->character_image_, &character->position_);
 }
 
 bool GameManager::isGameOver()
@@ -500,11 +498,9 @@ void GameManager::updateIntersections(T map)
 void GameManager::updateCharacters(std::array<std::shared_ptr<Character>, 5> array)
 {
     for (auto it = array.begin(); it != array.end(); ++it) {
-        if(it->get()->GetCharacterName() == PACMAN){
-            std::shared_ptr<SDL_Rect> image = it->get()->character_image_;
-            SDL_Rect position = it->get()->position_;
-            setColorAndBlitScaled(true, (SDL_Rect*)&image, &position);
-        }
+        SDL_Rect* image = it->get()->character_image_;
+        SDL_Rect position = it->get()->position_;
+        setColorAndBlitScaled(true, image, &position);
     }
 }
 
@@ -529,11 +525,6 @@ void GameManager::updateInterface()
     updateIntersections(intersections);
     updateIntersections(intersections_big);
     updateCharacters(characters);
-    
-    //SDL_Rect ghost_in2 = ghost_rect_in;
-    // if ((count / 8) % 2)
-        // ghost_in2.x += 20;
-    //setColorAndBlitScaled(true, &ghost_in2, ghost_rect);
 
     SDL_UpdateWindowSurface(pWindow);
 

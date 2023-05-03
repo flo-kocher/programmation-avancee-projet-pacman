@@ -8,7 +8,7 @@ Pacman::Pacman()
     character_image_ = PACMAN_IMAGES.find("RIGHT")->second;
 }
 
-Pacman::Pacman(CharacterName name, SDL_Rect start_position, std::shared_ptr<SDL_Rect> image)
+Pacman::Pacman(CharacterName name, SDL_Rect start_position, SDL_Rect* image)
 : life_(3)
 {
     SetCharacterName(name);

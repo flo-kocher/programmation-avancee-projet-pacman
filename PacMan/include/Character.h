@@ -18,7 +18,7 @@ class Character
         }
 
     public:
-        std::shared_ptr<SDL_Rect> character_image_;
+        SDL_Rect* character_image_;
         SDL_Rect position_;
 
         Character();
@@ -32,27 +32,7 @@ class Character
         void turnUp(int count);
         void standStill();
         
-        std::map<std::string, std::shared_ptr<SDL_Rect>> getImagesMap();
-
-        // inline SDL_Rect* getPosition()
-        // {
-        //     return &position_;
-        // };
-
-        // inline void setPosition(SDL_Rect pos)
-        // {
-        //     position_ = pos;
-        // };
-
-        // inline std::shared_ptr<SDL_Rect> getCharacterImage()
-        // {
-        //     return character_image_;
-        // };
-        
-        // inline void setCharacterImage(std::shared_ptr<SDL_Rect> image)
-        // {
-        //     character_image_ = image;
-        // };
+        std::map<std::string, SDL_Rect*> getImagesMap();
 
         inline CharacterName GetCharacterName()
         {

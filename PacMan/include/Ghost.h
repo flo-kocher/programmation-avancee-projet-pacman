@@ -14,7 +14,7 @@ class Ghost : public Character
 
     public:
         Ghost();
-        Ghost(CharacterName name, SDL_Rect position, std::shared_ptr<SDL_Rect> image);
+        Ghost(CharacterName name, SDL_Rect position, SDL_Rect* image);
        // Ghost(CharacterName name, SDL_Rect position, std::shared_ptr<SDL_Rect> image, std::pair<int, int> target);
         ~Ghost();
     

@@ -21,7 +21,7 @@ void Character::teleportLeft()
 
 void Character::turnRight(int count)
 {
-    std::map<std::string, std::shared_ptr<SDL_Rect>> character_images = getImagesMap();
+    std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("RIGHT")->second;
     else
@@ -32,7 +32,7 @@ void Character::turnRight(int count)
 
 void Character::turnDown(int count)
 {
-    std::map<std::string, std::shared_ptr<SDL_Rect>> character_images = getImagesMap();
+    std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("DOWN")->second;
     else
@@ -43,7 +43,7 @@ void Character::turnDown(int count)
 
 void Character::turnLeft(int count)
 {
-    std::map<std::string, std::shared_ptr<SDL_Rect>> character_images = getImagesMap();
+    std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("LEFT")->second;
     else
@@ -54,7 +54,7 @@ void Character::turnLeft(int count)
 
 void Character::turnUp(int count)
 {
-    std::map<std::string, std::shared_ptr<SDL_Rect>> character_images = getImagesMap();
+    std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("UP")->second;
     else
@@ -68,9 +68,9 @@ void Character::standStill()
     
 }
 
-std::map<std::string, std::shared_ptr<SDL_Rect>> Character::getImagesMap()
+std::map<std::string, SDL_Rect*> Character::getImagesMap()
 {
-    std::map<std::string, std::shared_ptr<SDL_Rect>> map;
+    std::map<std::string, SDL_Rect*> map;
 
     switch(name_){
         case(PACMAN) :
