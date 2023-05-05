@@ -6,7 +6,7 @@
 class Pellet: public Zone
 {
     private:
-        bool got_threw_;
+        bool got_through_;
         bool has_pellet_;
     
     protected:
@@ -18,12 +18,12 @@ class Pellet: public Zone
 
         inline bool getGotThrough()
         {
-            return got_threw_;
+            return got_through_;
         };
 
-        inline void setGotThrew(bool res)
+        inline void setGotThrough(bool res)
         {
-            got_threw_ = res;
+            got_through_ = res;
         };
 
         inline bool hasPellet()

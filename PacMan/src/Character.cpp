@@ -19,8 +19,9 @@ void Character::teleportLeft()
     position_.y = 418;
 }
 
-void Character::turnRight(int count)
+void Character::goRight(int count)
 {
+    std::cout << "goRight\n";
     std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("RIGHT")->second;
@@ -30,8 +31,9 @@ void Character::turnRight(int count)
     position_.x++;
 }
 
-void Character::turnDown(int count)
+void Character::goDown(int count)
 {
+    std::cout << "goDown\n";
     std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("DOWN")->second;
@@ -41,8 +43,9 @@ void Character::turnDown(int count)
     position_.y++;
 }
 
-void Character::turnLeft(int count)
+void Character::goLeft(int count)
 {
+    std::cout << "goLeft\n";
     std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("LEFT")->second;
@@ -52,8 +55,9 @@ void Character::turnLeft(int count)
     position_.x--;
 }
 
-void Character::turnUp(int count)
+void Character::goUp(int count)
 {
+    std::cout << "goUp\n";
     std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("UP")->second;

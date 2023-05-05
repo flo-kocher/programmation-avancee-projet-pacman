@@ -14,7 +14,7 @@ class Pacman : public Character
 
     public:
         Pacman();
-        Pacman(CharacterName name, SDL_Rect position, SDL_Rect* image);
+        Pacman(CharacterName name, SDL_Rect position, SDL_Rect* image, Direction direction);
         ~Pacman();
 };
 

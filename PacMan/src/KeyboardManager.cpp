@@ -1,6 +1,7 @@
 #include <SDL.h>
 
 #include "../include/KeyboardManager.h"
+#include "../include/Constante.h"
 
 KeyboardManager::KeyboardManager()
 {}

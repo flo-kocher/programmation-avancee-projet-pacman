@@ -13,6 +13,7 @@
 #endif
 
 enum CharacterName { PACMAN, RED_GHOST, PINK_GHOST, BLUE_GHOST, YELLOW_GHOST };
+enum Direction { RIGHT, DOWN, LEFT, UP };
 
 // Coordonnées Sprite Pacman
 const std::map<std::string, SDL_Rect*> PACMAN_IMAGES = {

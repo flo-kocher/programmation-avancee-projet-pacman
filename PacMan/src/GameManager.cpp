@@ -3,18 +3,17 @@
 #include "../include/Constante.h"
 #include "../include/Pacman.h"
 #include "../include/Ghost.h"
-// #include "../include/Character.h"
 
 #include <iostream>
 
 #include <SDL.h>
 
+int GameManager::count_ = 0;
+
 GameManager::GameManager()
-: count_(0)
-, score_(0)
-, direction_tmp_ (0)
+: score_(0)
+, direction_tmp_ (RIGHT)
 , intersection_detected_ (false)
-, last_pressed_key_(0)
 , gameInterface_(std::make_unique<GameInterface>())
 {
     std::cout<<"GameInterface constructor\n";
@@ -28,22 +27,20 @@ GameManager::~GameManager()
 
 void GameManager::initCharacters()
 {
-    initCharacter(PACMAN, {34, 34, 32, 32}, PACMAN_IMAGES.find("RIGHT")->second);
-    initCharacter(RED_GHOST, {322, 322, 32, 32}, RED_GHOST_IMAGES.find("LEFT")->second);
-    initCharacter(PINK_GHOST, {322, 402, 32, 32}, PINK_GHOST_IMAGES.find("DOWN")->second);
-    initCharacter(BLUE_GHOST, {288, 402, 32, 32}, BLUE_GHOST_IMAGES.find("UP")->second);
-    initCharacter(YELLOW_GHOST, {358, 402, 32, 32}, YELLOW_GHOST_IMAGES.find("UP")->second);
+    initCharacter(PACMAN, {34, 34, 32, 32}, PACMAN_IMAGES.find("RIGHT")->second, RIGHT);
+    initCharacter(RED_GHOST, {322, 322, 32, 32}, RED_GHOST_IMAGES.find("LEFT")->second, LEFT);
+    initCharacter(PINK_GHOST, {322, 418, 32, 32}, PINK_GHOST_IMAGES.find("DOWN")->second, UP);
+    initCharacter(BLUE_GHOST, {290, 418, 32, 32}, BLUE_GHOST_IMAGES.find("UP")->second, RIGHT);
+    initCharacter(YELLOW_GHOST, {354, 418, 32, 32}, YELLOW_GHOST_IMAGES.find("UP")->second, LEFT);
 }
 
-void GameManager::initCharacter(CharacterName name, SDL_Rect start_position, SDL_Rect* image){
-    std::shared_ptr<Character> character;
+void GameManager::initCharacter(CharacterName name, SDL_Rect start_position, SDL_Rect* image, Direction direction){
     if(name == PACMAN){
-        character = std::make_shared<Pacman>(name, start_position, image);
+        pacman_ = std::make_unique<Pacman>(name, start_position, image, direction);
     }
     else{
-        character = std::make_shared<Ghost>(name, start_position, image);
+        ghosts_[name - 1] = std::make_shared<Ghost>(name, start_position, image, direction);
     }
-    characters[name] = character;
     // setColorAndBlitScaled(true, character->character_image_, &character->position_);
 }
 
@@ -81,24 +78,28 @@ void GameManager::runGame()
 
         switch (keyboard_event)
         {
-        case -1:
-            quit = true;
-            break;
-        case LEFT:
-            setDirectionLeft();
-            break;
-        case RIGHT:
-            setDirectionRight();
-            break;
-        case UP:
-            setDirectionUp();
-            break;
-        case DOWN:
-            setDirectionDown();
-            break;
-        default:
-            // Do nothing
-            break;
+            case -1:
+                quit = true;
+                break;
+            case LEFT:
+                std::cout << "setDirection(LEFT)\n";
+                pacman_->setDirection(LEFT);
+                break;
+            case RIGHT:
+                std::cout << "setDirection(RIGHT)\n";
+                pacman_->setDirection(RIGHT);
+                break;
+            case UP:
+                std::cout << "setDirection(UP)\n";
+                pacman_->setDirection(UP);
+                break;
+            case DOWN:
+                std::cout << "setDirection(DOWN)\n";
+                pacman_->setDirection(DOWN);
+                break;
+            default:
+                // Do nothing
+                break;
         }
 
         // AFFICHAGE
@@ -113,7 +114,7 @@ void GameManager::runGame()
 
 bool GameManager::updateGame()
 {
-    std::cout<<this->getScore()<<std::endl;
+    //std::cout<<this->getScore()<<std::endl;
     IncrementCount();
 
     if(isGameOver())
@@ -122,9 +123,10 @@ bool GameManager::updateGame()
         return true;
     }
 
-    if(intersection_detected_ || last_pressed_key_ == 0 && direction_tmp_ == 2 || last_pressed_key_ == 2 && direction_tmp_ == 0 || last_pressed_key_ == 1 && direction_tmp_ == 3 || last_pressed_key_ == 3 && direction_tmp_ == 1)
+    Direction pacman_direction = pacman_->getDirection();
+    if((intersection_detected_ && pacman_direction != direction_tmp_) || (pacman_direction == RIGHT && direction_tmp_ == LEFT) || (pacman_direction == LEFT && direction_tmp_ == RIGHT) || (pacman_direction == DOWN && direction_tmp_ == UP) || (pacman_direction == UP && direction_tmp_ == DOWN))
     {
-        direction_tmp_ = last_pressed_key_;
+        direction_tmp_ = pacman_direction;
         intersection_detected_ = false;
     }
     else
@@ -132,43 +134,53 @@ bool GameManager::updateGame()
 
     switch(direction_tmp_)
     {
-        case 0:
-            characters[0]->turnRight(getCount());
+        case RIGHT:
+            pacman_->goRight(getCount());
             break;
-        case 1:
-            characters[0]->turnDown(getCount());
+        case DOWN:
+            pacman_->goDown(getCount());
             break;
-        case 2:
-            characters[0]->turnLeft(getCount());
+        case LEFT:
+            pacman_->goLeft(getCount());
             break;
-        case 3:
-            characters[0]->turnUp(getCount());
+        case UP:
+            pacman_->goUp(getCount());
             break;
         case -1:
-            characters[0]->standStill();
+            pacman_->standStill();
             break;
     }
 
-    int character_position;
-    if(character_position = collisionWithGhost() > 0)
+    for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
     {
-        // Donner à chaque Ghost une zone où laquelle respawn
-        characters[character_position]->position_.x = 250;
-        characters[character_position]->position_.y = 34;
+        Ghost* ghost = ghost_it->get();
+        //ghost->chase(pacman_, count_);
+        ghost->scatter(count_);
     }
 
-    int pellet_number = checkForPellet(characters[0]->position_.x, characters[0]->position_.y);
-    if(pellet_number == 0)
-        characters[0]->teleportRight();
-    if(pellet_number == 18)
-        characters[0]->teleportLeft();
-    if(checkForIntersection(characters[0]->position_.x, characters[0]->position_.y, last_pressed_key_) == 1)
+    // int character_position = collisionWithGhost();
+    // if(character_position != -1)
+    // {
+    //     // Donner à chaque Ghost une zone où laquelle respawn
+    //     ghosts_[character_position]->position_.x = 250;
+    //     ghosts_[character_position]->position_.y = 34;
+    // }
+
+    checkForPellet(pacman_->position_.x, pacman_->position_.y);
+    checkForTeleportation<std::shared_ptr<Pacman>>(pacman_);
+    for(int i = 0; i < 4; ++i)
+    {
+        checkForTeleportation<std::shared_ptr<Ghost>>(ghosts_[i]);
+    }
+    
+    int intersection_check = checkForIntersection();
+    if(intersection_check == 1)
         intersection_detected_ = true;
-    else if(checkForIntersection(characters[0]->position_.x, characters[0]->position_.y, last_pressed_key_) == 2)
+    else if(intersection_check == 2)
         direction_tmp_ = -1;
 
     // gère tout l'affichage dans le GameInterface en fonction des events qui sont catch juste au dessus (impossible de faire des appels en plusieurs fonctions)
-    gameInterface_->updateGameInterface(getCount(), characters, pellets, big_pellets, intersections, intersections_big);
+    gameInterface_->updateGameInterface(getCount(), pacman_, ghosts_, pellets, big_pellets, intersections, intersections_big);
 
     return false;
 
@@ -182,68 +194,99 @@ bool GameManager::isGameOver()
 }
 
 template <typename T>
-int GameManager::checkForPelletTemplate(int x, int y, T map)
+void GameManager::checkForTeleportation(T character)
 {
-    for (auto it = map.begin(); it != map.end(); ++it) {
-        if(it->second->getX() == x && it->second->getY() == y)
-        {
-            // std::cout<<it->first<<std::endl;
-            it->second->setGotThrew(false);
-            if(it->second->hasPellet())
-            {
-                this->AddToScore(it->second->addPoints());
-                it->second->setHasPellet();
-            }
-            if(it->first == "Pellet 12_left")
-                {std::cout<<it->second->getX()<<std::endl;std::cout<<it->second->getY()<<std::endl;return 0;}
-            if(it->first == "Pellet 12_right")
-                {std::cout<<it->second->getX()<<std::endl;std::cout<<it->second->getY()<<std::endl;return 18;}
-        }
+    if(pellets.find("Pellet 12_left")->second->getX() == character->position_.x && pellets.find("Pellet 12_left")->second->getY() == character->position_.y)
+    {
+        character->teleportRight();
     }
-    return -1;
-}
-
-int GameManager::checkForPellet(int x, int y)
-{
-    checkForPelletTemplate(x, y, big_pellets);
-    return checkForPelletTemplate(x, y, pellets);
+    else if(pellets.find("Pellet 12_right")->second->getX() == character->position_.x && pellets.find("Pellet 12_right")->second->getY() == character->position_.y)
+    {
+        character->teleportLeft();
+    }
 }
 
 template <typename T>
-int GameManager::checkForIntersectionTemplate(int x, int y, int last_pressed_key, T map)
+void GameManager::checkForPelletTemplate(int x, int y, T map)
 {
-    bool isIntersection = false;
     for (auto it = map.begin(); it != map.end(); ++it) {
         if(it->second->getX() == x && it->second->getY() == y)
         {
             // std::cout<<it->first<<std::endl;
-            it->second->setGotThrew(false);
+            it->second->setGotThrough(false);
             if(it->second->hasPellet())
             {
                 this->AddToScore(it->second->addPoints());
                 it->second->setHasPellet();
             }
-            if(last_pressed_key == 0 && it->second->canGoRight() || last_pressed_key == 1 && it->second->canGoDown()
-            || last_pressed_key == 2 && it->second->canGoLeft() || last_pressed_key == 3 && it->second->canGoUp())
-                return 1;
-            else
-                return 2;
+            break;
         }
     }
-    return 0;
 }
 
-int GameManager::checkForIntersection(int x, int y, int last_pressed_key)
+void GameManager::checkForPellet(int x, int y)
 {
-    return checkForIntersectionTemplate(x, y, last_pressed_key, intersections) + checkForIntersectionTemplate(x, y, last_pressed_key, intersections_big);
+    checkForPelletTemplate(x, y, big_pellets);
+    checkForPelletTemplate(x, y, pellets);
+}
+
+template <typename T>
+int GameManager::checkForIntersectionTemplate(T map)
+{
+    int res = 0;
+    Direction pacman_direction = pacman_->getDirection();
+    for (auto it = map.begin(); it != map.end(); ++it) {
+        if(it->second->getX() == pacman_->position_.x && it->second->getY() == pacman_->position_.y){
+            pacman_->setPossibleDirection(
+                it->second->canGoRight(),
+                it->second->canGoDown(),
+                it->second->canGoLeft(),
+                it->second->canGoUp()
+            );
+            // std::cout<<it->first<<std::endl;
+            it->second->setGotThrough(false);
+            if(it->second->hasPellet())
+            {
+                this->AddToScore(it->second->addPoints());
+                it->second->setHasPellet();
+            }
+        
+            if(pacman_direction == RIGHT && it->second->canGoRight() || pacman_direction == DOWN && it->second->canGoDown()
+            || pacman_direction == LEFT && it->second->canGoLeft() || pacman_direction == UP && it->second->canGoUp())
+                res = 1;
+            else
+                res = 2;
+        }
+
+        for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it){
+            Ghost* ghost = ghost_it->get();
+
+            if(it->second->getX() == ghost->position_.x && it->second->getY() == ghost->position_.y)
+            {
+                Direction ghost_direction = ghost->getDirection();
+                ghost->setPossibleDirection(
+                    it->second->canGoRight() && ghost_direction != LEFT,
+                    it->second->canGoDown() && ghost_direction != UP, 
+                    it->second->canGoLeft() && ghost_direction != RIGHT, 
+                    it->second->canGoUp() && ghost_direction != DOWN
+                );
+            }   
+        }
+    }
+    return res;
+}
+
+int GameManager::checkForIntersection()
+{
+    return checkForIntersectionTemplate(intersections) + checkForIntersectionTemplate(intersections_big);
 }
 
 
 int GameManager::collisionWithGhost()
 {
-    for (int i = 1; i < 5; i++) {
-        int pos_diff_x = abs(characters[0]->position_.x-characters[i]->position_.x);
-        int pos_diff_y = abs(characters[0]->position_.y-characters[i]->position_.y);
+    for (int i = 0; i < 4; i++) {
+        int pos_diff_x = abs(pacman_->position_.x - ghosts_[i]->position_.x);
+        int pos_diff_y = abs(pacman_->position_.y - ghosts_[i]->position_.y);
         if(0 <= pos_diff_x && pos_diff_x <= HITBOX && 0 <= pos_diff_y  && pos_diff_y <= HITBOX)
         {
             return i;

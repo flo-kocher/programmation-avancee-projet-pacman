@@ -5,13 +5,13 @@
 #include "Character.h"
 #include "MapInitialization.h"
 #include "GameInterface.h"
+#include "Intersection.h"
+#include "Pacman.h"
+#include "Ghost.h"
 #include <map>
 #include <array>
 
-#define RIGHT 0
-#define DOWN 1
-#define LEFT 2
-#define UP 3
+
 
 #define HITBOX 30
 
@@ -22,39 +22,39 @@ class GameManager
         std::map<std::string, std::shared_ptr<BigPellet>> big_pellets;
         std::map<std::string, std::shared_ptr<Intersection<Pellet>>> intersections;
         std::map<std::string, std::shared_ptr<Intersection<BigPellet>>> intersections_big;
-        //std::map<std::string, std::shared_ptr<Character>> characters;
 
-        
-        int count_;
+        static int count_;
         int score_;
 
         bool intersection_detected_;
         int direction_tmp_;
-        int last_pressed_key_;
         std::unique_ptr<GameInterface> gameInterface_ = nullptr;
 
     public:
-        std::array<std::shared_ptr<Character>, 5> characters;
+        std::shared_ptr<Pacman> pacman_;
+        std::array<std::shared_ptr<Ghost>, 4> ghosts_;
 
         GameManager();
         ~GameManager();
 
         void initCharacters();
-        void initCharacter(CharacterName name, SDL_Rect position, SDL_Rect* image);
+        void initCharacter(CharacterName name, SDL_Rect position, SDL_Rect* image, Direction direction);
         void runGame();
         bool updateGame();
         bool isGameOver();
 
         int collisionWithGhost();
 
-        int checkForPellet(int x, int y);
         template <typename T>
-        int checkForPelletTemplate(int x, int y, T map);
-        int checkForIntersection(int x, int y, int last_pressed_key);
+        void checkForTeleportation(T character);
+        void checkForPellet(int x, int y);
         template <typename T>
-        int checkForIntersectionTemplate(int x, int y, int last_pressed_key, T map);
+        void checkForPelletTemplate(int x, int y, T map);
+        int checkForIntersection();
+        template <typename T>
+        int checkForIntersectionTemplate(T map);
 
-        inline const int getCount()
+        inline static const int getCount()
         {
             return count_;
         };
@@ -69,31 +69,10 @@ class GameManager
             score_ += to_add;
         };
 
-        inline void IncrementCount()
+        inline static void IncrementCount()
         {
             count_ = (count_ + 1) % (250);
         };
-
-        inline void setDirectionRight()
-        {
-            last_pressed_key_ = 0;
-        };
-
-        inline void setDirectionDown()
-        {
-            last_pressed_key_ = 1;
-        };
-
-        inline void setDirectionLeft()
-        {
-            last_pressed_key_ = 2;
-        };
-
-        inline void setDirectionUp()
-        {
-            last_pressed_key_ = 3;
-        };
-
 };
 
 #endif
