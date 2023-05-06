@@ -20,12 +20,8 @@ Intersection<BigPellet>::Intersection(int init_x, int init_y, bool init_has_pell
 
 template <>
 Intersection<Pellet>::~Intersection()
-{
-
-}
+{}
 
 template <>
 Intersection<BigPellet>::~Intersection()
-{
-
-}
+{}

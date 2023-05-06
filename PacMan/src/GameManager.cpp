@@ -14,6 +14,7 @@ int GameManager::feared_timer_ = 0;
 GameManager::GameManager()
 : score_(0)
 , feared_timer_running_(false)
+, pacman_alive_(true)
 , consecutive_ghost_eaten_(0)
 , direction_tmp_ (RIGHT)
 , intersection_detected_ (false)
@@ -25,7 +26,10 @@ GameManager::GameManager()
 
 GameManager::~GameManager()
 {
-
+    pellets.clear();
+    big_pellets.clear();
+    intersections.clear();
+    intersections_big.clear();
 }
 
 void GameManager::initCharacters()
@@ -127,10 +131,7 @@ bool GameManager::updateGame()
     }
 
     if(isGameOver())
-    {
-        std::cout<<"FINITO"<<std::endl;
         return true;
-    }
 
     Direction pacman_direction = pacman_->getDirection();
     if((intersection_detected_ && pacman_direction != direction_tmp_) || (pacman_direction == RIGHT && direction_tmp_ == LEFT) || (pacman_direction == LEFT && direction_tmp_ == RIGHT) || (pacman_direction == DOWN && direction_tmp_ == UP) || (pacman_direction == UP && direction_tmp_ == DOWN))
@@ -195,8 +196,11 @@ bool GameManager::updateGame()
 
 bool GameManager::isGameOver()
 {
-    if(this->getScore() == 2100)
+    if(this->getScore() == 2100 || !pacmanAlive())
+    {
+        std::cout<<"Score : "<<getScore()<<std::endl;
         return true;
+    }
     return false;
 }
 
@@ -219,7 +223,6 @@ void GameManager::checkForPelletTemplate(int x, int y, T map)
     for (auto it = map.begin(); it != map.end(); ++it) {
         if(it->second->getX() == x && it->second->getY() == y)
         {
-            // std::cout<<it->first<<std::endl;
             it->second->setGotThrough(false);
             if(it->second->hasPellet())
             {
@@ -252,7 +255,6 @@ int GameManager::checkForIntersectionTemplate(T map)
                 it->second->canGoLeft(),
                 it->second->canGoUp()
             );
-            // std::cout<<it->first<<std::endl;
             it->second->setGotThrough(false);
             if(it->second->hasPellet())
             {
@@ -340,9 +342,10 @@ void GameManager::actionWithGhost(std::shared_ptr<Ghost> ghost)
         ghost->setIsEaten();
         AddToScore(200*getConsecutiveEatenGhosts());
     }
-    else
+    else if(ghost->getIsEaten())
     {
-        // Appeler une fonction qui fait un exit(0) propre, qui va destructe tout
-        // exit(0);
+        
     }
+    else
+        pacmanDied();
 }

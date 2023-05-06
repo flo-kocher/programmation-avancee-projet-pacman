@@ -46,9 +46,7 @@ Ghost::Ghost(CharacterName name, SDL_Rect start_position, SDL_Rect* image, Direc
 }
 
 Ghost::~Ghost()
-{
-
-}
+{}
 
 void Ghost::chase(std::shared_ptr<Pacman> pacman, int count)
 {
