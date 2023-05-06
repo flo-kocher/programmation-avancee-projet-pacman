@@ -14,6 +14,7 @@ int GameManager::feared_timer_ = 0;
 GameManager::GameManager()
 : score_(0)
 , feared_timer_running_(false)
+, consecutive_ghost_eaten_(0)
 , direction_tmp_ (RIGHT)
 , intersection_detected_ (false)
 , gameInterface_(std::make_unique<GameInterface>())
@@ -166,13 +167,11 @@ bool GameManager::updateGame()
         ghost->scatter(count_);
     }
 
-    // int character_position = collisionWithGhost();
-    // if(character_position != -1)
-    // {
-    //     // Donner à chaque Ghost une zone où laquelle respawn
-    //     ghosts_[character_position]->position_.x = 250;
-    //     ghosts_[character_position]->position_.y = 34;
-    // }
+    int ghost_hit = collisionWithGhost();
+    if(ghost_hit != -1)
+    {
+        actionWithGhost(ghosts_[ghost_hit]);
+    }
 
     checkForPellet(pacman_->position_.x, pacman_->position_.y);
     checkForTeleportation<std::shared_ptr<Pacman>>(pacman_);
@@ -329,5 +328,21 @@ void GameManager::setGhostsNormal(int count)
     {
         ghosts_[i]->increaseSpeed();
         ghosts_[i]->setIsFeared(false);
+    }
+    setConsecutiveEatenGhosts(0);
+}
+
+void GameManager::actionWithGhost(std::shared_ptr<Ghost> ghost)
+{
+    if(ghost->getIsFeared())
+    {
+        incrementConsecutiveEatenGhosts();
+        ghost->setIsEaten();
+        AddToScore(200*getConsecutiveEatenGhosts());
+    }
+    else
+    {
+        // Appeler une fonction qui fait un exit(0) propre, qui va destructe tout
+        // exit(0);
     }
 }

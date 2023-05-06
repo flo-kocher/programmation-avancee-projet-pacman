@@ -26,6 +26,7 @@ class GameManager
         static int count_;
         static int feared_timer_;
         int score_;
+        int consecutive_ghost_eaten_;
 
         bool intersection_detected_;
         int direction_tmp_;
@@ -47,6 +48,7 @@ class GameManager
         bool isGameOver();
 
         int collisionWithGhost();
+        void actionWithGhost(std::shared_ptr<Ghost> ghost);
 
         template <typename T>
         void checkForTeleportation(T character);
@@ -98,7 +100,22 @@ class GameManager
         inline void decrementFearedTimer()
         {
             feared_timer_--;
-        }
+        };
+
+        inline void incrementConsecutiveEatenGhosts()
+        {
+            consecutive_ghost_eaten_++;
+        };
+
+        inline void setConsecutiveEatenGhosts(int value)
+        {
+            consecutive_ghost_eaten_ = value;
+        };
+
+        inline int getConsecutiveEatenGhosts()
+        {
+            return consecutive_ghost_eaten_;
+        };
 };
 
 #endif
