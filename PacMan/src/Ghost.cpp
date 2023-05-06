@@ -272,10 +272,27 @@ void Ghost::goDown(int count)
 
 void Ghost::setFearedImage(int count)
 {
-    if (!((count / 8) % 2))
-        character_image_ = FEARED_GHOST_IMAGES.find("BLUE")->second;
+    int timer = GameManager::feared_timer_;
+    if(timer < 200)
+    {
+        if (!((count / 16) % 2))
+            if (!((count / 8) % 2))
+                character_image_ = FEARED_GHOST_IMAGES.find("WHITE")->second;
+            else
+                character_image_ = FEARED_GHOST_IMAGES.find("WHITE2")->second;
+        else
+            if (!((count / 8) % 2))
+                character_image_ = FEARED_GHOST_IMAGES.find("BLUE")->second;
+            else
+                character_image_ = FEARED_GHOST_IMAGES.find("BLUE2")->second;
+    }
     else
-        character_image_ = FEARED_GHOST_IMAGES.find("BLUE2")->second;
+    {
+        if (!((count / 8) % 2))
+            character_image_ = FEARED_GHOST_IMAGES.find("BLUE")->second;
+        else
+            character_image_ = FEARED_GHOST_IMAGES.find("BLUE2")->second;
+    }
 }
 
 void Ghost::setEatenImage(std::string direction)

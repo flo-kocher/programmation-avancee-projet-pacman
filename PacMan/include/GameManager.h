@@ -24,7 +24,6 @@ class GameManager
         std::map<std::string, std::shared_ptr<Intersection<BigPellet>>> intersections_big;
 
         int count_;
-        static int feared_timer_;
         int score_;
         int consecutive_ghost_eaten_;
         bool pacman_alive_;
@@ -40,6 +39,7 @@ class GameManager
 
 
     public:
+        static int feared_timer_;
         std::shared_ptr<Pacman> pacman_;
         std::array<std::shared_ptr<Ghost>, 4> ghosts_;
 
