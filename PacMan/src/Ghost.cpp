@@ -163,13 +163,35 @@ void Ghost::eaten(int count)
         goDown(count);
         setPossibleDirection(false, true, false, false);
     }
-    else if(position_.x == 322 && position_.y == 418){
-        is_eaten_ = false;
-        setDirection(UP);
-        goUp(count);
-        setPossibleDirection(false, false, false, true);
+    else if(position_.x == 322 && position_.y == 418)
+    {
+        std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+        std::chrono::duration<double> elapsed_seconds = now - eaten_start_timer_;
+        if (elapsed_seconds.count() < 10)
+        {
+            setPossibleDirection(direction_ != LEFT ? true : false, false, direction_ != RIGHT ? true : false, false);
+            classicalMovementAlgorithm(count);
+        }
+        else
+        {
+            is_eaten_ = false;
+            setDirection(UP);
+            goUp(count);
+            setPossibleDirection(false, false, false, true);
+        }
     }
-    else{
+    else if(position_.x == 290 && position_.y == 418)
+    {
+        setPossibleDirection(true, false, false, false);
+        classicalMovementAlgorithm(count);
+    }
+    else if(position_.x == 354 && position_.y == 418)
+    {
+        setPossibleDirection(false, false, true, false);
+        classicalMovementAlgorithm(count);
+    }
+    else
+    {
         classicalMovementAlgorithm(count);
     }
 }

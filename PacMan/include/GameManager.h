@@ -54,7 +54,7 @@ class GameManager
         bool isGameOver();
         void gameOver();
 
-        int collisionWithGhost();
+        bool collisionWithGhost(std::shared_ptr<Ghost> ghost);
         void actionWithGhost(std::shared_ptr<Ghost> ghost);
 
         template <typename T>
@@ -89,7 +89,7 @@ class GameManager
 
         inline void incrementCount()
         {
-            count_ = (count_ + 1) % (250);
+            count_ = (count_ + 1) % (240);
         };
 
         inline void activateFearedTimer()

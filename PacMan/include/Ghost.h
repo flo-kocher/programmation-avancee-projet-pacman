@@ -7,6 +7,7 @@
 #include "Constante.h"
 #include <iostream>
 #include <memory>
+#include <chrono>
 
 class Ghost : public Character
 {
@@ -23,6 +24,7 @@ class Ghost : public Character
         bool is_feared_;
         bool is_eaten_;
         bool is_in_corridor_;
+        std::chrono::steady_clock::time_point eaten_start_timer_;
 
     public:
         Ghost();
@@ -81,7 +83,18 @@ class Ghost : public Character
         inline bool isInCorridor()
         {
             return is_in_corridor_;
-        }
+        };
+
+        inline std::chrono::steady_clock::time_point getEatenStartTimer()
+        {
+            return eaten_start_timer_;
+        };
+
+        inline void setEatenStartTimer(std::chrono::steady_clock::time_point eaten_start_timer)
+        {
+            eaten_start_timer_ = eaten_start_timer;
+        };    
+
 };
 
 #endif
