@@ -12,6 +12,7 @@ Ghost::Ghost()
 Ghost::Ghost(CharacterName name, SDL_Rect start_position, SDL_Rect* image, Direction direction)
 : is_feared_(false)
 , is_eaten_(false)
+, is_in_corridor_(false)
 {
     setCharacterName(name);
     position_ = start_position;
@@ -35,9 +36,7 @@ Ghost::Ghost(CharacterName name, SDL_Rect start_position, SDL_Rect* image, Direc
 }
 
 Ghost::~Ghost()
-{
-
-}
+{}
 
 void Ghost::chase(std::shared_ptr<Pacman> pacman, int count, std::shared_ptr<Ghost> red_ghost)
 {
@@ -45,9 +44,9 @@ void Ghost::chase(std::shared_ptr<Pacman> pacman, int count, std::shared_ptr<Gho
     int target_y = 0;
     int zone_2_tiles_front_pacman_x;
     int zone_2_tiles_front_pacman_y;
-    int vector_vertical_red_ghost_to_2_tiles_front_target;
-    int vector_horizontal_red_ghost_to_2_tiles_front_target;
-    int vector_between_clyde_and_pacman;
+    double vector_vertical_red_ghost_to_2_tiles_front_target;
+    double vector_horizontal_red_ghost_to_2_tiles_front_target;
+    double vector_between_clyde_and_pacman;
 
     Direction pacman_direction = pacman->getDirection();
     switch(getCharacterName()){
@@ -68,8 +67,8 @@ void Ghost::chase(std::shared_ptr<Pacman> pacman, int count, std::shared_ptr<Gho
             vector_horizontal_red_ghost_to_2_tiles_front_target = zone_2_tiles_front_pacman_x - red_ghost->position_.x;
             vector_vertical_red_ghost_to_2_tiles_front_target = zone_2_tiles_front_pacman_y - red_ghost->position_.y;
 
-            target_x = zone_2_tiles_front_pacman_x + vector_horizontal_red_ghost_to_2_tiles_front_target;
-            target_y = zone_2_tiles_front_pacman_y + vector_vertical_red_ghost_to_2_tiles_front_target;
+            target_x = zone_2_tiles_front_pacman_x + (int)vector_horizontal_red_ghost_to_2_tiles_front_target;
+            target_y = zone_2_tiles_front_pacman_y + (int)vector_vertical_red_ghost_to_2_tiles_front_target;
 
             setTarget(target_x, target_y); //Inky cible la position exacte de Pacman   
             calculateVectorsToTarget(target, position_);
@@ -165,7 +164,7 @@ void Ghost::eaten(int count)
         setPossibleDirection(false, true, false, false);
     }
     else if(position_.x == 322 && position_.y == 418){
-        //is_eaten = false;
+        is_eaten_ = false;
         setDirection(UP);
         goUp(count);
         setPossibleDirection(false, false, false, true);

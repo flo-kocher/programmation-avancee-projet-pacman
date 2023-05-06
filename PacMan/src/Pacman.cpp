@@ -20,6 +20,4 @@ Pacman::Pacman(CharacterName name, SDL_Rect start_position, SDL_Rect* image, Dir
 }
 
 Pacman::~Pacman()
-{
-
-}
+{}

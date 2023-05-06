@@ -27,6 +27,7 @@ class GameManager
         static int feared_timer_;
         int score_;
         int consecutive_ghost_eaten_;
+        bool pacman_alive_;
 
         bool intersection_detected_;
         int direction_tmp_;
@@ -49,7 +50,9 @@ class GameManager
         void initCharacter(CharacterName name, SDL_Rect position, SDL_Rect* image, Direction direction);
         void runGame();
         bool updateGame();
+        bool levelCompleted();
         bool isGameOver();
+        void gameOver();
 
         int collisionWithGhost();
         void actionWithGhost(std::shared_ptr<Ghost> ghost);
@@ -62,6 +65,7 @@ class GameManager
         int checkForIntersection();
         template <typename T>
         int checkForIntersectionTemplate(T map);
+        void checkIfInCorridor();
         void setGhostsFeared(int count);
         void setGhostsNormal(int count);
         void checkGameStep();
@@ -134,6 +138,16 @@ class GameManager
             current_ghost_mode_ = mode;
         };
 
+
+        inline void pacmanDied()
+        {
+            pacman_alive_ = false;
+        };
+
+        inline bool pacmanAlive()
+        {
+            return pacman_alive_;
+        };
 };
 
 #endif

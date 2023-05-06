@@ -34,9 +34,7 @@ GameInterface::GameInterface()
 }
 
 GameInterface::~GameInterface()
-{
-
-}
+{}
 
 template <typename T>
 void GameInterface::updateCharacters(T array)

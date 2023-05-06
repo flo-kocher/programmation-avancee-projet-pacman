@@ -15,6 +15,7 @@ GameManager::GameManager()
 , feared_timer_running_(false)
 , current_ghost_mode_(SCATTER)
 , current_game_step_(SCATTER1)
+, pacman_alive_(true)
 , consecutive_ghost_eaten_(0)
 , direction_tmp_ (RIGHT)
 , intersection_detected_ (false)
@@ -27,7 +28,10 @@ GameManager::GameManager()
 
 GameManager::~GameManager()
 {
-
+    pellets.clear();
+    big_pellets.clear();
+    intersections.clear();
+    intersections_big.clear();
 }
 
 void GameManager::initCharacters()
@@ -130,10 +134,7 @@ bool GameManager::updateGame()
     checkGameStep();
 
     if(isGameOver())
-    {
-        std::cout<<"FINITO"<<std::endl;
         return true;
-    }
 
     Direction pacman_direction = pacman_->getDirection();
     if((intersection_detected_ && pacman_direction != direction_tmp_) || (pacman_direction == RIGHT && direction_tmp_ == LEFT) || (pacman_direction == LEFT && direction_tmp_ == RIGHT) || (pacman_direction == DOWN && direction_tmp_ == UP) || (pacman_direction == UP && direction_tmp_ == DOWN))
@@ -191,6 +192,7 @@ bool GameManager::updateGame()
         actionWithGhost(ghosts_[ghost_hit]);
     }
 
+    checkIfInCorridor();
     checkForPellet(pacman_->position_.x, pacman_->position_.y);
     checkForTeleportation<std::shared_ptr<Pacman>>(pacman_);
     for(int i = 0; i < 4; ++i)
@@ -213,8 +215,11 @@ bool GameManager::updateGame()
 
 bool GameManager::isGameOver()
 {
-    if(this->getScore() == 9999)
+    if(this->getScore() == 9999 || !pacmanAlive())
+    {
+        std::cout<<"Score : "<<getScore()<<std::endl;
         return true;
+    }
     return false;
 }
 
@@ -237,7 +242,6 @@ void GameManager::checkForPelletTemplate(int x, int y, T map)
     for (auto it = map.begin(); it != map.end(); ++it) {
         if(it->second->getX() == x && it->second->getY() == y)
         {
-            // std::cout<<it->first<<std::endl;
             it->second->setGotThrough(false);
             if(it->second->hasPellet())
             {
@@ -270,7 +274,6 @@ int GameManager::checkForIntersectionTemplate(T map)
                 it->second->canGoLeft(),
                 it->second->canGoUp()
             );
-            // std::cout<<it->first<<std::endl;
             it->second->setGotThrough(false);
             if(it->second->hasPellet())
             {
@@ -310,6 +313,31 @@ int GameManager::checkForIntersection()
     return checkForIntersectionTemplate(intersections) + checkForIntersectionTemplate(intersections_big);
 }
 
+void GameManager::checkIfInCorridor()
+{
+    for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
+    {
+        Ghost* ghost = ghost_it->get();
+        if(ghost->position_.y == 418 && (ghost->position_.x <= 161 || ghost->position_.x >= 515))
+        {
+            if(!ghost->isInCorridor())
+            {
+                ghost->setIsInCorridor(true);
+                if(!ghost->getIsFeared())
+                    ghost->lowerSpeed();
+            }
+        }
+        else
+        {
+            if(ghost->isInCorridor())
+            {
+                ghost->setIsInCorridor(false);
+                ghost->increaseSpeed();
+            }
+        }
+    }
+}
+
 
 int GameManager::collisionWithGhost()
 {
@@ -330,7 +358,8 @@ void GameManager::setGhostsFeared(int count)
     {
         for(int i = 0; i < ghosts_.size(); ++i)
         {
-            ghosts_[i]->lowerSpeed();
+            if(!ghosts_[i]->isInCorridor())
+                ghosts_[i]->lowerSpeed();
             ghosts_[i]->setIsFeared(true);
         }
         setGhostsOppositeDirection();
@@ -422,9 +451,10 @@ void GameManager::actionWithGhost(std::shared_ptr<Ghost> ghost)
         ghost->setIsEaten();
         AddToScore(200*getConsecutiveEatenGhosts());
     }
-    else
+    else if(ghost->getIsEaten())
     {
-        // Appeler une fonction qui fait un exit(0) propre, qui va destructe tout
-        // exit(0);
+        
     }
+    else
+        pacmanDied();
 }

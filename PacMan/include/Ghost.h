@@ -16,12 +16,13 @@ class Ghost : public Character
             int x;
             int y;
         } target;
-        int vector_up_to_target_;
-        int vector_down_to_target_;
-        int vector_left_to_target_;
-        int vector_right_to_target_;
+        double vector_up_to_target_;
+        double vector_down_to_target_;
+        double vector_left_to_target_;
+        double vector_right_to_target_;
         bool is_feared_;
         bool is_eaten_;
+        bool is_in_corridor_;
 
     public:
         Ghost();
@@ -72,7 +73,15 @@ class Ghost : public Character
             is_eaten_ = true;
         };
 
+        inline void setIsInCorridor(bool value)
+        {
+            is_in_corridor_ = value;
+        };
 
+        inline bool isInCorridor()
+        {
+            return is_in_corridor_;
+        }
 };
 
 #endif
