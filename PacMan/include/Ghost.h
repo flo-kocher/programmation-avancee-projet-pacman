@@ -22,6 +22,7 @@ class Ghost : public Character
         double vector_right_to_target_;
         bool is_feared_;
         bool is_eaten_;
+        bool is_in_corridor_;
 
     public:
         Ghost();
@@ -71,6 +72,15 @@ class Ghost : public Character
             return is_eaten_;
         };
 
+        inline void setIsInCorridor(bool value)
+        {
+            is_in_corridor_ = value;
+        };
+
+        inline bool isInCorridor()
+        {
+            return is_in_corridor_;
+        }
 
 };
 

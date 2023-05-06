@@ -300,13 +300,23 @@ void GameManager::checkIfInCorridor()
     for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
     {
         Ghost* ghost = ghost_it->get();
-        if(ghost->position_.y == 418 && (ghost->position_.x <= 162 || ghost->position_.x >= 514) )
+        if(ghost->position_.y == 418 && (ghost->position_.x <= 161 || ghost->position_.x >= 515))
         {
-            ghost->setSpeed(1);
+            if(!ghost->isInCorridor())
+            {
+                ghost->setIsInCorridor(true);
+                if(!ghost->getIsFeared())
+                    ghost->lowerSpeed();
+            }
         }
         else
-            if(!ghost->getIsFeared())
-                ghost->setSpeed(2);
+        {
+            if(ghost->isInCorridor())
+            {
+                ghost->setIsInCorridor(false);
+                ghost->increaseSpeed();
+            }
+        }
     }
 }
 
@@ -330,7 +340,8 @@ void GameManager::setGhostsFeared(int count)
     {
         for(int i = 0; i < ghosts_.size(); ++i)
         {
-            ghosts_[i]->lowerSpeed();
+            if(!ghosts_[i]->isInCorridor())
+                ghosts_[i]->lowerSpeed();
             ghosts_[i]->setIsFeared(true);
         }
         activateFearedTimer();

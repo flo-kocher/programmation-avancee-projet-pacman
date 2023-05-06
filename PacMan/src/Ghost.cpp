@@ -11,6 +11,7 @@ Ghost::Ghost()
 Ghost::Ghost(CharacterName name, SDL_Rect start_position, SDL_Rect* image, Direction direction)
 : is_feared_(false)
 , is_eaten_(false)
+, is_in_corridor_(false)
 {
     setCharacterName(name);
     position_ = start_position;
