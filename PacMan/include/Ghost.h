@@ -16,21 +16,22 @@ class Ghost : public Character
             int x;
             int y;
         } target;
-        double vector_up_to_target_;
-        double vector_down_to_target_;
-        double vector_left_to_target_;
-        double vector_right_to_target_;
+        int vector_up_to_target_;
+        int vector_down_to_target_;
+        int vector_left_to_target_;
+        int vector_right_to_target_;
 
     public:
         Ghost();
         Ghost(CharacterName name, SDL_Rect position, SDL_Rect* image, Direction direction);
         ~Ghost();
 
-        void chase(std::shared_ptr<Pacman> pacman, int count);
+        void chase(std::shared_ptr<Pacman> pacman, int count, std::shared_ptr<Ghost> red_ghost);
         void scatter(int count);
         void frightened(int count);
         void eaten(int count);
         void calculateVectorsToTarget(Target target, SDL_Rect position);
+        void classicalMovementAlgorithm(int count);
 
         inline Target getTarget() {
             return target;

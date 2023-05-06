@@ -53,7 +53,7 @@ class GameManager
         int checkForIntersection();
         template <typename T>
         int checkForIntersectionTemplate(T map);
-
+        
         inline static const int getCount()
         {
             return count_;

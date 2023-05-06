@@ -154,8 +154,10 @@ bool GameManager::updateGame()
     for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
     {
         Ghost* ghost = ghost_it->get();
-        //ghost->chase(pacman_, count_);
-        ghost->scatter(count_);
+        ghost->chase(pacman_, count_, ghosts_[0]);
+        //ghost->scatter(count_);
+        //ghost->frightened(count_);
+        //ghost->eaten(count_);
     }
 
     // int character_position = collisionWithGhost();
