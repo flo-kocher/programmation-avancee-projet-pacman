@@ -19,6 +19,8 @@ class Character
         bool can_go_down_;
         bool can_go_left_;
         bool can_go_up_;
+
+        int speed_;
         
         inline void setCharacterName(CharacterName name)
         {
@@ -66,6 +68,16 @@ class Character
             can_go_down_ = can_go_down;
             can_go_left_ = can_go_left;
             can_go_up_ = can_go_up;
+        };
+
+        inline void lowerSpeed()
+        {
+            speed_ /= 2;
+        };
+
+        inline void increaseSpeed()
+        {
+            speed_ *= 2;
         };
 };
 

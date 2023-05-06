@@ -9,9 +9,11 @@
 #include <SDL.h>
 
 int GameManager::count_ = 0;
+int GameManager::feared_timer_ = 0;
 
 GameManager::GameManager()
 : score_(0)
+, feared_timer_running_(false)
 , direction_tmp_ (RIGHT)
 , intersection_detected_ (false)
 , gameInterface_(std::make_unique<GameInterface>())
@@ -82,19 +84,19 @@ void GameManager::runGame()
                 quit = true;
                 break;
             case LEFT:
-                std::cout << "setDirection(LEFT)\n";
+                // std::cout << "setDirection(LEFT)\n";
                 pacman_->setDirection(LEFT);
                 break;
             case RIGHT:
-                std::cout << "setDirection(RIGHT)\n";
+                // std::cout << "setDirection(RIGHT)\n";
                 pacman_->setDirection(RIGHT);
                 break;
             case UP:
-                std::cout << "setDirection(UP)\n";
+                // std::cout << "setDirection(UP)\n";
                 pacman_->setDirection(UP);
                 break;
             case DOWN:
-                std::cout << "setDirection(DOWN)\n";
+                // std::cout << "setDirection(DOWN)\n";
                 pacman_->setDirection(DOWN);
                 break;
             default:
@@ -114,8 +116,14 @@ void GameManager::runGame()
 
 bool GameManager::updateGame()
 {
-    //std::cout<<this->getScore()<<std::endl;
-    IncrementCount();
+    std::cout<<this->getScore()<<std::endl;
+    incrementCount();
+    if(feared_timer_running_)
+    {
+        if(feared_timer_ == 0)
+            setGhostsNormal(getCount());
+        decrementFearedTimer();
+    }
 
     if(isGameOver())
     {
@@ -218,6 +226,8 @@ void GameManager::checkForPelletTemplate(int x, int y, T map)
             {
                 this->AddToScore(it->second->addPoints());
                 it->second->setHasPellet();
+                if(it->second->hasAdditionalBehavior())
+                    this->setGhostsFeared(count_);
             }
             break;
         }
@@ -249,6 +259,8 @@ int GameManager::checkForIntersectionTemplate(T map)
             {
                 this->AddToScore(it->second->addPoints());
                 it->second->setHasPellet();
+                if(it->second->hasAdditionalBehavior())
+                    this->setGhostsFeared(count_);
             }
         
             if(pacman_direction == RIGHT && it->second->canGoRight() || pacman_direction == DOWN && it->second->canGoDown()
@@ -293,4 +305,29 @@ int GameManager::collisionWithGhost()
         }
     }
     return -1;
+}
+
+void GameManager::setGhostsFeared(int count)
+{
+    if(!feared_timer_running_)
+    {
+        for(int i = 0; i < ghosts_.size(); ++i)
+        {
+            ghosts_[i]->lowerSpeed();
+            ghosts_[i]->setIsFeared(true);
+        }
+        activateFearedTimer();
+    }
+    else
+        resetFearedTimer();
+}
+
+void GameManager::setGhostsNormal(int count)
+{
+    deactivateFearedTimer();
+    for(int i = 0; i < ghosts_.size(); ++i)
+    {
+        ghosts_[i]->increaseSpeed();
+        ghosts_[i]->setIsFeared(false);
+    }
 }
