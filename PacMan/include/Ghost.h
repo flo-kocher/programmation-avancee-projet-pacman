@@ -29,11 +29,12 @@ class Ghost : public Character
         Ghost(CharacterName name, SDL_Rect position, SDL_Rect* image, Direction direction);
         ~Ghost();
 
-        void chase(std::shared_ptr<Pacman> pacman, int count);
+        void chase(std::shared_ptr<Pacman> pacman, int count, std::shared_ptr<Ghost> red_ghost);
         void scatter(int count);
         void frightened(int count);
         void eaten(int count);
         void calculateVectorsToTarget(Target target, SDL_Rect position);
+        void classicalMovementAlgorithm(int count);
 
         void goRight(int count);
         void goLeft(int count);
@@ -61,15 +62,15 @@ class Ghost : public Character
             return is_feared_;
         };
 
+        inline bool getIsEaten()
+        {
+            return is_eaten_;
+        };
+
         inline void setIsEaten()
         {
             is_feared_ = false;
             is_eaten_ = true;
-        };
-
-        inline bool getIsEaten()
-        {
-            return is_eaten_;
         };
 
         inline void setIsInCorridor(bool value)
@@ -81,7 +82,6 @@ class Ghost : public Character
         {
             return is_in_corridor_;
         }
-
 };
 
 #endif

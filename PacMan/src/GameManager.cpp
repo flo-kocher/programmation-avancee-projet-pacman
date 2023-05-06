@@ -5,19 +5,21 @@
 #include "../include/Ghost.h"
 
 #include <iostream>
-
+#include <chrono>
 #include <SDL.h>
 
-int GameManager::count_ = 0;
 int GameManager::feared_timer_ = 0;
 
 GameManager::GameManager()
 : score_(0)
 , feared_timer_running_(false)
+, current_ghost_mode_(SCATTER)
+, current_game_step_(SCATTER1)
 , pacman_alive_(true)
 , consecutive_ghost_eaten_(0)
 , direction_tmp_ (RIGHT)
 , intersection_detected_ (false)
+, mode_start_timer_(std::chrono::steady_clock::now())
 , gameInterface_(std::make_unique<GameInterface>())
 {
     std::cout<<"GameInterface constructor\n";
@@ -57,7 +59,6 @@ void GameManager::runGame()
     initPellets(&pellets, &big_pellets);
     initIntersections(&intersections, &intersections_big);
     initCharacters();
-
     std::unique_ptr<KeyboardManager> kb_manager = std::make_unique<KeyboardManager>();
 
     int keyboard_event;
@@ -129,6 +130,8 @@ bool GameManager::updateGame()
             setGhostsNormal(getCount());
         decrementFearedTimer();
     }
+    
+    checkGameStep();
 
     if(isGameOver())
         return true;
@@ -164,8 +167,23 @@ bool GameManager::updateGame()
     for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
     {
         Ghost* ghost = ghost_it->get();
-        ghost->chase(pacman_, count_);
-        // ghost->scatter(count_);
+        if(feared_timer_running_ && !ghost->getIsEaten()){
+            ghost->frightened(count_);
+        }
+        else if(ghost->getIsEaten()){
+            ghost->eaten(count_);
+        }
+        else{
+            switch (current_ghost_mode_)
+            {
+                case CHASE :
+                    ghost->chase(pacman_, count_, ghosts_[0]);
+                    break;
+                case SCATTER :
+                    ghost->scatter(count_);
+                    break;
+            }
+        }
     }
 
     int ghost_hit = collisionWithGhost();
@@ -197,7 +215,7 @@ bool GameManager::updateGame()
 
 bool GameManager::isGameOver()
 {
-    if(this->getScore() == 2100 || !pacmanAlive())
+    if(this->getScore() == 9999 || !pacmanAlive())
     {
         std::cout<<"Score : "<<getScore()<<std::endl;
         return true;
@@ -344,6 +362,7 @@ void GameManager::setGhostsFeared(int count)
                 ghosts_[i]->lowerSpeed();
             ghosts_[i]->setIsFeared(true);
         }
+        setGhostsOppositeDirection();
         activateFearedTimer();
     }
     else
@@ -359,6 +378,69 @@ void GameManager::setGhostsNormal(int count)
         ghosts_[i]->setIsFeared(false);
     }
     setConsecutiveEatenGhosts(0);
+}
+
+void GameManager::checkGameStep()
+{
+    switch (current_game_step_)
+    {
+        case SCATTER1 :
+            switchGhostsTrackingMode(7, CHASE, CHASE1);
+            break;
+        case CHASE1 :
+            switchGhostsTrackingMode(20, SCATTER, SCATTER2);
+            break;
+        case SCATTER2 :
+            switchGhostsTrackingMode(7, CHASE, CHASE2);
+            break;
+        case CHASE2 :
+            switchGhostsTrackingMode(20, SCATTER, SCATTER3);
+            break;
+        case SCATTER3 :
+            switchGhostsTrackingMode(5, CHASE, CHASE3);
+            break;
+        case CHASE3 :
+            switchGhostsTrackingMode(20, SCATTER, SCATTER4);
+            break;
+        case SCATTER4 :
+            switchGhostsTrackingMode(5, CHASE, CHASE4);
+            break;
+        case CHASE4 :
+            break;
+    }
+}
+
+void GameManager::switchGhostsTrackingMode(double timer, GhostMode new_ghost_mode, GameStep next_game_step)
+{
+    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    std::chrono::duration<double> elapsed_seconds = now - mode_start_timer_ ;
+    if(elapsed_seconds.count() > timer)
+    {
+        mode_start_timer_ = now;
+        current_ghost_mode_ = new_ghost_mode;
+        current_game_step_ = next_game_step;
+        setGhostsOppositeDirection();
+    }
+}
+
+void GameManager::setGhostsOppositeDirection()
+{
+    for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
+    {
+        Direction current_ghost_direction_ = ghost_it->get()->getDirection();
+        ghost_it->get()->setPossibleDirection(
+            current_ghost_direction_ == LEFT ? true : false, 
+            current_ghost_direction_ == UP ? true : false, 
+            current_ghost_direction_ == RIGHT ? true : false, 
+            current_ghost_direction_ == DOWN ? true : false
+        );
+        ghost_it->get()->setDirection(
+            current_ghost_direction_ == RIGHT ? LEFT : 
+            current_ghost_direction_ == LEFT ? RIGHT : 
+            current_ghost_direction_ == UP ? DOWN : 
+            UP
+        );
+    }
 }
 
 void GameManager::actionWithGhost(std::shared_ptr<Ghost> ghost)

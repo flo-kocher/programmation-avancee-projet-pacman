@@ -41,7 +41,8 @@ class Character
         void goLeft(int count);
         void goUp(int count);
         void standStill();
-        
+        void setImage(int count, std::string direction);
+
         std::map<std::string, SDL_Rect*> getImagesMap();
 
         inline CharacterName getCharacterName()

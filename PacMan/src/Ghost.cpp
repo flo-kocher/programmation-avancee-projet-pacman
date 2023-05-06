@@ -4,6 +4,7 @@
 #include "../include/Pacman.h"
 #include <cmath>
 #include <array>
+#include <random>
 
 Ghost::Ghost()
 {}
@@ -19,28 +20,16 @@ Ghost::Ghost(CharacterName name, SDL_Rect start_position, SDL_Rect* image, Direc
     direction_ = direction;
     switch(getCharacterName()){
         case(RED_GHOST) :
-            can_go_right_ = false;
-            can_go_down_ = false;
-            can_go_left_ = true;
-            can_go_up_ = false;
+            setPossibleDirection(false, false, true, false);
             break;
         case(PINK_GHOST) :
-            can_go_right_ = false;
-            can_go_down_ = false;
-            can_go_left_ = false;
-            can_go_up_ = true;
+            setPossibleDirection(false, false, false, true);
             break;
         case(BLUE_GHOST) :
-            can_go_right_ = true;
-            can_go_down_ = false;
-            can_go_left_ = false;
-            can_go_up_ = false;
+            setPossibleDirection(true, false, false, false);
             break;
         case(YELLOW_GHOST) :
-            can_go_right_ = false;
-            can_go_down_ = false;
-            can_go_left_ = true;
-            can_go_up_ = false;
+            setPossibleDirection(false, false, true, false);
             break;
         default: break;
     }
@@ -49,11 +38,16 @@ Ghost::Ghost(CharacterName name, SDL_Rect start_position, SDL_Rect* image, Direc
 Ghost::~Ghost()
 {}
 
-void Ghost::chase(std::shared_ptr<Pacman> pacman, int count)
+void Ghost::chase(std::shared_ptr<Pacman> pacman, int count, std::shared_ptr<Ghost> red_ghost)
 {
-    double min_vector;
     int target_x = 0;
     int target_y = 0;
+    int zone_2_tiles_front_pacman_x;
+    int zone_2_tiles_front_pacman_y;
+    double vector_vertical_red_ghost_to_2_tiles_front_target;
+    double vector_horizontal_red_ghost_to_2_tiles_front_target;
+    double vector_between_clyde_and_pacman;
+
     Direction pacman_direction = pacman->getDirection();
     switch(getCharacterName()){
         case(RED_GHOST) :
@@ -67,70 +61,38 @@ void Ghost::chase(std::shared_ptr<Pacman> pacman, int count)
             calculateVectorsToTarget(target, position_);
             break;
         case(BLUE_GHOST) :
-            setTarget(pacman->position_.x, pacman->position_.y); //Inky cible la position exacte de Pacman   
+            zone_2_tiles_front_pacman_x = pacman->position_.x + (pacman_direction == RIGHT ? 64 : (pacman_direction == LEFT || pacman_direction == UP) ? -64 : 0);
+            zone_2_tiles_front_pacman_y = pacman->position_.y + (pacman_direction == DOWN ? 64 : pacman_direction == UP  ? -64 : 0);
+            
+            vector_horizontal_red_ghost_to_2_tiles_front_target = zone_2_tiles_front_pacman_x - red_ghost->position_.x;
+            vector_vertical_red_ghost_to_2_tiles_front_target = zone_2_tiles_front_pacman_y - red_ghost->position_.y;
+
+            target_x = zone_2_tiles_front_pacman_x + (int)vector_horizontal_red_ghost_to_2_tiles_front_target;
+            target_y = zone_2_tiles_front_pacman_y + (int)vector_vertical_red_ghost_to_2_tiles_front_target;
+
+            setTarget(target_x, target_y); //Inky cible la position exacte de Pacman   
             calculateVectorsToTarget(target, position_);
             break;
         case(YELLOW_GHOST) :
-            setTarget(pacman->position_.x, pacman->position_.y); //Clyde cible la position exacte de Pacman   
+            vector_between_clyde_and_pacman = std::round(sqrt(pow(abs(pacman->position_.x - position_.x), 2) + pow(abs(pacman->position_.y - position_.y), 2)));
+
+            if(vector_between_clyde_and_pacman < 256) //256 = longueur d'un vecteur correspondant à 8 cases autour de Pacman
+            {
+                setTarget(34, 768); //A l'intérieur du cercle de 8 cases autour de Pacman, Clyde cible le même point que dans le mode scatter dans le coin bas-gauche de la map
+            }
+            else{
+                setTarget(pacman->position_.x, pacman->position_.y); //Hors du cercle de 8 cases autour de Pacman, Clyde cible sa position exacte
+            }
             calculateVectorsToTarget(target, position_);
             break;
         default: break;
     }
 
-     min_vector = std::min(std::min(std::min(vector_up_to_target_, vector_left_to_target_), vector_down_to_target_), vector_right_to_target_);
-    if(can_go_up_ && 
-        (min_vector == vector_up_to_target_ || 
-        (!can_go_left_ && !can_go_down_ && !can_go_right_) ||
-        (!can_go_down_ && !can_go_right_ && vector_up_to_target_ < vector_left_to_target_) ||
-        (!can_go_down_ && !can_go_left_ && vector_up_to_target_ < vector_right_to_target_) ||
-        (!can_go_left_ && !can_go_right_ && vector_up_to_target_ < vector_down_to_target_) ||
-        (!can_go_down_ && vector_up_to_target_ < vector_right_to_target_ && vector_up_to_target_ < vector_left_to_target_) ||
-        (!can_go_left_ && vector_up_to_target_ < vector_down_to_target_ && vector_up_to_target_ < vector_right_to_target_) ||
-        (!can_go_right_ && vector_up_to_target_ < vector_down_to_target_ && vector_up_to_target_ < vector_left_to_target_)))
-    {
-        setDirection(UP);
-        goUp(count);
-        setPossibleDirection(false, false, false, true);
-    }
-    else{
-        min_vector = std::min(std::min(vector_left_to_target_, vector_down_to_target_), vector_right_to_target_);
-
-        if(can_go_left_ && 
-            (min_vector == vector_left_to_target_ || 
-            (!can_go_down_ && !can_go_right_) || 
-            (!can_go_down_ && vector_left_to_target_ < vector_right_to_target_) ||
-            (!can_go_right_ && vector_left_to_target_ < vector_down_to_target_)))
-        {
-            setDirection(LEFT);
-            goLeft(count);
-            setPossibleDirection(false, false, true, false);
-        }
-        else{
-            min_vector = std::min(vector_down_to_target_, vector_right_to_target_);
-
-            if(can_go_down_ && (min_vector == vector_down_to_target_ || !can_go_right_))
-            {
-                setDirection(DOWN);
-                goDown(count);
-                setPossibleDirection(false, true, false, false);
-            }
-            else if(can_go_right_)
-            {
-                setDirection(RIGHT);
-                goRight(count);
-                setPossibleDirection(true, false, false, false);
-            }
-            else{
-                std::cout << "Aucune direction disponible pour le fantôme " << getCharacterName() << "\n";
-            }
-        }
-    }
+    classicalMovementAlgorithm(count);
 }
         
 void Ghost::scatter(int count)
 {
-    double min_vector;
-
     switch(getCharacterName()){
         case(RED_GHOST) :
             setTarget(546, 0);
@@ -151,153 +113,69 @@ void Ghost::scatter(int count)
         default: break;
     }
 
-    min_vector = std::min(std::min(std::min(vector_up_to_target_, vector_left_to_target_), vector_down_to_target_), vector_right_to_target_);
-    if(can_go_up_ && 
-        (min_vector == vector_up_to_target_ || 
-        (!can_go_left_ && !can_go_down_ && !can_go_right_) ||
-        (!can_go_down_ && !can_go_right_ && vector_up_to_target_ < vector_left_to_target_) ||
-        (!can_go_down_ && !can_go_left_ && vector_up_to_target_ < vector_right_to_target_) ||
-        (!can_go_left_ && !can_go_right_ && vector_up_to_target_ < vector_down_to_target_) ||
-        (!can_go_down_ && vector_up_to_target_ < vector_right_to_target_ && vector_up_to_target_ < vector_left_to_target_) ||
-        (!can_go_left_ && vector_up_to_target_ < vector_down_to_target_ && vector_up_to_target_ < vector_right_to_target_) ||
-        (!can_go_right_ && vector_up_to_target_ < vector_down_to_target_ && vector_up_to_target_ < vector_left_to_target_)))
-    {
-        setDirection(UP);
-        goUp(count);
-        setPossibleDirection(false, false, false, true);
-    }
-    else{
-        min_vector = std::min(std::min(vector_left_to_target_, vector_down_to_target_), vector_right_to_target_);
-
-        if(can_go_left_ && 
-            (min_vector == vector_left_to_target_ || 
-            (!can_go_down_ && !can_go_right_) || 
-            (!can_go_down_ && vector_left_to_target_ < vector_right_to_target_) ||
-            (!can_go_right_ && vector_left_to_target_ < vector_down_to_target_)))
-        {
-            setDirection(LEFT);
-            goLeft(count);
-            setPossibleDirection(false, false, true, false);
-        }
-        else{
-            min_vector = std::min(vector_down_to_target_, vector_right_to_target_);
-
-            if(can_go_down_ && (min_vector == vector_down_to_target_ || !can_go_right_))
-            {
-                setDirection(DOWN);
-                goDown(count);
-                setPossibleDirection(false, true, false, false);
-            }
-            else if(can_go_right_)
-            {
-                setDirection(RIGHT);
-                goRight(count);
-                setPossibleDirection(true, false, false, false);
-            }
-            else{
-                std::cout << "Aucune direction disponible pour le fantôme " << getCharacterName() << "\n";
-            }
-        }
-    }
+    classicalMovementAlgorithm(count);
 }
 
 void Ghost::frightened(int count)
 {
-    double min_vector;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(0, 3);
+    bool can_move_to_random_direction = false;
 
-    switch(getCharacterName()){
-        case(RED_GHOST) :
-            //setTarget(position_pacman.x, position_pacman.y); //Blinky cible la position exacte de Pacman 
-            //calculateVectorsToTarget(target, position_);
-            break;
-        case(PINK_GHOST) :
-            //setTarget(position_pacman.x, position_pacman.y); //Pinky cible la position exacte de Pacman 
-            //calculateVectorsToTarget(target, position_);
-            break;
-        case(BLUE_GHOST) :
-            //setTarget(position_pacman.x, position_pacman.y); //Inky cible la position exacte de Pacman   
-            //calculateVectorsToTarget(target, position_);
-            break;
-        case(YELLOW_GHOST) :
-            //setTarget(position_pacman.x, position_pacman.y); //Clyde cible la position exacte de Pacman   
-            //calculateVectorsToTarget(target, position_);
-            break;
-        default: break;
-    }
-
-    min_vector = std::min(std::min(std::min(vector_up_to_target_, vector_left_to_target_), vector_down_to_target_), vector_right_to_target_);
-    if(can_go_up_ && 
-        (min_vector == vector_up_to_target_ || 
-        (!can_go_left_ && !can_go_down_ && !can_go_right_) ||
-        (!can_go_down_ && !can_go_right_ && vector_up_to_target_ < vector_left_to_target_) ||
-        (!can_go_down_ && !can_go_left_ && vector_up_to_target_ < vector_right_to_target_) ||
-        (!can_go_left_ && !can_go_right_ && vector_up_to_target_ < vector_down_to_target_) ||
-        (!can_go_down_ && vector_up_to_target_ < vector_right_to_target_ && vector_up_to_target_ < vector_left_to_target_) ||
-        (!can_go_left_ && vector_up_to_target_ < vector_down_to_target_ && vector_up_to_target_ < vector_right_to_target_) ||
-        (!can_go_right_ && vector_up_to_target_ < vector_down_to_target_ && vector_up_to_target_ < vector_left_to_target_)))
-    {
-        setDirection(UP);
-        goUp(count);
-        setPossibleDirection(false, false, false, true);
-    }
-    else{
-        min_vector = std::min(std::min(vector_left_to_target_, vector_down_to_target_), vector_right_to_target_);
-
-        if(can_go_left_ && 
-            (min_vector == vector_left_to_target_ || 
-            (!can_go_down_ && !can_go_right_) || 
-            (!can_go_down_ && vector_left_to_target_ < vector_right_to_target_) ||
-            (!can_go_right_ && vector_left_to_target_ < vector_down_to_target_)))
+    while (!can_move_to_random_direction){
+        int random_direction = distrib(gen);
+        if(can_go_up_ && random_direction == UP)
         {
+            can_move_to_random_direction = true;
+            setDirection(UP);
+            goUp(count);
+            setPossibleDirection(false, false, false, true);
+        }
+        else if(can_go_left_ && random_direction == LEFT){
+            can_move_to_random_direction = true;
             setDirection(LEFT);
             goLeft(count);
             setPossibleDirection(false, false, true, false);
         }
-        else{
-            min_vector = std::min(vector_down_to_target_, vector_right_to_target_);
-
-            if(can_go_down_ && (min_vector == vector_down_to_target_ || !can_go_right_))
-            {
-                setDirection(DOWN);
-                goDown(count);
-                setPossibleDirection(false, true, false, false);
-            }
-            else if(can_go_right_)
-            {
-                setDirection(RIGHT);
-                goRight(count);
-                setPossibleDirection(true, false, false, false);
-            }
-            else{
-                std::cout << "Aucune direction disponible pour le fantôme " << getCharacterName() << "\n";
-            }
+        else if(can_go_down_ && random_direction == DOWN){
+            can_move_to_random_direction = true;
+            setDirection(DOWN);
+            goDown(count);
+            setPossibleDirection(false, true, false, false);
+        }
+        else if(can_go_right_ && random_direction == RIGHT){
+            can_move_to_random_direction = true;
+            setDirection(RIGHT);
+            goRight(count);
+            setPossibleDirection(true, false, false, false);
         }
     }
 }
         
 void Ghost::eaten(int count)
 {
-    double min_vector;
-
-    switch(getCharacterName()){
-        case(RED_GHOST) :
-            //setTarget(position_pacman.x, position_pacman.y); //Blinky cible la position exacte de Pacman 
-            //calculateVectorsToTarget(target, position_);
-            break;
-        case(PINK_GHOST) :
-            //setTarget(position_pacman.x, position_pacman.y); //Pinky cible la position exacte de Pacman 
-            //calculateVectorsToTarget(target, position_);
-            break;
-        case(BLUE_GHOST) :
-            //setTarget(position_pacman.x, position_pacman.y); //Inky cible la position exacte de Pacman   
-            //calculateVectorsToTarget(target, position_);
-            break;
-        case(YELLOW_GHOST) :
-            //setTarget(position_pacman.x, position_pacman.y); //Clyde cible la position exacte de Pacman   
-            //calculateVectorsToTarget(target, position_);
-            break;
-        default: break;
+    setTarget(322, 322);
+    calculateVectorsToTarget(target, position_);
+    if(position_.x == 322 && position_.y == 322)
+    {
+        setDirection(DOWN);
+        goDown(count);
+        setPossibleDirection(false, true, false, false);
     }
+    else if(position_.x == 322 && position_.y == 418){
+        is_eaten_ = false;
+        setDirection(UP);
+        goUp(count);
+        setPossibleDirection(false, false, false, true);
+    }
+    else{
+        classicalMovementAlgorithm(count);
+    }
+}
+
+void Ghost::classicalMovementAlgorithm(int count){
+    double min_vector;
 
     min_vector = std::min(std::min(std::min(vector_up_to_target_, vector_left_to_target_), vector_down_to_target_), vector_right_to_target_);
     if(can_go_up_ && 
@@ -350,15 +228,14 @@ void Ghost::eaten(int count)
 }
 
 void Ghost::calculateVectorsToTarget(Target target, SDL_Rect position){
-    vector_up_to_target_ = pow(abs(target.x - position_.x), 2) + pow(abs(target.y - (position_.y - 32)), 2);
-    vector_down_to_target_ = pow(abs(target.x - position_.x), 2) + pow(abs(target.y - (position_.y + 32)), 2);
-    vector_left_to_target_ = pow(abs(target.x - (position_.x - 32)), 2) + pow(abs(target.y - position_.y), 2);
-    vector_right_to_target_ = pow(abs(target.x - (position_.x + 32)), 2) + pow(abs(target.y - position_.y), 2);
+    vector_up_to_target_ = std::round(sqrt(pow(abs(target.x - position_.x), 2) + pow(abs(target.y - (position_.y - 32)), 2)));
+    vector_down_to_target_ = std::round(sqrt(pow(abs(target.x - position_.x), 2) + pow(abs(target.y - (position_.y + 32)), 2)));
+    vector_left_to_target_ = std::round(sqrt(pow(abs(target.x - (position_.x - 32)), 2) + pow(abs(target.y - position_.y), 2)));
+    vector_right_to_target_ = std::round(sqrt(pow(abs(target.x - (position_.x + 32)), 2) + pow(abs(target.y - position_.y), 2)));
 }
 
 void Ghost::goRight(int count)
 {
-
     Character::goRight(count);
     if(is_eaten_)
         setEatenImage("RIGHT");
