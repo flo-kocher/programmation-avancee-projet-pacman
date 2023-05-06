@@ -40,6 +40,11 @@ class Pellet: public Zone
         {
             return points_earned_;
         };
+
+        inline bool hasAdditionalBehavior()
+        {
+            return false;
+        };
     
 };
 

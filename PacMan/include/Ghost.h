@@ -20,6 +20,7 @@ class Ghost : public Character
         double vector_down_to_target_;
         double vector_left_to_target_;
         double vector_right_to_target_;
+        bool is_feared_;
 
     public:
         Ghost();
@@ -32,6 +33,12 @@ class Ghost : public Character
         void eaten(int count);
         void calculateVectorsToTarget(Target target, SDL_Rect position);
 
+        void goRight(int count);
+        void goLeft(int count);
+        void goUp(int count);
+        void goDown(int count);
+        void setFeared(int count);
+
         inline Target getTarget() {
             return target;
         };
@@ -40,6 +47,11 @@ class Ghost : public Character
             target.x = coord_x;
             target.y = coord_y;
         };
+
+        inline void setIsFeared(bool value)
+        {
+            is_feared_= value;
+        }
 
 
 };

@@ -24,11 +24,14 @@ class GameManager
         std::map<std::string, std::shared_ptr<Intersection<BigPellet>>> intersections_big;
 
         static int count_;
+        static int feared_timer_;
         int score_;
 
         bool intersection_detected_;
         int direction_tmp_;
         std::unique_ptr<GameInterface> gameInterface_ = nullptr;
+
+        bool feared_timer_running_;
 
     public:
         std::shared_ptr<Pacman> pacman_;
@@ -53,6 +56,8 @@ class GameManager
         int checkForIntersection();
         template <typename T>
         int checkForIntersectionTemplate(T map);
+        void setGhostsFeared(int count);
+        void setGhostsNormal(int count);
 
         inline static const int getCount()
         {
@@ -69,10 +74,31 @@ class GameManager
             score_ += to_add;
         };
 
-        inline static void IncrementCount()
+        inline static void incrementCount()
         {
             count_ = (count_ + 1) % (250);
         };
+
+        inline void activateFearedTimer()
+        {
+            feared_timer_running_ = true;
+            feared_timer_ = 500;
+        };
+
+        inline void resetFearedTimer()
+        {
+            feared_timer_ = 500;
+        };
+
+        inline void deactivateFearedTimer()
+        {
+            feared_timer_running_ = false;
+        };
+
+        inline void decrementFearedTimer()
+        {
+            feared_timer_--;
+        }
 };
 
 #endif

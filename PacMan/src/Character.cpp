@@ -2,6 +2,7 @@
 #include "../include/Constante.h"
 
 Character::Character()
+: speed_(2)
 {}
 
 Character::~Character()
@@ -21,50 +22,42 @@ void Character::teleportLeft()
 
 void Character::goRight(int count)
 {
-    std::cout << "goRight\n";
     std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("RIGHT")->second;
     else
         character_image_ = character_images.find("RIGHT2")->second;
-
-    position_.x++;
+    position_.x += speed_;
 }
 
 void Character::goDown(int count)
 {
-    std::cout << "goDown\n";
     std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("DOWN")->second;
     else
         character_image_ = character_images.find("DOWN2")->second;
-
-    position_.y++;
+    position_.y += speed_;
 }
 
 void Character::goLeft(int count)
 {
-    std::cout << "goLeft\n";
     std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("LEFT")->second;
     else
         character_image_ = character_images.find("LEFT2")->second;
-
-    position_.x--;
+    position_.x -= speed_;
 }
 
 void Character::goUp(int count)
 {
-    std::cout << "goUp\n";
     std::map<std::string, SDL_Rect*> character_images = getImagesMap();
     if (!((count / 8) % 2))
         character_image_ = character_images.find("UP")->second;
     else
         character_image_ = character_images.find("UP2")->second;
-
-    position_.y--;
+    position_.y -= speed_;
 }
 
 void Character::standStill()

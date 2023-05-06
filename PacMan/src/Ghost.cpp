@@ -9,6 +9,7 @@ Ghost::Ghost()
 {}
 
 Ghost::Ghost(CharacterName name, SDL_Rect start_position, SDL_Rect* image, Direction direction)
+: is_feared_(false)
 {
     setCharacterName(name);
     position_ = start_position;
@@ -353,4 +354,41 @@ void Ghost::calculateVectorsToTarget(Target target, SDL_Rect position){
     vector_down_to_target_ = pow(abs(target.x - position_.x), 2) + pow(abs(target.y - (position_.y + 32)), 2);
     vector_left_to_target_ = pow(abs(target.x - (position_.x - 32)), 2) + pow(abs(target.y - position_.y), 2);
     vector_right_to_target_ = pow(abs(target.x - (position_.x + 32)), 2) + pow(abs(target.y - position_.y), 2);
+}
+
+void Ghost::goRight(int count)
+{
+
+    Character::goRight(count);
+    if(is_feared_)
+        setFeared(count);
+}
+
+void Ghost::goLeft(int count)
+{
+    Character::goLeft(count);
+    if(is_feared_)
+        setFeared(count);
+}
+
+void Ghost::goUp(int count)
+{
+    Character::goUp(count);
+    if(is_feared_)
+        setFeared(count);
+}
+
+void Ghost::goDown(int count)
+{
+    Character::goDown(count);
+    if(is_feared_)
+        setFeared(count);
+}
+
+void Ghost::setFeared(int count)
+{
+    if (!((count / 8) % 2))
+        character_image_ = FEARED_GHOST_IMAGES.find("BLUE")->second;
+    else
+        character_image_ = FEARED_GHOST_IMAGES.find("BLUE2")->second;
 }
