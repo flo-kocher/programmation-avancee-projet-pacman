@@ -122,7 +122,7 @@ void GameManager::runGame()
 
 bool GameManager::updateGame()
 {
-    std::cout<<this->getScore()<<std::endl;
+    //std::cout<<this->getScore()<<std::endl;
     incrementCount();
     if(feared_timer_running_)
     {
@@ -195,7 +195,7 @@ bool GameManager::updateGame()
     checkIfInCorridor();
     checkForPellet(pacman_->position_.x, pacman_->position_.y);
     checkForTeleportation<std::shared_ptr<Pacman>>(pacman_);
-    for(int i = 0; i < 4; ++i)
+    for(int i = 0; i < ghosts_.size(); ++i)
     {
         checkForTeleportation<std::shared_ptr<Ghost>>(ghosts_[i]);
     }
@@ -361,8 +361,8 @@ void GameManager::setGhostsFeared(int count)
             if(!ghosts_[i]->isInCorridor())
                 ghosts_[i]->lowerSpeed();
             ghosts_[i]->setIsFeared(true);
+            setGhostOppositeDirection(ghosts_[i]);
         }
-        setGhostsOppositeDirection();
         activateFearedTimer();
     }
     else
@@ -414,27 +414,31 @@ void GameManager::switchGhostsTrackingMode(double timer, GhostMode new_ghost_mod
 {
     std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
     std::chrono::duration<double> elapsed_seconds = now - mode_start_timer_ ;
+    std::cout<<elapsed_seconds.count()<<std::endl;
     if(elapsed_seconds.count() > timer)
     {
         mode_start_timer_ = now;
         current_ghost_mode_ = new_ghost_mode;
         current_game_step_ = next_game_step;
-        setGhostsOppositeDirection();
+        for(int i = 0; i < ghosts_.size(); ++i)
+        {
+            setGhostOppositeDirection(ghosts_[i]);
+        }
     }
 }
 
-void GameManager::setGhostsOppositeDirection()
+void GameManager::setGhostOppositeDirection(std::shared_ptr<Ghost> ghost)
 {
-    for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
+    Direction current_ghost_direction_ = ghost->getDirection();
+    if(!ghost->getIsEaten() && !ghost->getIsFeared())
     {
-        Direction current_ghost_direction_ = ghost_it->get()->getDirection();
-        ghost_it->get()->setPossibleDirection(
+        ghost->setPossibleDirection(
             current_ghost_direction_ == LEFT ? true : false, 
             current_ghost_direction_ == UP ? true : false, 
             current_ghost_direction_ == RIGHT ? true : false, 
             current_ghost_direction_ == DOWN ? true : false
         );
-        ghost_it->get()->setDirection(
+        ghost->setDirection(
             current_ghost_direction_ == RIGHT ? LEFT : 
             current_ghost_direction_ == LEFT ? RIGHT : 
             current_ghost_direction_ == UP ? DOWN : 

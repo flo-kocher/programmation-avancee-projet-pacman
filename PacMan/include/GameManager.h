@@ -70,7 +70,7 @@ class GameManager
         void setGhostsNormal(int count);
         void checkGameStep();
         void switchGhostsTrackingMode(double timer, GhostMode new_ghost_mode, GameStep next_game_step);
-        void setGhostsOppositeDirection();
+        void setGhostOppositeDirection(std::shared_ptr<Ghost> ghost);
 
         inline const int getCount()
         {
