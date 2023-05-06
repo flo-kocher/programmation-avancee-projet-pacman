@@ -23,25 +23,69 @@ void Character::teleportLeft()
 void Character::goRight(int count)
 {
     setImage(count, "RIGHT");
-    position_.x += speed_;
+    /*
+     *   Vérification permettant d'empêcher qu'un fantôme ait une position 
+     *   impaire après que ça vitesse ait augmenté, ce qui empêcherait la détection d'intersection.
+     */
+    if(speed_ == 2 && position_.x % 2 == 1) 
+    {
+        position_.x += speed_ / 2;
+    }
+    else
+    {
+        position_.x += speed_;
+    }
 }
 
 void Character::goDown(int count)
 {
     setImage(count, "DOWN");
-    position_.y += speed_;
+    /*
+     *   Vérification permettant d'empêcher qu'un fantôme ait une position 
+     *   impaire après que ça vitesse ait augmenté, ce qui empêcherait la détection d'intersection.
+     */
+    if(speed_ == 2 && position_.y % 2 == 1) 
+    {
+        position_.y += speed_ / 2;
+    }
+    else
+    {
+        position_.y += speed_;
+    }
 }
 
 void Character::goLeft(int count)
 {
     setImage(count, "LEFT");
-    position_.x -= speed_;
+    /*
+     *   Vérification permettant d'empêcher qu'un fantôme ait une position 
+     *   impaire après que ça vitesse ait augmenté, ce qui empêcherait la détection d'intersection.
+     */
+    if(speed_ == 2 && position_.x % 2 == 1) 
+    {
+        position_.x -= speed_ / 2;
+    }
+    else
+    {
+        position_.x -= speed_;
+    }
 }
 
 void Character::goUp(int count)
 {
     setImage(count, "UP");
-    position_.y -= speed_;
+    /*
+     *   Vérification permettant d'empêcher qu'un fantôme ait une position 
+     *   impaire après que ça vitesse ait augmenté, ce qui empêcherait la détection d'intersection.
+     */
+    if(speed_ == 2 && position_.y % 2 == 1) 
+    {
+        position_.y -= speed_ / 2;
+    }
+    else
+    {
+        position_.y -= speed_;
+    }
 }
 
 void Character::standStill()

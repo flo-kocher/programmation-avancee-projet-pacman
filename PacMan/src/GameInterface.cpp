@@ -100,6 +100,6 @@ void GameInterface::updateGameInterface(int timer, std::shared_ptr<Pacman> pacma
     SDL_UpdateWindowSurface(pWindow_);
 
     // LIMITE A 60 FPS
-    SDL_Delay(10); // SDL_Delay(16); de base
+    SDL_Delay(4); // SDL_Delay(16); de base
     // utiliser SDL_GetTicks64() pour plus de precisions
 }

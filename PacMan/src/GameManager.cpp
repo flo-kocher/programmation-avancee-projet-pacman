@@ -36,7 +36,7 @@ GameManager::~GameManager()
 
 void GameManager::initCharacters()
 {
-    initCharacter(PACMAN, {34, 34, 32, 32}, PACMAN_IMAGES.find("RIGHT")->second, RIGHT);
+    initCharacter(PACMAN, {322, 642, 32, 32}, PACMAN_IMAGES.find("LEFT")->second, LEFT);
     initCharacter(RED_GHOST, {322, 322, 32, 32}, RED_GHOST_IMAGES.find("LEFT")->second, LEFT);
     initCharacter(PINK_GHOST, {322, 418, 32, 32}, PINK_GHOST_IMAGES.find("DOWN")->second, UP);
     initCharacter(BLUE_GHOST, {290, 418, 32, 32}, BLUE_GHOST_IMAGES.find("UP")->second, RIGHT);
@@ -126,9 +126,9 @@ bool GameManager::updateGame()
     incrementCount();
     if(feared_timer_running_)
     {
-        if(feared_timer_ == 0)
-            setGhostsNormal(getCount());
         decrementFearedTimer();
+        if(feared_timer_ == 0)
+            setGhostsNormal(getCount());           
     }
     
     checkGameStep();
@@ -164,40 +164,35 @@ bool GameManager::updateGame()
             break;
     }
 
-    for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
-    {
-        Ghost* ghost = ghost_it->get();
-        if(feared_timer_running_ && !ghost->getIsEaten()){
-            ghost->frightened(count_);
-        }
-        else if(ghost->getIsEaten()){
-            ghost->eaten(count_);
-        }
-        else{
-            switch (current_ghost_mode_)
-            {
-                case CHASE :
-                    ghost->chase(pacman_, count_, ghosts_[0]);
-                    break;
-                case SCATTER :
-                    ghost->scatter(count_);
-                    break;
-            }
-        }
-    }
-
-    int ghost_hit = collisionWithGhost();
-    if(ghost_hit != -1)
-    {
-        actionWithGhost(ghosts_[ghost_hit]);
-    }
-
     checkIfInCorridor();
     checkForPellet(pacman_->position_.x, pacman_->position_.y);
     checkForTeleportation<std::shared_ptr<Pacman>>(pacman_);
     for(int i = 0; i < ghosts_.size(); ++i)
     {
+        if(feared_timer_running_ && !ghosts_[i]->getIsEaten()){
+            ghosts_[i]->frightened(count_);
+        }
+        else if(ghosts_[i]->getIsEaten()){
+            ghosts_[i]->eaten(count_);
+        }
+        else{
+            switch (current_ghost_mode_)
+            {
+                case CHASE :
+                    ghosts_[i]->chase(pacman_, count_, ghosts_[0]);
+                    break;
+                case SCATTER :
+                    ghosts_[i]->scatter(count_);
+                    break;
+            }
+        }
+
         checkForTeleportation<std::shared_ptr<Ghost>>(ghosts_[i]);
+
+        if(collisionWithGhost(ghosts_[i]))
+        {
+            actionWithGhost(ghosts_[i]);
+        }
     }
     
     int intersection_check = checkForIntersection();
@@ -332,24 +327,25 @@ void GameManager::checkIfInCorridor()
             if(ghost->isInCorridor())
             {
                 ghost->setIsInCorridor(false);
-                ghost->increaseSpeed();
+                if(!ghost->getIsFeared())
+                    ghost->increaseSpeed();
             }
         }
     }
 }
 
-
-int GameManager::collisionWithGhost()
+bool GameManager::collisionWithGhost(std::shared_ptr<Ghost> ghost)
 {
-    for (int i = 0; i < 4; i++) {
-        int pos_diff_x = abs(pacman_->position_.x - ghosts_[i]->position_.x);
-        int pos_diff_y = abs(pacman_->position_.y - ghosts_[i]->position_.y);
-        if(0 <= pos_diff_x && pos_diff_x <= HITBOX && 0 <= pos_diff_y  && pos_diff_y <= HITBOX)
-        {
-            return i;
-        }
+    int pos_diff_x = abs(pacman_->position_.x - ghost->position_.x);
+    int pos_diff_y = abs(pacman_->position_.y - ghost->position_.y);
+    if(0 <= pos_diff_x && pos_diff_x <= HITBOX && 0 <= pos_diff_y  && pos_diff_y <= HITBOX)
+    {
+        return true;
     }
-    return -1;
+    else
+    {
+        return false;
+    }
 }
 
 void GameManager::setGhostsFeared(int count)
@@ -374,7 +370,8 @@ void GameManager::setGhostsNormal(int count)
     deactivateFearedTimer();
     for(int i = 0; i < ghosts_.size(); ++i)
     {
-        ghosts_[i]->increaseSpeed();
+        if(!ghosts_[i]->isInCorridor())
+            ghosts_[i]->increaseSpeed();
         ghosts_[i]->setIsFeared(false);
     }
     setConsecutiveEatenGhosts(0);
@@ -414,7 +411,6 @@ void GameManager::switchGhostsTrackingMode(double timer, GhostMode new_ghost_mod
 {
     std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
     std::chrono::duration<double> elapsed_seconds = now - mode_start_timer_ ;
-    std::cout<<elapsed_seconds.count()<<std::endl;
     if(elapsed_seconds.count() > timer)
     {
         mode_start_timer_ = now;
@@ -453,6 +449,9 @@ void GameManager::actionWithGhost(std::shared_ptr<Ghost> ghost)
     {
         incrementConsecutiveEatenGhosts();
         ghost->setIsEaten();
+        if(!ghost->isInCorridor())
+            ghost->increaseSpeed();
+        ghost->setEatenStartTimer(std::chrono::steady_clock::now());
         AddToScore(200*getConsecutiveEatenGhosts());
     }
     else if(ghost->getIsEaten())
