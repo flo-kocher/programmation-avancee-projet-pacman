@@ -81,7 +81,7 @@ void GameInterface::updateGameInterface(int timer, std::shared_ptr<Pacman> pacma
 
     SDL_Rect black_rect = {376, 10, 10, 10}; // Position d'un rectangle noir
 
-    if(0 <= timer && timer <= 125)
+    if(timer%50 <= 30)
     {
         setColorAndBlitScaled(false, &black_rect, intersections_big.at("BigIntersection 19_00")->getRectangle());
         setColorAndBlitScaled(false, &black_rect, intersections_big.at("BigIntersection 19_18")->getRectangle());

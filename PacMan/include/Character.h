@@ -71,14 +71,16 @@ class Character
             can_go_up_ = can_go_up;
         };
 
+        // Mode de vitesse Lent
         inline void lowerSpeed()
         {
-            speed_ /= 2;
+            speed_ = 1;
         };
 
+        // Mode de vitesse Normal
         inline void increaseSpeed()
         {
-            speed_ *= 2;
+            speed_ = 2;
         };
 
         inline void setSpeed(int speed)
