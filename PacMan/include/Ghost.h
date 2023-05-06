@@ -21,6 +21,7 @@ class Ghost : public Character
         double vector_left_to_target_;
         double vector_right_to_target_;
         bool is_feared_;
+        bool is_eaten_;
 
     public:
         Ghost();
@@ -37,7 +38,8 @@ class Ghost : public Character
         void goLeft(int count);
         void goUp(int count);
         void goDown(int count);
-        void setFeared(int count);
+        void setFearedImage(int count);
+        void setEatenImage(std::string direction);
 
         inline Target getTarget() {
             return target;
@@ -51,7 +53,18 @@ class Ghost : public Character
         inline void setIsFeared(bool value)
         {
             is_feared_= value;
-        }
+        };
+
+        inline bool getIsFeared()
+        {
+            return is_feared_;
+        };
+
+        inline void setIsEaten()
+        {
+            is_feared_ = false;
+            is_eaten_ = true;
+        };
 
 
 };
