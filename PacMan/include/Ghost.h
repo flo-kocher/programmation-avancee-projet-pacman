@@ -66,6 +66,11 @@ class Ghost : public Character
             is_eaten_ = true;
         };
 
+        inline bool getIsEaten()
+        {
+            return is_eaten_;
+        };
+
 
 };
 

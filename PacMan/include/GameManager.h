@@ -27,6 +27,7 @@ class GameManager
         static int feared_timer_;
         int score_;
         int consecutive_ghost_eaten_;
+        bool pacman_alive_;
 
         bool intersection_detected_;
         int direction_tmp_;
@@ -45,7 +46,9 @@ class GameManager
         void initCharacter(CharacterName name, SDL_Rect position, SDL_Rect* image, Direction direction);
         void runGame();
         bool updateGame();
+        bool levelCompleted();
         bool isGameOver();
+        void gameOver();
 
         int collisionWithGhost();
         void actionWithGhost(std::shared_ptr<Ghost> ghost);
@@ -115,6 +118,16 @@ class GameManager
         inline int getConsecutiveEatenGhosts()
         {
             return consecutive_ghost_eaten_;
+        };
+
+        inline void pacmanDied()
+        {
+            pacman_alive_ = false;
+        };
+
+        inline bool pacmanAlive()
+        {
+            return pacman_alive_;
         };
 };
 

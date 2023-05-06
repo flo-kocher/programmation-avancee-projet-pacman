@@ -7,9 +7,7 @@ KeyboardManager::KeyboardManager()
 {}
 
 KeyboardManager::~KeyboardManager()
-{
-
-}
+{}
 
 int KeyboardManager::waitForEvent()
 {

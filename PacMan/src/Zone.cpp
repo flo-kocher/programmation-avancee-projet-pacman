@@ -7,6 +7,4 @@ Zone::Zone(int init_x, int init_y)
 {}
 
 Zone::~Zone()
-{
-
-}
+{}
