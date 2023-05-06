@@ -61,6 +61,7 @@ class GameManager
         int checkForIntersection();
         template <typename T>
         int checkForIntersectionTemplate(T map);
+        void checkIfInCorridor();
         void setGhostsFeared(int count);
         void setGhostsNormal(int count);
 

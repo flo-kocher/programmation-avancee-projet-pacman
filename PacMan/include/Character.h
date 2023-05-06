@@ -79,6 +79,11 @@ class Character
         {
             speed_ *= 2;
         };
+
+        inline void setSpeed(int speed)
+        {
+            speed_ = speed;
+        };
 };
 
 #endif

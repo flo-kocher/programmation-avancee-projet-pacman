@@ -164,8 +164,8 @@ bool GameManager::updateGame()
     for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
     {
         Ghost* ghost = ghost_it->get();
-        //ghost->chase(pacman_, count_);
-        ghost->scatter(count_);
+        ghost->chase(pacman_, count_);
+        // ghost->scatter(count_);
     }
 
     int ghost_hit = collisionWithGhost();
@@ -174,6 +174,7 @@ bool GameManager::updateGame()
         actionWithGhost(ghosts_[ghost_hit]);
     }
 
+    checkIfInCorridor();
     checkForPellet(pacman_->position_.x, pacman_->position_.y);
     checkForTeleportation<std::shared_ptr<Pacman>>(pacman_);
     for(int i = 0; i < 4; ++i)
@@ -292,6 +293,21 @@ int GameManager::checkForIntersectionTemplate(T map)
 int GameManager::checkForIntersection()
 {
     return checkForIntersectionTemplate(intersections) + checkForIntersectionTemplate(intersections_big);
+}
+
+void GameManager::checkIfInCorridor()
+{
+    for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
+    {
+        Ghost* ghost = ghost_it->get();
+        if(ghost->position_.y == 418 && (ghost->position_.x <= 162 || ghost->position_.x >= 514) )
+        {
+            ghost->setSpeed(1);
+        }
+        else
+            if(!ghost->getIsFeared())
+                ghost->setSpeed(2);
+    }
 }
 
 
