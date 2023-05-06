@@ -1,6 +1,7 @@
 #include "../include/GameInterface.h"
+#include "../include/Character.h"
 #include <iostream>
-
+#include <array>
 #include <SDL.h>
 
 GameInterface::GameInterface()
@@ -37,7 +38,8 @@ GameInterface::~GameInterface()
 
 }
 
-void GameInterface::updateCharacters(std::array<std::shared_ptr<Character>, 5> array)
+template <typename T>
+void GameInterface::updateCharacters(T array)
 {
     for (auto it = array.begin(); it != array.end(); ++it) {
         SDL_Rect* image = it->get()->character_image_;
@@ -70,7 +72,8 @@ void GameInterface::updateIntersections(T map)
     }
 }
 
-void GameInterface::updateGameInterface(int timer, std::array<std::shared_ptr<Character>, 5> array,
+void GameInterface::updateGameInterface(int timer, std::shared_ptr<Pacman> pacman,
+                            std::array<std::shared_ptr<Ghost>, 4> ghosts,
                             std::map<std::string, std::shared_ptr<Pellet>> pellets,
                             std::map<std::string, std::shared_ptr<BigPellet>> big_pellets,
                             std::map<std::string, std::shared_ptr<Intersection<Pellet>>> intersections,
@@ -88,12 +91,13 @@ void GameInterface::updateGameInterface(int timer, std::array<std::shared_ptr<Ch
         setColorAndBlitScaled(false, &black_rect, big_pellets.at("BigPellet 02_18")->getRectangle());
     }
 
-
+    std::array<std::shared_ptr<Pacman>, 1> pacman_as_array = {pacman};
     updatePellets(pellets);
     updatePellets(big_pellets);
     updateIntersections(intersections);
     updateIntersections(intersections_big);
-    updateCharacters(array);
+    updateCharacters(pacman_as_array);
+    updateCharacters(ghosts);
 
     SDL_UpdateWindowSurface(pWindow_);
 

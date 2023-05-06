@@ -2,12 +2,13 @@
 #define __GAME_INTERFACE_H__
 
 #include <SDL.h>
-#include "Pacman.h"
-#include "Ghost.h"
-#include "Pellet.h"
-#include "Intersection.h"
-#include "Character.h"
-#include <memory>
+#include <map>
+#include <array>
+#include "../include/Pellet.h"
+#include "../include/BigPellet.h"
+#include "../include/Intersection.h"
+#include "../include/Pacman.h"
+#include "../include/Ghost.h"
 
 class GameInterface
 {
@@ -23,12 +24,14 @@ class GameInterface
         GameInterface();
         ~GameInterface();
 
-        void updateCharacters(std::array<std::shared_ptr<Character>, 5> array);
+        template <typename T>
+        void updateCharacters(T array);
         template <typename T>
         void updatePellets(T map);
         template <typename T>
         void updateIntersections(T map);
-        void updateGameInterface(int timer, std::array<std::shared_ptr<Character>, 5> array,
+        void updateGameInterface(int timer, std::shared_ptr<Pacman> pacman,
+                                    std::array<std::shared_ptr<Ghost>, 4> ghosts,
                                     std::map<std::string, std::shared_ptr<Pellet>> pellets,
                                     std::map<std::string, std::shared_ptr<BigPellet>> big_pellets,
                                     std::map<std::string, std::shared_ptr<Intersection<Pellet>>> intersections,
