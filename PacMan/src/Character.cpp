@@ -2,6 +2,7 @@
 #include "../include/Constante.h"
 
 Character::Character()
+: speed_(2)
 {}
 
 Character::~Character()
@@ -22,25 +23,25 @@ void Character::teleportLeft()
 void Character::goRight(int count)
 {
     setImage(count, "RIGHT");
-    position_.x++;
+    position_.x += speed_;
 }
 
 void Character::goDown(int count)
 {
     setImage(count, "DOWN");
-    position_.y++;
+    position_.y += speed_;
 }
 
 void Character::goLeft(int count)
 {
     setImage(count, "LEFT");
-    position_.x--;
+    position_.x -= speed_;
 }
 
 void Character::goUp(int count)
 {
     setImage(count, "UP");
-    position_.y--;
+    position_.y -= speed_;
 }
 
 void Character::standStill()

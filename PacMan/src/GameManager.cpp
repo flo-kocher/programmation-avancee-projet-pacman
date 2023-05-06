@@ -5,15 +5,20 @@
 #include "../include/Ghost.h"
 
 #include <iostream>
-
+#include <chrono>
 #include <SDL.h>
 
-int GameManager::count_ = 0;
+int GameManager::feared_timer_ = 0;
 
 GameManager::GameManager()
 : score_(0)
+, feared_timer_running_(false)
+, current_ghost_mode_(SCATTER)
+, current_game_step_(SCATTER1)
+, consecutive_ghost_eaten_(0)
 , direction_tmp_ (RIGHT)
 , intersection_detected_ (false)
+, mode_start_timer_(std::chrono::steady_clock::now())
 , gameInterface_(std::make_unique<GameInterface>())
 {
     std::cout<<"GameInterface constructor\n";
@@ -50,7 +55,6 @@ void GameManager::runGame()
     initPellets(&pellets, &big_pellets);
     initIntersections(&intersections, &intersections_big);
     initCharacters();
-
     std::unique_ptr<KeyboardManager> kb_manager = std::make_unique<KeyboardManager>();
 
     int keyboard_event;
@@ -82,19 +86,19 @@ void GameManager::runGame()
                 quit = true;
                 break;
             case LEFT:
-                std::cout << "setDirection(LEFT)\n";
+                // std::cout << "setDirection(LEFT)\n";
                 pacman_->setDirection(LEFT);
                 break;
             case RIGHT:
-                std::cout << "setDirection(RIGHT)\n";
+                // std::cout << "setDirection(RIGHT)\n";
                 pacman_->setDirection(RIGHT);
                 break;
             case UP:
-                std::cout << "setDirection(UP)\n";
+                // std::cout << "setDirection(UP)\n";
                 pacman_->setDirection(UP);
                 break;
             case DOWN:
-                std::cout << "setDirection(DOWN)\n";
+                // std::cout << "setDirection(DOWN)\n";
                 pacman_->setDirection(DOWN);
                 break;
             default:
@@ -114,8 +118,16 @@ void GameManager::runGame()
 
 bool GameManager::updateGame()
 {
-    //std::cout<<this->getScore()<<std::endl;
-    IncrementCount();
+    std::cout<<this->getScore()<<std::endl;
+    incrementCount();
+    if(feared_timer_running_)
+    {
+        if(feared_timer_ == 0)
+            setGhostsNormal(getCount());
+        decrementFearedTimer();
+    }
+    
+    checkGameStep();
 
     if(isGameOver())
     {
@@ -154,19 +166,30 @@ bool GameManager::updateGame()
     for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
     {
         Ghost* ghost = ghost_it->get();
-        ghost->chase(pacman_, count_, ghosts_[0]);
-        //ghost->scatter(count_);
-        //ghost->frightened(count_);
-        //ghost->eaten(count_);
+        if(feared_timer_running_ && !ghost->getIsEaten()){
+            ghost->frightened(count_);
+        }
+        else if(ghost->getIsEaten()){
+            ghost->eaten(count_);
+        }
+        else{
+            switch (current_ghost_mode_)
+            {
+                case CHASE :
+                    ghost->chase(pacman_, count_, ghosts_[0]);
+                    break;
+                case SCATTER :
+                    ghost->scatter(count_);
+                    break;
+            }
+        }
     }
 
-    // int character_position = collisionWithGhost();
-    // if(character_position != -1)
-    // {
-    //     // Donner à chaque Ghost une zone où laquelle respawn
-    //     ghosts_[character_position]->position_.x = 250;
-    //     ghosts_[character_position]->position_.y = 34;
-    // }
+    int ghost_hit = collisionWithGhost();
+    if(ghost_hit != -1)
+    {
+        actionWithGhost(ghosts_[ghost_hit]);
+    }
 
     checkForPellet(pacman_->position_.x, pacman_->position_.y);
     checkForTeleportation<std::shared_ptr<Pacman>>(pacman_);
@@ -190,7 +213,7 @@ bool GameManager::updateGame()
 
 bool GameManager::isGameOver()
 {
-    if(this->getScore() == 2100)
+    if(this->getScore() == 9999)
         return true;
     return false;
 }
@@ -220,6 +243,8 @@ void GameManager::checkForPelletTemplate(int x, int y, T map)
             {
                 this->AddToScore(it->second->addPoints());
                 it->second->setHasPellet();
+                if(it->second->hasAdditionalBehavior())
+                    this->setGhostsFeared(count_);
             }
             break;
         }
@@ -251,6 +276,8 @@ int GameManager::checkForIntersectionTemplate(T map)
             {
                 this->AddToScore(it->second->addPoints());
                 it->second->setHasPellet();
+                if(it->second->hasAdditionalBehavior())
+                    this->setGhostsFeared(count_);
             }
         
             if(pacman_direction == RIGHT && it->second->canGoRight() || pacman_direction == DOWN && it->second->canGoDown()
@@ -295,4 +322,109 @@ int GameManager::collisionWithGhost()
         }
     }
     return -1;
+}
+
+void GameManager::setGhostsFeared(int count)
+{
+    if(!feared_timer_running_)
+    {
+        for(int i = 0; i < ghosts_.size(); ++i)
+        {
+            ghosts_[i]->lowerSpeed();
+            ghosts_[i]->setIsFeared(true);
+        }
+        setGhostsOppositeDirection();
+        activateFearedTimer();
+    }
+    else
+        resetFearedTimer();
+}
+
+void GameManager::setGhostsNormal(int count)
+{
+    deactivateFearedTimer();
+    for(int i = 0; i < ghosts_.size(); ++i)
+    {
+        ghosts_[i]->increaseSpeed();
+        ghosts_[i]->setIsFeared(false);
+    }
+    setConsecutiveEatenGhosts(0);
+}
+
+void GameManager::checkGameStep()
+{
+    switch (current_game_step_)
+    {
+        case SCATTER1 :
+            switchGhostsTrackingMode(7, CHASE, CHASE1);
+            break;
+        case CHASE1 :
+            switchGhostsTrackingMode(20, SCATTER, SCATTER2);
+            break;
+        case SCATTER2 :
+            switchGhostsTrackingMode(7, CHASE, CHASE2);
+            break;
+        case CHASE2 :
+            switchGhostsTrackingMode(20, SCATTER, SCATTER3);
+            break;
+        case SCATTER3 :
+            switchGhostsTrackingMode(5, CHASE, CHASE3);
+            break;
+        case CHASE3 :
+            switchGhostsTrackingMode(20, SCATTER, SCATTER4);
+            break;
+        case SCATTER4 :
+            switchGhostsTrackingMode(5, CHASE, CHASE4);
+            break;
+        case CHASE4 :
+            break;
+    }
+}
+
+void GameManager::switchGhostsTrackingMode(double timer, GhostMode new_ghost_mode, GameStep next_game_step)
+{
+    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    std::chrono::duration<double> elapsed_seconds = now - mode_start_timer_ ;
+    if(elapsed_seconds.count() > timer)
+    {
+        mode_start_timer_ = now;
+        current_ghost_mode_ = new_ghost_mode;
+        current_game_step_ = next_game_step;
+        setGhostsOppositeDirection();
+    }
+}
+
+void GameManager::setGhostsOppositeDirection()
+{
+    for(auto ghost_it = ghosts_.begin(); ghost_it != ghosts_.end(); ++ghost_it)
+    {
+        Direction current_ghost_direction_ = ghost_it->get()->getDirection();
+        ghost_it->get()->setPossibleDirection(
+            current_ghost_direction_ == LEFT ? true : false, 
+            current_ghost_direction_ == UP ? true : false, 
+            current_ghost_direction_ == RIGHT ? true : false, 
+            current_ghost_direction_ == DOWN ? true : false
+        );
+        ghost_it->get()->setDirection(
+            current_ghost_direction_ == RIGHT ? LEFT : 
+            current_ghost_direction_ == LEFT ? RIGHT : 
+            current_ghost_direction_ == UP ? DOWN : 
+            UP
+        );
+    }
+}
+
+void GameManager::actionWithGhost(std::shared_ptr<Ghost> ghost)
+{
+    if(ghost->getIsFeared())
+    {
+        incrementConsecutiveEatenGhosts();
+        ghost->setIsEaten();
+        AddToScore(200*getConsecutiveEatenGhosts());
+    }
+    else
+    {
+        // Appeler une fonction qui fait un exit(0) propre, qui va destructe tout
+        // exit(0);
+    }
 }
