@@ -291,12 +291,26 @@ int GameManager::checkForIntersectionTemplate(T map)
             if(it->second->getX() == ghost->position_.x && it->second->getY() == ghost->position_.y)
             {
                 Direction ghost_direction = ghost->getDirection();
-                ghost->setPossibleDirection(
-                    it->second->canGoRight() && ghost_direction != LEFT,
-                    it->second->canGoDown() && ghost_direction != UP, 
-                    it->second->canGoLeft() && ghost_direction != RIGHT, 
-                    it->second->canGoUp() && ghost_direction != DOWN
-                );
+                if((it->first == "Intersection 09_08" || it->first == "Intersection 09_10" 
+                    || it->first == "Intersection 19_08" || it->first == "Intersection 19_10")
+                    && (!ghost->getIsEaten() && !ghost->getIsFeared()))
+                {
+                    ghost->setPossibleDirection(
+                        it->second->canGoRight() && ghost_direction != LEFT,
+                        it->second->canGoDown() && ghost_direction != UP, 
+                        it->second->canGoLeft() && ghost_direction != RIGHT, 
+                        false
+                    );
+                }
+                else
+                {
+                    ghost->setPossibleDirection(
+                        it->second->canGoRight() && ghost_direction != LEFT,
+                        it->second->canGoDown() && ghost_direction != UP, 
+                        it->second->canGoLeft() && ghost_direction != RIGHT, 
+                        it->second->canGoUp() && ghost_direction != DOWN
+                    );
+                }
             }   
         }
     }
