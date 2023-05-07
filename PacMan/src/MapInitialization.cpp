@@ -281,9 +281,7 @@ void initIntersections(std::map<std::string, std::shared_ptr<Intersection<Pellet
     x = 162; y = 418;
     intersections->insert({"Intersection 12_04", std::make_shared<Intersection<Pellet>>(x, y, true, true, true, true, true)});x += space/2;
     intersections->insert({"Intersection 12_06", std::make_shared<Intersection<Pellet>>(x, y, false, false, true, true, true)});x += space/4*3;
-   // intersections->insert({"Intersection 12_08", std::make_shared<Intersection<Pellet>>(x, y, false, true, false, false, false)}); x += space/4;
     intersections->insert({"Intersection 12_09", std::make_shared<Intersection<Pellet>>(x, y, false, false, false, false, true)}); x += space/4*3;
-    //intersections->insert({"Intersection 12_10", std::make_shared<Intersection<Pellet>>(x, y, false, false, false, true, false)}); x += space/2;
     intersections->insert({"Intersection 12_12", std::make_shared<Intersection<Pellet>>(x, y, false, true, true, false, true)});x += space/2;
     intersections->insert({"Intersection 12_14", std::make_shared<Intersection<Pellet>>(x, y, true, true, true, true, true)});
 
