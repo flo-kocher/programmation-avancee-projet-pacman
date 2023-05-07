@@ -94,9 +94,7 @@ class GameInterface
             //                SDL_Rect*       dstrect)
             SDL_SetColorKey(plancheSprites_, transparence, 0);
             SDL_BlitScaled(plancheSprites_, src_rect, win_surf_, dst_rect);
-        };
-
-    
+        }; 
 };
 
 #endif

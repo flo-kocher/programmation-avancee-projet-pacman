@@ -57,13 +57,13 @@ void Ghost::chase(std::shared_ptr<Pacman> pacman, int count, std::shared_ptr<Gho
     switch(getCharacterName()){
         case(RED_GHOST) :
             setTarget(pacman->position_.x, pacman->position_.y); //Blinky cible la position exacte de Pacman 
-            calculateVectorsToTarget(target, position_);
+            calculateVectorsToTarget(target_, position_);
             break;
         case(PINK_GHOST) :
             target_x = pacman->position_.x + (pacman_direction == RIGHT ? 96 : (pacman_direction == LEFT || pacman_direction == UP) ? -96 : 0);
             target_y = pacman->position_.y + (pacman_direction == DOWN ? 96 : pacman_direction == UP  ? -96 : 0);
             setTarget(target_x, target_y); //Pinky cible 3 cases devant Pacman (si celui va vers le haut, 3 cases vers la gauche en plus)
-            calculateVectorsToTarget(target, position_);
+            calculateVectorsToTarget(target_, position_);
             break;
         case(BLUE_GHOST) :
             zone_2_tiles_front_pacman_x = pacman->position_.x + (pacman_direction == RIGHT ? 64 : (pacman_direction == LEFT || pacman_direction == UP) ? -64 : 0);
@@ -76,7 +76,7 @@ void Ghost::chase(std::shared_ptr<Pacman> pacman, int count, std::shared_ptr<Gho
             target_y = zone_2_tiles_front_pacman_y + (int)vector_vertical_red_ghost_to_2_tiles_front_target;
 
             setTarget(target_x, target_y); //Inky cible la position exacte de Pacman   
-            calculateVectorsToTarget(target, position_);
+            calculateVectorsToTarget(target_, position_);
             break;
         case(YELLOW_GHOST) :
             vector_between_clyde_and_pacman = std::round(sqrt(pow(abs(pacman->position_.x - position_.x), 2) + pow(abs(pacman->position_.y - position_.y), 2)));
@@ -88,7 +88,7 @@ void Ghost::chase(std::shared_ptr<Pacman> pacman, int count, std::shared_ptr<Gho
             else{
                 setTarget(pacman->position_.x, pacman->position_.y); //Hors du cercle de 8 cases autour de Pacman, Clyde cible sa position exacte
             }
-            calculateVectorsToTarget(target, position_);
+            calculateVectorsToTarget(target_, position_);
             break;
         default: break;
     }
@@ -101,19 +101,19 @@ void Ghost::scatter(int count)
     switch(getCharacterName()){
         case(RED_GHOST) :
             setTarget(546, 0);
-            calculateVectorsToTarget(target, position_);
+            calculateVectorsToTarget(target_, position_);
             break;
         case(PINK_GHOST) :
             setTarget(64, 0);
-            calculateVectorsToTarget(target, position_);
+            calculateVectorsToTarget(target_, position_);
             break;
         case(BLUE_GHOST) :
             setTarget(608, 768);
-            calculateVectorsToTarget(target, position_);
+            calculateVectorsToTarget(target_, position_);
             break;
         case(YELLOW_GHOST) :
             setTarget(34, 768);
-            calculateVectorsToTarget(target, position_);
+            calculateVectorsToTarget(target_, position_);
             break;
         default: break;
     }
@@ -121,7 +121,7 @@ void Ghost::scatter(int count)
     classicalMovementAlgorithm(count);
 }
 
-void Ghost::frightened(int count)
+void Ghost::feared(int count)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -161,7 +161,7 @@ void Ghost::frightened(int count)
 void Ghost::eaten(int count)
 {
     setTarget(322, 322);
-    calculateVectorsToTarget(target, position_);
+    calculateVectorsToTarget(target_, position_);
     if(position_.x == 322 && position_.y == 322)
     {
         setDirection(DOWN);

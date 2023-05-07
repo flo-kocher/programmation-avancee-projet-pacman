@@ -11,13 +11,13 @@ class BigPellet: public Pellet
 {
     public:
 
-    /**
-     * @brief Construct a new Big Pellet object
-     * 
-     * @param init_x 
-     * @param init_y 
-     * @param init_has_pellet 
-     */
+        /**
+         * @brief Construct a new Big Pellet object
+         * 
+         * @param init_x 
+         * @param init_y 
+         * @param init_has_pellet 
+         */
         BigPellet(int init_x, int init_y, bool init_has_pellet);
         ~BigPellet();
 
