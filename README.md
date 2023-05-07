@@ -1,6 +1,6 @@
 # Programmation Avancée - Projet Pacman
-## Lancement du jeu de base ou le notre
-- cd PacMan_CPP/ ou cd PacMan/
+## Lancement du jeu
+- cd PacMan/
 - cmake CMakeLists.txt
 - make
 - ./PacManGame
@@ -11,3 +11,5 @@
 - /PacMan/Makefile
 - /PacMan/cmake_install.cmake
 - /PacMan/PacManGame
+- /PacMan/build/
+- .vscode/
