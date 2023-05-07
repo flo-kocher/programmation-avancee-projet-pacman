@@ -222,7 +222,7 @@ class GameManager
         // Setters
         inline void incrementCount()
         {
-            count_ = count_++;
+            count_++;
         };
 
         inline void decrementFearedTimer()
