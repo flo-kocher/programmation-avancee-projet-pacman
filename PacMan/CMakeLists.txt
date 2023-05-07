@@ -11,6 +11,11 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS})
 target_compile_definitions(${PROJECT_NAME} PRIVATE "SDL_MAIN_HANDLED")
 IF(WIN32)
 	target_link_libraries(${PROJECT_NAME} SDL2::SDL2 SDL2::SDL2main)
+	add_custom_command(
+        TARGET PacManGame POST_BUILD
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL2::SDL2>" "$<TARGET_FILE_DIR:PacManGame>"
+        VERBATIM
+    )
 ELSE()
 	target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES})
 ENDIF()
