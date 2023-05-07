@@ -26,7 +26,6 @@ class GameManager
         int count_;
         int score_;
         int consecutive_ghost_eaten_;
-        bool pacman_alive_;
 
         bool intersection_detected_;
         int direction_tmp_;
@@ -36,7 +35,6 @@ class GameManager
         enum GhostMode { CHASE, SCATTER } current_ghost_mode_;
         enum GameStep { SCATTER1, CHASE1, SCATTER2, CHASE2, SCATTER3, CHASE3, SCATTER4, CHASE4 } current_game_step_;
         std::chrono::steady_clock::time_point mode_start_timer_;
-
 
     public:
         static int feared_timer_;
@@ -48,14 +46,14 @@ class GameManager
 
         void initCharacters();
         void initCharacter(CharacterName name, SDL_Rect position, SDL_Rect* image, Direction direction);
-        void runGame();
-        bool updateGame();
+        int runGame();
+        int updateGame();
         bool levelCompleted();
         bool isGameOver();
         void gameOver();
 
         bool collisionWithGhost(std::shared_ptr<Ghost> ghost);
-        void actionWithGhost(std::shared_ptr<Ghost> ghost);
+        int actionWithGhost(std::shared_ptr<Ghost> ghost);
 
         template <typename T>
         void checkForTeleportation(T character);
@@ -66,11 +64,13 @@ class GameManager
         template <typename T>
         int checkForIntersectionTemplate(T map);
         void checkIfInCorridor();
+        void checkIfInSpawn(std::shared_ptr<Ghost> ghost);
         void setGhostsFeared(int count);
         void setGhostsNormal(int count);
         void checkGameStep();
         void switchGhostsTrackingMode(double timer, GhostMode new_ghost_mode, GameStep next_game_step);
         void setGhostOppositeDirection(std::shared_ptr<Ghost> ghost);
+        void respawn(int remaining_life);
 
         inline const int getCount()
         {
@@ -89,7 +89,7 @@ class GameManager
 
         inline void incrementCount()
         {
-            count_ = (count_ + 1) % (240);
+            count_++;
         };
 
         inline void activateFearedTimer()
@@ -136,17 +136,6 @@ class GameManager
         inline void setCurrentGhostMode(GhostMode mode)
         {
             current_ghost_mode_ = mode;
-        };
-
-
-        inline void pacmanDied()
-        {
-            pacman_alive_ = false;
-        };
-
-        inline bool pacmanAlive()
-        {
-            return pacman_alive_;
         };
 };
 

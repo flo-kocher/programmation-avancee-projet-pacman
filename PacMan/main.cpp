@@ -1,30 +1,22 @@
-// #include <SDL.h>
-
-// #include "include/GameInterface.h"
-// #include "include/KeyboardManager.h"
+#include <SDL.h>
 #include "include/GameManager.h"
-
-// #include <iostream>
+#include <iostream>
 
 int main(int argc, char **argv)
 {
-    std::unique_ptr<GameManager> gameManager = std::make_unique<GameManager>();
-    // try run game
-    /*
-
-
-    RAJOUTER UN TRY CATCH ICI OU ALORS DANS LE RUN_GAME ET ENSUITE C'EST BON
-    
-    
-    */
     try{
-        gameManager->runGame();
+        int quit_event = 1;
+        while(quit_event == 1)
+        {
+            std::unique_ptr<GameManager> gameManager = std::make_unique<GameManager>();
+            quit_event = gameManager->runGame();
+            gameManager = nullptr;
+            SDL_Quit(); // On quitte l'instance de jeu actuelle
+        }
     }
     catch(...){
         std::cout << "Un erreur est survenu pendant le programme" << std::endl;
     }
-
-    // catch :
 
     return 0;
 }

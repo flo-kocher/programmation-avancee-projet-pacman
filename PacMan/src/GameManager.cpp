@@ -7,15 +7,16 @@
 #include <iostream>
 #include <chrono>
 #include <SDL.h>
+#include <thread>
 
 int GameManager::feared_timer_ = 0;
 
 GameManager::GameManager()
 : score_(0)
+, count_(0)
 , feared_timer_running_(false)
 , current_ghost_mode_(SCATTER)
 , current_game_step_(SCATTER1)
-, pacman_alive_(true)
 , consecutive_ghost_eaten_(0)
 , direction_tmp_ (RIGHT)
 , intersection_detected_ (false)
@@ -45,15 +46,14 @@ void GameManager::initCharacters()
 
 void GameManager::initCharacter(CharacterName name, SDL_Rect start_position, SDL_Rect* image, Direction direction){
     if(name == PACMAN){
-        pacman_ = std::make_unique<Pacman>(name, start_position, image, direction);
+        pacman_ = std::make_shared<Pacman>(name, start_position, image, direction);
     }
     else{
         ghosts_[name - 1] = std::make_shared<Ghost>(name, start_position, image, direction);
     }
-    // setColorAndBlitScaled(true, character->character_image_, &character->position_);
 }
 
-void GameManager::runGame()
+int GameManager::runGame()
 {
     std::cout<<"runGame"<<std::endl;
     initPellets(&pellets, &big_pellets);
@@ -64,8 +64,8 @@ void GameManager::runGame()
     int keyboard_event;
 
     // BOUCLE PRINCIPALE
-    bool quit = false;
-    while (!quit)
+    int quit = 0;
+    while (quit == 0)
     {
         // Créer une fonction eventHandler pour tout ça
 
@@ -74,11 +74,11 @@ void GameManager::runGame()
         {
             switch (event.type)
             {
-            case SDL_QUIT:
-                quit = true;
-                break;
-            default:
-                break;
+                case SDL_QUIT:
+                    quit = true;
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -87,22 +87,18 @@ void GameManager::runGame()
         switch (keyboard_event)
         {
             case -1:
-                quit = true;
+                quit = 2;
                 break;
             case LEFT:
-                // std::cout << "setDirection(LEFT)\n";
                 pacman_->setDirection(LEFT);
                 break;
             case RIGHT:
-                // std::cout << "setDirection(RIGHT)\n";
                 pacman_->setDirection(RIGHT);
                 break;
             case UP:
-                // std::cout << "setDirection(UP)\n";
                 pacman_->setDirection(UP);
                 break;
             case DOWN:
-                // std::cout << "setDirection(DOWN)\n";
                 pacman_->setDirection(DOWN);
                 break;
             default:
@@ -111,18 +107,19 @@ void GameManager::runGame()
         }
 
         // AFFICHAGE
-        // if(window->update())
-            // quit = true;
-        if(updateGame())
-            quit = true;
+        if(quit != 2)
+            quit = updateGame();
     }
-    SDL_Quit(); // ON SORT
-
+    return quit;
 }
 
-bool GameManager::updateGame()
+int GameManager::updateGame()
 {
     //std::cout<<this->getScore()<<std::endl;
+    if(isGameOver())
+        return 1;
+    
+    checkGameStep();        
     incrementCount();
     if(feared_timer_running_)
     {
@@ -130,11 +127,6 @@ bool GameManager::updateGame()
         if(feared_timer_ == 0)
             setGhostsNormal(getCount());           
     }
-    
-    checkGameStep();
-
-    if(isGameOver())
-        return true;
 
     Direction pacman_direction = pacman_->getDirection();
     if((intersection_detected_ && pacman_direction != direction_tmp_) || (pacman_direction == RIGHT && direction_tmp_ == LEFT) || (pacman_direction == LEFT && direction_tmp_ == RIGHT) || (pacman_direction == DOWN && direction_tmp_ == UP) || (pacman_direction == UP && direction_tmp_ == DOWN))
@@ -167,8 +159,10 @@ bool GameManager::updateGame()
     checkIfInCorridor();
     checkForPellet(pacman_->position_.x, pacman_->position_.y);
     checkForTeleportation<std::shared_ptr<Pacman>>(pacman_);
+    bool deadly_collision = false;
     for(int i = 0; i < ghosts_.size(); ++i)
     {
+        checkIfInSpawn(ghosts_[i]);
         if(feared_timer_running_ && !ghosts_[i]->getIsEaten()){
             ghosts_[i]->frightened(count_);
         }
@@ -191,9 +185,14 @@ bool GameManager::updateGame()
 
         if(collisionWithGhost(ghosts_[i]))
         {
-            actionWithGhost(ghosts_[i]);
+            int res = actionWithGhost(ghosts_[i]);
+            if(res == 1)
+                deadly_collision = true;
         }
     }
+
+    if(deadly_collision)
+        respawn(pacman_->getLifes());
     
     int intersection_check = checkForIntersection();
     if(intersection_check == 1)
@@ -204,13 +203,15 @@ bool GameManager::updateGame()
     // gère tout l'affichage dans le GameInterface en fonction des events qui sont catch juste au dessus (impossible de faire des appels en plusieurs fonctions)
     gameInterface_->updateGameInterface(getCount(), pacman_, ghosts_, pellets, big_pellets, intersections, intersections_big);
 
-    return false;
+    if(deadly_collision && pacman_->getLifes() > 0 || count_ == 1)
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
+    return 0;
 }
 
 bool GameManager::isGameOver()
 {
-    if(this->getScore() == 9999 || !pacmanAlive())
+    if(this->getScore() == 9999 || pacman_->getLifes() == 0)
     {
         std::cout<<"Score : "<<getScore()<<std::endl;
         return true;
@@ -329,7 +330,7 @@ void GameManager::checkIfInCorridor()
         Ghost* ghost = ghost_it->get();
         if(ghost->position_.y == 418 && (ghost->position_.x <= 161 || ghost->position_.x >= 515))
         {
-            if(!ghost->isInCorridor())
+            if(!ghost->getIsInCorridor())
             {
                 ghost->setIsInCorridor(true);
                 if(!ghost->getIsFeared())
@@ -338,13 +339,28 @@ void GameManager::checkIfInCorridor()
         }
         else
         {
-            if(ghost->isInCorridor())
+            if(ghost->getIsInCorridor())
             {
                 ghost->setIsInCorridor(false);
                 if(!ghost->getIsFeared())
                     ghost->increaseSpeed();
             }
         }
+    }
+}
+
+void GameManager::checkIfInSpawn(std::shared_ptr<Ghost> ghost)
+{
+    if((ghost->position_.y == 418 && (ghost->position_.x <= 354 && ghost->position_.x >= 290)) ||
+       ((ghost->position_.y <= 418 && ghost->position_.y > 322) && ghost->position_.x == 322))
+    {
+        if(!ghost->getIsInSpawn())
+            ghost->setIsInSpawn(true);   
+    }
+    else
+    {
+        if(ghost->getIsInSpawn())
+            ghost->setIsInSpawn(false);
     }
 }
 
@@ -368,7 +384,7 @@ void GameManager::setGhostsFeared(int count)
     {
         for(int i = 0; i < ghosts_.size(); ++i)
         {
-            if(!ghosts_[i]->isInCorridor())
+            if(!ghosts_[i]->getIsInCorridor())
                 ghosts_[i]->lowerSpeed();
             ghosts_[i]->setIsFeared(true);
             setGhostOppositeDirection(ghosts_[i]);
@@ -384,7 +400,7 @@ void GameManager::setGhostsNormal(int count)
     deactivateFearedTimer();
     for(int i = 0; i < ghosts_.size(); ++i)
     {
-        if(!ghosts_[i]->isInCorridor())
+        if(!ghosts_[i]->getIsInCorridor())
             ghosts_[i]->increaseSpeed();
         ghosts_[i]->setIsFeared(false);
     }
@@ -440,7 +456,7 @@ void GameManager::switchGhostsTrackingMode(double timer, GhostMode new_ghost_mod
 void GameManager::setGhostOppositeDirection(std::shared_ptr<Ghost> ghost)
 {
     Direction current_ghost_direction_ = ghost->getDirection();
-    if(!ghost->getIsEaten() && !ghost->getIsFeared())
+    if(!ghost->getIsEaten() && !ghost->getIsFeared() && !ghost->getIsInSpawn())
     {
         ghost->setPossibleDirection(
             current_ghost_direction_ == LEFT ? true : false, 
@@ -457,21 +473,36 @@ void GameManager::setGhostOppositeDirection(std::shared_ptr<Ghost> ghost)
     }
 }
 
-void GameManager::actionWithGhost(std::shared_ptr<Ghost> ghost)
+int GameManager::actionWithGhost(std::shared_ptr<Ghost> ghost)
 {
     if(ghost->getIsFeared())
     {
         incrementConsecutiveEatenGhosts();
         ghost->setIsEaten();
-        if(!ghost->isInCorridor())
+        if(!ghost->getIsInCorridor())
             ghost->increaseSpeed();
         ghost->setEatenStartTimer(std::chrono::steady_clock::now());
         AddToScore(200*getConsecutiveEatenGhosts());
     }
     else if(ghost->getIsEaten())
     {
-        
+        //do nothing
     }
     else
-        pacmanDied();
+    {
+        pacman_->loseLife();
+        return 1;
+    }
+    return 0; 
+}
+
+void GameManager::respawn(int remaining_life)
+{
+    pacman_ = nullptr;
+    for(int i = 0; i < ghosts_.size(); i++){
+        ghosts_[i] = nullptr;
+    }
+    initCharacters();
+    pacman_->setLifes(remaining_life);
+    direction_tmp_ = LEFT;
 }
