@@ -13,7 +13,7 @@
 #include <chrono>
 
 
-#define HITBOX 30
+#define HITBOX 16
 
 class GameManager
 {
