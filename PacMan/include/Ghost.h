@@ -24,6 +24,7 @@ class Ghost : public Character
         bool is_feared_;
         bool is_eaten_;
         bool is_in_corridor_;
+        bool is_in_spawn_;
         std::chrono::steady_clock::time_point eaten_start_timer_;
 
     public:
@@ -80,9 +81,19 @@ class Ghost : public Character
             is_in_corridor_ = value;
         };
 
-        inline bool isInCorridor()
+        inline bool getIsInCorridor()
         {
             return is_in_corridor_;
+        };
+
+        inline void setIsInSpawn(bool value)
+        {
+            is_in_spawn_ = value;
+        };
+
+        inline bool getIsInSpawn()
+        {
+            return is_in_spawn_;
         };
 
         inline std::chrono::steady_clock::time_point getEatenStartTimer()

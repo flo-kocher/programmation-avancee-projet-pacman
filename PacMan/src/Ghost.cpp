@@ -21,22 +21,27 @@ Ghost::Ghost(CharacterName name, SDL_Rect start_position, SDL_Rect* image, Direc
     switch(getCharacterName()){
         case(RED_GHOST) :
             setPossibleDirection(false, false, true, false);
+            setIsInSpawn(false);
             break;
         case(PINK_GHOST) :
             setPossibleDirection(false, false, false, true);
-            break;
+             setIsInSpawn(true);
+           break;
         case(BLUE_GHOST) :
             setPossibleDirection(true, false, false, false);
+            setIsInSpawn(true);
             break;
         case(YELLOW_GHOST) :
             setPossibleDirection(false, false, true, false);
+            setIsInSpawn(true);
             break;
         default: break;
     }
 }
 
 Ghost::~Ghost()
-{}
+{
+}
 
 void Ghost::chase(std::shared_ptr<Pacman> pacman, int count, std::shared_ptr<Ghost> red_ghost)
 {

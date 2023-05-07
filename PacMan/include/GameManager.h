@@ -35,8 +35,6 @@ class GameManager
         int score_;
         // Holds the number of consecutive ghosts eaten
         int consecutive_ghost_eaten_;
-        // If the PacMan is alive
-        bool pacman_alive_;
         // Number of pellets eaten by PacMan
         int pellet_counter_;
         // If PacMan is on an Intersection object
@@ -87,14 +85,14 @@ class GameManager
          * @brief Starting function to run the game and inialize all the necessary objects and maps
          * 
          */
-        void runGame();
+        int runGame();
         /**
          * @brief In real-time function that catches all the events happening
          * 
          * @return true if the game is over
          * @return false else
          */
-        bool updateGame();
+        int updateGame();
         /**
          * @brief Events that would lead to the game beeing over
          * 
@@ -115,7 +113,7 @@ class GameManager
          * 
          * @param ghost a ghost in the ghosts_ array
          */
-        void actionWithGhost(std::shared_ptr<Ghost> ghost);
+        int actionWithGhost(std::shared_ptr<Ghost> ghost);
         /**
          * @brief Teleports the Character if he is the left corridor or right corridor of the stage
          * 
@@ -161,6 +159,7 @@ class GameManager
          * 
          */
         void checkIfInCorridor();
+        void checkIfInSpawn(std::shared_ptr<Ghost> ghost);
         /**
          * @brief Set the ghosts to feared mode
          * 
@@ -192,6 +191,7 @@ class GameManager
          * @param ghost 
          */
         void setGhostOppositeDirection(std::shared_ptr<Ghost> ghost);
+        void respawn(int remaining_life);
 
         // Getters
         inline const int getCount()
@@ -219,16 +219,10 @@ class GameManager
             return current_ghost_mode_;
         };
 
-        inline bool pacmanAlive()
-        {
-            return pacman_alive_;
-        };
-
-
         // Setters
         inline void incrementCount()
         {
-            count_ = (count_ + 1) % (240);
+            count_ = count_++;
         };
 
         inline void decrementFearedTimer()
@@ -272,11 +266,6 @@ class GameManager
         inline void setCurrentGhostMode(GhostMode mode)
         {
             current_ghost_mode_ = mode;
-        };
-
-        inline void pacmanDied()
-        {
-            pacman_alive_ = false;
         };
 
         inline const void AddToScore(int to_add)

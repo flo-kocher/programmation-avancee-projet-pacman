@@ -1,14 +1,18 @@
+#include <SDL.h>
 #include "include/GameManager.h"
+#include <iostream>
 
 int main(int argc, char **argv)
 {
-    // Initialization of the GameManager
-    std::unique_ptr<GameManager> gameManager = std::make_unique<GameManager>();
-
-    try
-    {
-        // Run the PacMan game
-        gameManager->runGame();
+    try{
+        int quit_event = 1;
+        while(quit_event == 1)
+        {
+            std::unique_ptr<GameManager> gameManager = std::make_unique<GameManager>();
+            quit_event = gameManager->runGame();
+            gameManager = nullptr;
+            SDL_Quit(); // On quitte l'instance de jeu actuelle
+        }
     }
     catch(...)
     {

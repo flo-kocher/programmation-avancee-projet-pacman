@@ -1,4 +1,6 @@
 #include "../include/MapInitialization.h"
+#include <iostream>
+#include <map>
 
 void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::map<std::string, std::shared_ptr<BigPellet>> *big_pellets)
 {

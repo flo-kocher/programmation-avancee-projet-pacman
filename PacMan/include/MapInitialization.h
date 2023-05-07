@@ -4,6 +4,7 @@
 #include "Pellet.h"
 #include "BigPellet.h"
 #include "Intersection.h"
+#include <iostream>
 #include <map>
 #include <memory>
 
