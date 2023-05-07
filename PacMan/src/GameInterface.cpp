@@ -8,27 +8,29 @@ GameInterface::GameInterface()
 : src_bg_({200, 3, 168, 216})
 , bg_({4, 4, 672, 864})
 {
+    // Initialization of the SDL Window
+
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
-        std::cerr << "Echec de l'initialisation de la SDL " << SDL_GetError() << std::endl;
+        std::cerr << "Error while initializing the SDL package " << SDL_GetError() << std::endl;
         exit(EXIT_FAILURE);
     }
 
     if((pWindow_ = SDL_CreateWindow("PacManGame", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN)) == NULL)
     {
-        std::cerr<<"Echec de la création de la fenêtre "<<SDL_GetError()<<std::endl;
+        std::cerr<<"Error while creating the Window "<<SDL_GetError()<<std::endl;
         exit(EXIT_FAILURE);
     }
 
     if((win_surf_ = SDL_GetWindowSurface(pWindow_)) == NULL)
     {
-        std::cerr<<"Echec de la récupération de la surface de la fenêtre "<<SDL_GetError()<<std::endl;
+        std::cerr<<"Error while getting the window surface "<<SDL_GetError()<<std::endl;
         exit(EXIT_FAILURE);
     }
 
     if((plancheSprites_ = SDL_LoadBMP(SPRITES_PATH)) == NULL)
     {
-        std::cerr<<"Echec du chargement du bmp "<<SDL_GetError()<<std::endl;
+        std::cerr<<"Error while loading the bitmap image "<<SDL_GetError()<<std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -39,6 +41,7 @@ GameInterface::~GameInterface()
 template <typename T>
 void GameInterface::updateCharacters(T array)
 {
+    // Updates the entire array of Characters depending on their position and mode (eaten, feared) for ghosts
     for (auto it = array.begin(); it != array.end(); ++it) {
         SDL_Rect* image = it->get()->character_image_;
         SDL_Rect position = it->get()->position_;
@@ -47,19 +50,7 @@ void GameInterface::updateCharacters(T array)
 }
 
 template <typename T>
-void GameInterface::updatePellets(T map)
-{
-    for (auto it = map.begin(); it != map.end(); ++it) {
-        if(!it->second->getGotThrough())
-        {
-            SDL_Rect init = {376, 10, 10, 10};
-            setColorAndBlitScaled(false, &init, it->second->getRectangle());
-        }
-    }
-}
-
-template <typename T>
-void GameInterface::updateIntersections(T map)
+void GameInterface::updateZones(T map)
 {
     for (auto it = map.begin(); it != map.end(); ++it) {
         if(!it->second->getGotThrough())
@@ -79,7 +70,7 @@ void GameInterface::updateGameInterface(int timer, std::shared_ptr<Pacman> pacma
 {
     setColorAndBlitScaled(false, &src_bg_, &bg_);
 
-    SDL_Rect black_rect = {376, 10, 10, 10}; // Position d'un rectangle noir
+    SDL_Rect black_rect = {376, 10, 10, 10}; // Black rectangle used to update the background
 
     if(timer%50 <= 30)
     {
@@ -90,16 +81,14 @@ void GameInterface::updateGameInterface(int timer, std::shared_ptr<Pacman> pacma
     }
 
     std::array<std::shared_ptr<Pacman>, 1> pacman_as_array = {pacman};
-    updatePellets(pellets);
-    updatePellets(big_pellets);
-    updateIntersections(intersections);
-    updateIntersections(intersections_big);
+    updateZones(pellets);
+    updateZones(big_pellets);
+    updateZones(intersections);
+    updateZones(intersections_big);
     updateCharacters(pacman_as_array);
     updateCharacters(ghosts);
 
     SDL_UpdateWindowSurface(pWindow_);
 
-    // LIMITE A 60 FPS
-    SDL_Delay(4); // SDL_Delay(16); de base
-    // utiliser SDL_GetTicks64() pour plus de precisions
+    SDL_Delay(DELAY);
 }

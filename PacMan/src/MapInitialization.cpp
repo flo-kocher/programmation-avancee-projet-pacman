@@ -4,8 +4,9 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
 {
     int x = 66;
     int y = 34;
+    // The space is the number of pixels between 2 Pellets
     int space = 32;
-    // Ligne 1 de Pellets
+    // Line 1 of Pellets
     pellets->insert({"Pellet 00_01", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 00_02", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 00_03", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
@@ -18,7 +19,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 00_15", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 00_16", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 00_17", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 2
+    // Line 2
     x = 34; y = 66;
     pellets->insert({"Pellet 01_00", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 01_04", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
@@ -26,7 +27,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 01_10", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 01_14", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 01_18", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 3
+    // Line 3
     x = 34; y = 98;
     big_pellets->insert({"BigPellet 02_00", std::make_shared<BigPellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 02_04", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
@@ -34,7 +35,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 02_10", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 02_14", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     big_pellets->insert({"BigPellet 02_18", std::make_shared<BigPellet>(x, y, true)});
-    // Ligne 4
+    // Line 4
     x = 34; y = 130;
     pellets->insert({"Pellet 03_00", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 03_04", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
@@ -43,7 +44,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 03_10", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 03_14", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 03_18", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 5
+    // Line 5
     x = 66; y = 162;
     pellets->insert({"Pellet 04_01", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 04_02", std::make_shared<Pellet>(x, y, true)}); x+=space;
@@ -58,7 +59,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 04_15", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 04_16", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 04_17", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
-    // Ligne 6
+    // Line 6
     x = 34; y = 194;
     pellets->insert({"Pellet 05_00", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 05_04", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
@@ -66,7 +67,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 05_10", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 05_14", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 05_18", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 7
+    // Line 7
     x = 34; y = 226;
     pellets->insert({"Pellet 06_00", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 06_04", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
@@ -74,7 +75,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 06_10", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 06_14", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 06_18", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 8
+    // Line 8
     x = 66; y = 258;
     pellets->insert({"Pellet 07_01", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 07_02", std::make_shared<Pellet>(x, y, true)}); x+=space;
@@ -84,26 +85,26 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 07_15", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 07_16", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 07_17", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 9
+    // Line 9
     x = 162; y = 290;
     pellets->insert({"Pellet 08_04", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 08_08", std::make_shared<Pellet>(x, y, false)}); x+=space*2;
     pellets->insert({"Pellet 08_10", std::make_shared<Pellet>(x, y, false)}); x+=space*4;
     pellets->insert({"Pellet 08_14", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 10
+    // Line 10
     x = 162; y = 322;
     pellets->insert({"Pellet 09_04", std::make_shared<Pellet>(x, y, true)}); x+=space*3;
     pellets->insert({"Pellet 09_07", std::make_shared<Pellet>(x, y, false)}); x+=space*2;
     pellets->insert({"Pellet 09_09", std::make_shared<Pellet>(x, y, false)}); x+=space*2;
     pellets->insert({"Pellet 09_11", std::make_shared<Pellet>(x, y, false)}); x+=space*3;
     pellets->insert({"Pellet 09_14", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 11
+    // Line 11
     x = 162; y = 354;
     pellets->insert({"Pellet 10_04", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 10_06", std::make_shared<Pellet>(x, y, false)}); x+=space*6;
     pellets->insert({"Pellet 10_12", std::make_shared<Pellet>(x, y, false)}); x+=space*2;
     pellets->insert({"Pellet 10_14", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 12
+    // Line 12
     x = 162; y = 386;
     pellets->insert({"Pellet 11_04", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 11_06", std::make_shared<Pellet>(x, y, false)}); x+=space*2;
@@ -112,7 +113,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 11_10", std::make_shared<Pellet>(x, y, false)}); x+=space*2;
     pellets->insert({"Pellet 11_12", std::make_shared<Pellet>(x, y, false)}); x+=space*2;
     pellets->insert({"Pellet 11_14", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 13
+    // Line 13
     x = 2; y = 418;
     pellets->insert({"Pellet 12_left", std::make_shared<Pellet>(x, y, false)}); x+=space;
     pellets->insert({"Pellet 12_00", std::make_shared<Pellet>(x, y, false)}); x+=space;
@@ -130,13 +131,13 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 12_17", std::make_shared<Pellet>(x, y, false)}); x+=space;
     pellets->insert({"Pellet 12_18", std::make_shared<Pellet>(x, y, false)}); x+=space;
     pellets->insert({"Pellet 12_right", std::make_shared<Pellet>(x, y, false)});
-    // Ligne 14
+    // Line 14
     x = 162; y = 450;
     pellets->insert({"Pellet 13_04", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 13_06", std::make_shared<Pellet>(x, y, false)}); x+=space*6;
     pellets->insert({"Pellet 13_12", std::make_shared<Pellet>(x, y, false)}); x+=space*2;
     pellets->insert({"Pellet 13_14", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 15
+    // Line 15
     x = 162; y = 482;
     pellets->insert({"Pellet 14_04", std::make_shared<Pellet>(x, y, true)}); x+=space*3;
     pellets->insert({"Pellet 14_07", std::make_shared<Pellet>(x, y, false)}); x+=space;
@@ -145,19 +146,19 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 14_10", std::make_shared<Pellet>(x, y, false)}); x+=space;
     pellets->insert({"Pellet 14_11", std::make_shared<Pellet>(x, y, false)}); x+=space*3;
     pellets->insert({"Pellet 14_14", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 16
+    // Line 16
     x = 162; y = 514;
     pellets->insert({"Pellet 15_04", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 15_06", std::make_shared<Pellet>(x, y, false)}); x+=space*6;
     pellets->insert({"Pellet 15_12", std::make_shared<Pellet>(x, y, false)}); x+=space*2;
     pellets->insert({"Pellet 15_14", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 17
+    // Line 17
     x = 162; y = 546;
     pellets->insert({"Pellet 16_04", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 16_06", std::make_shared<Pellet>(x, y, false)}); x+=space*6;
     pellets->insert({"Pellet 16_12", std::make_shared<Pellet>(x, y, false)}); x+=space*2;
     pellets->insert({"Pellet 16_14", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 18
+    // Line 18
     x = 66; y = 578;
     pellets->insert({"Pellet 17_01", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 17_02", std::make_shared<Pellet>(x, y, true)}); x+=space;
@@ -169,7 +170,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 17_15", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 17_16", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 17_17", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 19
+    // Line 19
     x = 34; y = 610;
     pellets->insert({"Pellet 18_00", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 18_04", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
@@ -177,7 +178,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 18_10", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 18_14", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 18_18", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 20
+    // Line 20
     x = 66; y = 642;
     pellets->insert({"Pellet 19_01", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 19_05", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
@@ -186,7 +187,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 19_11", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 19_13", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 19_17", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 21
+    // Line 21
     x = 98; y = 674;
     pellets->insert({"Pellet 20_02", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 20_04", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
@@ -194,7 +195,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 20_12", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 20_14", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 20_16", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 22
+    // Line 22
     x = 98; y = 706;
     pellets->insert({"Pellet 21_02", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 21_04", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
@@ -202,7 +203,7 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 21_12", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 21_14", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 21_16", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 23
+    // Line 23
     x = 66; y = 738;
     pellets->insert({"Pellet 22_01", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 22_07", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
@@ -210,13 +211,13 @@ void initPellets(std::map<std::string, std::shared_ptr<Pellet>> *pellets, std::m
     pellets->insert({"Pellet 22_11", std::make_shared<Pellet>(x, y, true)}); x+=space*4;
     pellets->insert({"Pellet 22_15", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 22_17", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 24
+    // Line 24
     x = 34; y = 770;
     pellets->insert({"Pellet 23_00", std::make_shared<Pellet>(x, y, true)}); x+=space*8;
     pellets->insert({"Pellet 23_08", std::make_shared<Pellet>(x, y, true)}); x+=space*2;
     pellets->insert({"Pellet 23_10", std::make_shared<Pellet>(x, y, true)}); x+=space*8;
     pellets->insert({"Pellet 23_18", std::make_shared<Pellet>(x, y, true)});
-    // Ligne 25
+    // Line 25
     x = 66; y = 802;
     pellets->insert({"Pellet 24_01", std::make_shared<Pellet>(x, y, true)}); x+=space;
     pellets->insert({"Pellet 24_02", std::make_shared<Pellet>(x, y, true)}); x+=space;
@@ -239,17 +240,16 @@ void initIntersections(std::map<std::string, std::shared_ptr<Intersection<Pellet
 {
     int x = 34, y = 34;
     int space = 128;
-    // Première ligne d'intersections
+    // First line of Intersections
     intersections->insert({"Intersection 00_00", std::make_shared<Intersection<Pellet>>(x, y, true, true, true, false, false)}); x += space;
     intersections->insert({"Intersection 00_04", std::make_shared<Intersection<Pellet>>(x, y, true, true, true, true, false)}); x += space;
     intersections->insert({"Intersection 00_08", std::make_shared<Intersection<Pellet>>(x, y, true, false, true, true, false)}); x += space/2;
-    // On se décale pour passer à la partie droite
-    // x = 354;
+    
     intersections->insert({"Intersection 00_10", std::make_shared<Intersection<Pellet>>(x, y, true, true, true, false, false)}); x += space;
     intersections->insert({"Intersection 00_14", std::make_shared<Intersection<Pellet>>(x, y, true, true, true, true, false)}); x += space;
     intersections->insert({"Intersection 00_18", std::make_shared<Intersection<Pellet>>(x, y, true, false, true, true, false)});
 
-    // Deuxième ligne
+    // Second line
     x = 34; y = 162;
     intersections->insert({"Intersection 04_00", std::make_shared<Intersection<Pellet>>(x, y, true, true, true, false, true)}); x += space;
     intersections->insert({"Intersection 04_04", std::make_shared<Intersection<Pellet>>(x, y, true, true, true, true, true)}); x += space/2;
@@ -281,9 +281,7 @@ void initIntersections(std::map<std::string, std::shared_ptr<Intersection<Pellet
     x = 162; y = 418;
     intersections->insert({"Intersection 12_04", std::make_shared<Intersection<Pellet>>(x, y, true, true, true, true, true)});x += space/2;
     intersections->insert({"Intersection 12_06", std::make_shared<Intersection<Pellet>>(x, y, false, false, true, true, true)});x += space/4*3;
-   // intersections->insert({"Intersection 12_08", std::make_shared<Intersection<Pellet>>(x, y, false, true, false, false, false)}); x += space/4;
     intersections->insert({"Intersection 12_09", std::make_shared<Intersection<Pellet>>(x, y, false, false, false, false, true)}); x += space/4*3;
-    //intersections->insert({"Intersection 12_10", std::make_shared<Intersection<Pellet>>(x, y, false, false, false, true, false)}); x += space/2;
     intersections->insert({"Intersection 12_12", std::make_shared<Intersection<Pellet>>(x, y, false, true, true, false, true)});x += space/2;
     intersections->insert({"Intersection 12_14", std::make_shared<Intersection<Pellet>>(x, y, true, true, true, true, true)});
 
@@ -302,6 +300,7 @@ void initIntersections(std::map<std::string, std::shared_ptr<Intersection<Pellet
     intersections->insert({"Intersection 17_18", std::make_shared<Intersection<Pellet>>(x, y, true, false, true, true, false)});
 
     x = 34; y = 642;
+    // A BigIntersection is an Intersection derived from a BigPellet, so it gets the features of both Intersection and BigPellets
     intersections_big->insert({"BigIntersection 19_00", std::make_shared<Intersection<BigPellet>>(x, y, true, true, false, false, true)}); x += space/2;
     intersections->insert({"Intersection 19_02", std::make_shared<Intersection<Pellet>>(x, y, true, false, true, true, false)}); x += space/2;
     intersections->insert({"Intersection 19_04", std::make_shared<Intersection<Pellet>>(x, y, true, true, true, false, true)}); x += space/2;
