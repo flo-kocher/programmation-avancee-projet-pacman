@@ -14,8 +14,9 @@ int main(int argc, char **argv)
             SDL_Quit(); // On quitte l'instance de jeu actuelle
         }
     }
-    catch(...){
-        std::cout << "Un erreur est survenu pendant le programme" << std::endl;
+    catch(...)
+    {
+        std::cout << "An error has occured during the program" << std::endl;
     }
 
     return 0;

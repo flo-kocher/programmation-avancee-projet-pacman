@@ -33,5 +33,6 @@ int KeyboardManager::waitForEvent()
         return DOWN;
     }
 
+    // if no event caught, returns 10
     return 10;
 }
