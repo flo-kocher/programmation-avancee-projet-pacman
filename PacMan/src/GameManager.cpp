@@ -172,9 +172,11 @@ int GameManager::updateGame()
     bool deadly_collision = false;
     for(int i = 0; i < ghosts_.size(); ++i)
     {
+        // Check if the ghost is in the spawn
         checkIfInSpawn(ghosts_[i]);
+        // Makes the ghost move base on its state and the current game step
         if(feared_timer_running_ && !ghosts_[i]->getIsEaten()){
-            ghosts_[i]->frightened(count_);
+            ghosts_[i]->feared(count_);
         }
         else if(ghosts_[i]->getIsEaten()){
             ghosts_[i]->eaten(count_);
@@ -193,14 +195,17 @@ int GameManager::updateGame()
 
         checkForTeleportation<std::shared_ptr<Ghost>>(ghosts_[i]);
 
+        // Check if there is a collision between Pacman and the ghost
         if(collisionWithGhost(ghosts_[i]))
         {
+            // Determine how to react if there is a collision between Pacman and the ghost
             int res = actionWithGhost(ghosts_[i]);
             if(res == 1)
                 deadly_collision = true;
         }
     }
 
+    // Makes the characters respawn to their start position
     if(deadly_collision)
         respawn(pacman_->getLifes());
     

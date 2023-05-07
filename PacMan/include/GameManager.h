@@ -159,6 +159,11 @@ class GameManager
          * 
          */
         void checkIfInCorridor();
+        /**
+         * @brief Check if a ghost is inside the ghost spawner
+         * 
+         * @param ghost
+         */
         void checkIfInSpawn(std::shared_ptr<Ghost> ghost);
         /**
          * @brief Set the ghosts to feared mode
@@ -173,12 +178,12 @@ class GameManager
          */
         void setGhostsNormal(int count);
         /**
-         * @brief 
+         * @brief Determine and set the current game step (scatter,chase) depending on a timer
          * 
          */
         void checkGameStep();
         /**
-         * @brief 
+         * @brief Change the tracking mode of the ghosts based on the current game step
          * 
          * @param timer 
          * @param new_ghost_mode 
@@ -186,11 +191,16 @@ class GameManager
          */
         void switchGhostsTrackingMode(double timer, GhostMode new_ghost_mode, GameStep next_game_step);
         /**
-         * @brief Set the Ghost Opposite Direction object
+         * @brief Set the Ghost direction to its opposite 
          * 
          * @param ghost 
          */
         void setGhostOppositeDirection(std::shared_ptr<Ghost> ghost);
+        /**
+         * @brief Set the characters to their spawn position
+         * 
+         * @param remaining_life 
+         */
         void respawn(int remaining_life);
 
         // Getters
@@ -222,7 +232,7 @@ class GameManager
         // Setters
         inline void incrementCount()
         {
-            count_ = count_++;
+            count_++;
         };
 
         inline void decrementFearedTimer()
