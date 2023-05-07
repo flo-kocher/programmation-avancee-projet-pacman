@@ -27,6 +27,7 @@ class GameManager
         int score_;
         int consecutive_ghost_eaten_;
         bool pacman_alive_;
+        int pellet_counter_;
 
         bool intersection_detected_;
         int direction_tmp_;
@@ -147,6 +148,16 @@ class GameManager
         inline bool pacmanAlive()
         {
             return pacman_alive_;
+        };
+
+        inline void incrementPelletCounter()
+        {
+            pellet_counter_++;
+        };
+
+        inline bool allPelletsEaten()
+        {
+            return (pellet_counter_ == 193);
         };
 };
 

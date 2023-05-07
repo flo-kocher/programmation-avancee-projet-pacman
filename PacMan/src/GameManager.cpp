@@ -16,6 +16,7 @@ GameManager::GameManager()
 , current_ghost_mode_(SCATTER)
 , current_game_step_(SCATTER1)
 , pacman_alive_(true)
+, pellet_counter_(0)
 , consecutive_ghost_eaten_(0)
 , direction_tmp_ (RIGHT)
 , intersection_detected_ (false)
@@ -210,7 +211,7 @@ bool GameManager::updateGame()
 
 bool GameManager::isGameOver()
 {
-    if(this->getScore() == 9999 || !pacmanAlive())
+    if(!pacmanAlive() || allPelletsEaten())
     {
         std::cout<<"Score : "<<getScore()<<std::endl;
         return true;
@@ -240,6 +241,7 @@ void GameManager::checkForPelletTemplate(int x, int y, T map)
             it->second->setGotThrough(false);
             if(it->second->hasPellet())
             {
+                incrementPelletCounter();
                 this->AddToScore(it->second->addPoints());
                 it->second->setHasPellet();
                 if(it->second->hasAdditionalBehavior())
@@ -272,6 +274,7 @@ int GameManager::checkForIntersectionTemplate(T map)
             it->second->setGotThrough(false);
             if(it->second->hasPellet())
             {
+                incrementPelletCounter();
                 this->AddToScore(it->second->addPoints());
                 it->second->setHasPellet();
                 if(it->second->hasAdditionalBehavior())
