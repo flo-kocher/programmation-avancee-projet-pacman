@@ -336,9 +336,9 @@ void GameManager::checkIfInCorridor()
 
 bool GameManager::collisionWithGhost(std::shared_ptr<Ghost> ghost)
 {
-    int pos_diff_x = abs(pacman_->position_.x - ghost->position_.x);
-    int pos_diff_y = abs(pacman_->position_.y - ghost->position_.y);
-    if(0 <= pos_diff_x && pos_diff_x <= HITBOX && 0 <= pos_diff_y  && pos_diff_y <= HITBOX)
+    int pos_diff_x = abs((pacman_->position_.x + ((32 - HITBOX) / 2)) - (ghost->position_.x +  ((32 - HITBOX) / 2)));
+    int pos_diff_y = abs((pacman_->position_.y + ((32 - HITBOX) / 2)) - (ghost->position_.y +  ((32 - HITBOX) / 2)));
+    if((pos_diff_x <= HITBOX) && (pos_diff_y <= HITBOX))
     {
         return true;
     }

@@ -17,8 +17,12 @@ int main(int argc, char **argv)
     
     
     */
-
-    gameManager->runGame();
+    try{
+        gameManager->runGame();
+    }
+    catch(...){
+        std::cout << "Un erreur est survenu pendant le programme" << std::endl;
+    }
 
     // catch :
 
