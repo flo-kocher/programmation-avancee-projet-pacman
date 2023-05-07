@@ -15,7 +15,7 @@
 enum CharacterName { PACMAN, RED_GHOST, PINK_GHOST, BLUE_GHOST, YELLOW_GHOST };
 enum Direction { RIGHT, DOWN, LEFT, UP };
 
-// Coordonnées Sprite Pacman
+// Coordinates Sprite Pacman
 const std::map<std::string, SDL_Rect*> PACMAN_IMAGES = {
     {"RIGHT", new SDL_Rect{19, 89, 16, 16}},
     {"RIGHT2", new SDL_Rect{34, 89, 14, 16 }},
@@ -27,7 +27,7 @@ const std::map<std::string, SDL_Rect*> PACMAN_IMAGES = {
     {"DOWN2", new SDL_Rect{126, 93, 16, 16 }},
 };
 
-// Coordonnées Sprite Fantôme rouge
+// Coordinates Sprite Red Ghost
 const std::map<std::string, SDL_Rect*> RED_GHOST_IMAGES = {
     {"RIGHT", new SDL_Rect{3, 123, 16, 16 }},
     {"RIGHT2", new SDL_Rect{20, 123, 16, 16 }},
@@ -39,7 +39,7 @@ const std::map<std::string, SDL_Rect*> RED_GHOST_IMAGES = {
     {"DOWN2", new SDL_Rect{122, 123, 16, 16 }},
 };
 
-// Coordonnées Sprite Fantôme rose
+// Coordinates Sprite Pink Ghost
 const std::map<std::string, SDL_Rect*> PINK_GHOST_IMAGES = {
     {"RIGHT", new SDL_Rect{3, 141, 16, 16 }},
     {"RIGHT2", new SDL_Rect{20, 141, 16, 16 }},
@@ -51,7 +51,7 @@ const std::map<std::string, SDL_Rect*> PINK_GHOST_IMAGES = {
     {"DOWN2", new SDL_Rect{122, 141, 16, 16 }},
 };
 
-// Coordonnées Sprite Fantôme bleu
+// Coordinates Sprite Blue Ghost
 const std::map<std::string, SDL_Rect*> BLUE_GHOST_IMAGES = {
     {"RIGHT", new SDL_Rect{3, 159, 16, 16 }},
     {"RIGHT2", new SDL_Rect{20, 159, 16, 16 }},
@@ -63,7 +63,7 @@ const std::map<std::string, SDL_Rect*> BLUE_GHOST_IMAGES = {
     {"DOWN2", new SDL_Rect{122, 159, 16, 16 }},
 };
 
-// Coordonnées Sprite Fantôme jaune
+// Coordinates Sprite Yellow Ghost
 const std::map<std::string, SDL_Rect*> YELLOW_GHOST_IMAGES = {
     {"RIGHT", new SDL_Rect{3, 177, 16, 16 }},
     {"RIGHT2", new SDL_Rect{20, 177, 16, 16 }},
@@ -75,7 +75,7 @@ const std::map<std::string, SDL_Rect*> YELLOW_GHOST_IMAGES = {
     {"DOWN2", new SDL_Rect{122, 177, 16, 16 }},
 };
 
-// Coordonnées Sprite Fantôme appeuré
+// Coordinates Sprite Feared Ghost
 const std::map<std::string, SDL_Rect*> FEARED_GHOST_IMAGES = {
     {"BLUE", new SDL_Rect{3, 195, 16, 16 }},
     {"BLUE2", new SDL_Rect{20, 195, 16, 16 }},
@@ -83,7 +83,7 @@ const std::map<std::string, SDL_Rect*> FEARED_GHOST_IMAGES = {
     {"WHITE2", new SDL_Rect{54, 195, 16, 16 }},
 };
 
-// Coordonnées Sprite Fantôme mangé
+// Coordinates Sprite Eaten Ghost
 const std::map<std::string, SDL_Rect*> EATEN_GHOST_IMAGES = {
     {"RIGHT", new SDL_Rect{71, 195, 16, 16 }},
     {"LEFT", new SDL_Rect{88, 195, 16, 16 }},

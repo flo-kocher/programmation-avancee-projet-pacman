@@ -16,15 +16,13 @@ GameManager::GameManager()
 , current_ghost_mode_(SCATTER)
 , current_game_step_(SCATTER1)
 , pacman_alive_(true)
+, pellet_counter_(0)
 , consecutive_ghost_eaten_(0)
 , direction_tmp_ (RIGHT)
 , intersection_detected_ (false)
 , mode_start_timer_(std::chrono::steady_clock::now())
 , gameInterface_(std::make_unique<GameInterface>())
-{
-    std::cout<<"GameInterface constructor\n";
-}
-
+{}
 
 GameManager::~GameManager()
 {
@@ -55,7 +53,7 @@ void GameManager::initCharacter(CharacterName name, SDL_Rect start_position, SDL
 
 void GameManager::runGame()
 {
-    std::cout<<"runGame"<<std::endl;
+    // Initialize all the game objects and the KeyboardManager
     initPellets(&pellets, &big_pellets);
     initIntersections(&intersections, &intersections_big);
     initCharacters();
@@ -63,12 +61,9 @@ void GameManager::runGame()
 
     int keyboard_event;
 
-    // BOUCLE PRINCIPALE
     bool quit = false;
     while (!quit)
     {
-        // Créer une fonction eventHandler pour tout ça
-
         SDL_Event event;
         while (!quit && SDL_PollEvent(&event))
         {
@@ -84,35 +79,29 @@ void GameManager::runGame()
 
         keyboard_event = kb_manager->waitForEvent();
 
+        // Change the direction of the PacMan depending on the key pressed by the player
         switch (keyboard_event)
         {
             case -1:
                 quit = true;
                 break;
             case LEFT:
-                // std::cout << "setDirection(LEFT)\n";
                 pacman_->setDirection(LEFT);
                 break;
             case RIGHT:
-                // std::cout << "setDirection(RIGHT)\n";
                 pacman_->setDirection(RIGHT);
                 break;
             case UP:
-                // std::cout << "setDirection(UP)\n";
                 pacman_->setDirection(UP);
                 break;
             case DOWN:
-                // std::cout << "setDirection(DOWN)\n";
                 pacman_->setDirection(DOWN);
                 break;
             default:
                 // Do nothing
                 break;
         }
-
-        // AFFICHAGE
-        // if(window->update())
-            // quit = true;
+        // updateGame is constently running
         if(updateGame())
             quit = true;
     }
@@ -122,8 +111,11 @@ void GameManager::runGame()
 
 bool GameManager::updateGame()
 {
-    //std::cout<<this->getScore()<<std::endl;
+    std::cout<<"Current score : "<<this->getScore()<<std::endl;
+
     incrementCount();
+
+    // Setting back the ghosts to normal mode when the feared_timer is finished
     if(feared_timer_running_)
     {
         decrementFearedTimer();
@@ -133,11 +125,18 @@ bool GameManager::updateGame()
     
     checkGameStep();
 
+    // Check if one of the condition for the game to end is valid
     if(isGameOver())
         return true;
 
+    // Get the current direction of the PacMan
     Direction pacman_direction = pacman_->getDirection();
-    if((intersection_detected_ && pacman_direction != direction_tmp_) || (pacman_direction == RIGHT && direction_tmp_ == LEFT) || (pacman_direction == LEFT && direction_tmp_ == RIGHT) || (pacman_direction == DOWN && direction_tmp_ == UP) || (pacman_direction == UP && direction_tmp_ == DOWN))
+    // Allow a change of direction only if it is to turn around or if PacMan reaches an Intersection
+    if((intersection_detected_ && pacman_direction != direction_tmp_)
+     || (pacman_direction == RIGHT && direction_tmp_ == LEFT) 
+     || (pacman_direction == LEFT && direction_tmp_ == RIGHT) 
+     || (pacman_direction == DOWN && direction_tmp_ == UP) 
+     || (pacman_direction == UP && direction_tmp_ == DOWN))
     {
         direction_tmp_ = pacman_direction;
         intersection_detected_ = false;
@@ -145,6 +144,7 @@ bool GameManager::updateGame()
     else
         intersection_detected_ = false;
 
+    // Change animation depending on the current direction
     switch(direction_tmp_)
     {
         case RIGHT:
@@ -164,9 +164,13 @@ bool GameManager::updateGame()
             break;
     }
 
+    // Only if ghosts is in corridor
     checkIfInCorridor();
+    // Check if on a Pellet
     checkForPellet(pacman_->position_.x, pacman_->position_.y);
+    // Check if in the right or left side of the corridor to teleport the PacMan
     checkForTeleportation<std::shared_ptr<Pacman>>(pacman_);
+
     for(int i = 0; i < ghosts_.size(); ++i)
     {
         if(feared_timer_running_ && !ghosts_[i]->getIsEaten()){
@@ -195,24 +199,25 @@ bool GameManager::updateGame()
         }
     }
     
+    // If on an Intersection, allow direction
     int intersection_check = checkForIntersection();
     if(intersection_check == 1)
         intersection_detected_ = true;
     else if(intersection_check == 2)
         direction_tmp_ = -1;
 
-    // gère tout l'affichage dans le GameInterface en fonction des events qui sont catch juste au dessus (impossible de faire des appels en plusieurs fonctions)
+    // All the updates regarding the Window are made in the GameInterface
     gameInterface_->updateGameInterface(getCount(), pacman_, ghosts_, pellets, big_pellets, intersections, intersections_big);
 
     return false;
-
 }
 
 bool GameManager::isGameOver()
 {
-    if(this->getScore() == 9999 || !pacmanAlive())
+    // GameOver if the PacMan dies from a Ghost or if all the pellets were eaten
+    if(!pacmanAlive() || allPelletsEaten())
     {
-        std::cout<<"Score : "<<getScore()<<std::endl;
+        std::cout<<"Final score : "<<getScore()<<std::endl;
         return true;
     }
     return false;
@@ -221,6 +226,7 @@ bool GameManager::isGameOver()
 template <typename T>
 void GameManager::checkForTeleportation(T character)
 {
+    // When a character hits one of those specific pellets, they are teleported
     if(pellets.find("Pellet 12_left")->second->getX() == character->position_.x && pellets.find("Pellet 12_left")->second->getY() == character->position_.y)
     {
         character->teleportRight();
@@ -240,8 +246,11 @@ void GameManager::checkForPelletTemplate(int x, int y, T map)
             it->second->setGotThrough(false);
             if(it->second->hasPellet())
             {
+                incrementPelletCounter();
+                // Add the correct points to the score
                 this->AddToScore(it->second->addPoints());
                 it->second->setHasPellet();
+                // If a BigPellet is eaten, all the ghosts are set to feared mode
                 if(it->second->hasAdditionalBehavior())
                     this->setGhostsFeared(count_);
             }
@@ -252,6 +261,7 @@ void GameManager::checkForPelletTemplate(int x, int y, T map)
 
 void GameManager::checkForPellet(int x, int y)
 {
+    // Call is done on both big_pellets and pellets maps
     checkForPelletTemplate(x, y, big_pellets);
     checkForPelletTemplate(x, y, pellets);
 }
@@ -272,6 +282,7 @@ int GameManager::checkForIntersectionTemplate(T map)
             it->second->setGotThrough(false);
             if(it->second->hasPellet())
             {
+                incrementPelletCounter();
                 this->AddToScore(it->second->addPoints());
                 it->second->setHasPellet();
                 if(it->second->hasAdditionalBehavior())
@@ -319,6 +330,7 @@ int GameManager::checkForIntersectionTemplate(T map)
 
 int GameManager::checkForIntersection()
 {
+    // Check done on both intersections and intersections_big maps
     return checkForIntersectionTemplate(intersections) + checkForIntersectionTemplate(intersections_big);
 }
 
@@ -329,9 +341,11 @@ void GameManager::checkIfInCorridor()
         Ghost* ghost = ghost_it->get();
         if(ghost->position_.y == 418 && (ghost->position_.x <= 161 || ghost->position_.x >= 515))
         {
+            // If a ghost enters the corridor
             if(!ghost->isInCorridor())
             {
                 ghost->setIsInCorridor(true);
+                // And it is in normal mode, his speed is lowered
                 if(!ghost->getIsFeared())
                     ghost->lowerSpeed();
             }
@@ -341,6 +355,7 @@ void GameManager::checkIfInCorridor()
             if(ghost->isInCorridor())
             {
                 ghost->setIsInCorridor(false);
+                // Set the speed back to normal when exits the corridor
                 if(!ghost->getIsFeared())
                     ghost->increaseSpeed();
             }
@@ -350,16 +365,13 @@ void GameManager::checkIfInCorridor()
 
 bool GameManager::collisionWithGhost(std::shared_ptr<Ghost> ghost)
 {
+    // If the PacMan is around the hitbox of a ghost, this method returns true
     int pos_diff_x = abs((pacman_->position_.x + ((32 - HITBOX) / 2)) - (ghost->position_.x +  ((32 - HITBOX) / 2)));
     int pos_diff_y = abs((pacman_->position_.y + ((32 - HITBOX) / 2)) - (ghost->position_.y +  ((32 - HITBOX) / 2)));
     if((pos_diff_x <= HITBOX) && (pos_diff_y <= HITBOX))
-    {
         return true;
-    }
     else
-    {
         return false;
-    }
 }
 
 void GameManager::setGhostsFeared(int count)
@@ -370,6 +382,7 @@ void GameManager::setGhostsFeared(int count)
         {
             if(!ghosts_[i]->isInCorridor())
                 ghosts_[i]->lowerSpeed();
+            // Ghosts pass in feared mode
             ghosts_[i]->setIsFeared(true);
             setGhostOppositeDirection(ghosts_[i]);
         }
@@ -459,19 +472,26 @@ void GameManager::setGhostOppositeDirection(std::shared_ptr<Ghost> ghost)
 
 void GameManager::actionWithGhost(std::shared_ptr<Ghost> ghost)
 {
+    // If PacMan enters in collision with a ghost in feared mode
     if(ghost->getIsFeared())
     {
+        // To influence on the number of points earned when a ghost is eaten consecutively
         incrementConsecutiveEatenGhosts();
+        // Ghost is in eaten mode
         ghost->setIsEaten();
         if(!ghost->isInCorridor())
             ghost->increaseSpeed();
+        // Start a clock for the time the ghost stays in eaten mode
         ghost->setEatenStartTimer(std::chrono::steady_clock::now());
+        // Add points to the score
         AddToScore(200*getConsecutiveEatenGhosts());
     }
+    // No specific action when PacMan passes through an eaten ghost 
     else if(ghost->getIsEaten())
     {
         
     }
+    // If PacMan hits a normal mode ghost, he dies
     else
         pacmanDied();
 }

@@ -2,21 +2,32 @@
 #define __ZONE_H__
 
 #include <SDL.h>
-#include <iostream>
 
+/**
+ * @brief The Zone class represent à zone where the PacMan and the ghosts can travel,
+ * the walls don't count as zones
+ * 
+ */
 class Zone
 {
     private:
-        // la zone de base
+        // The rectangle representing the zone
         SDL_Rect rect_;
+        // The positions of the zones in the bitmap
         int x_;
         int y_;
 
     public:
-
+        /**
+         * @brief Construct a new Zone object
+         * 
+         * @param init_x x position
+         * @param init_y y position
+         */
         Zone(int init_x, int init_y);
         ~Zone();
 
+        // Getters
         inline SDL_Rect* getRectangle()
         {
             return &rect_;
@@ -32,6 +43,7 @@ class Zone
             return y_;
         };
 
+        // Setters
         inline void setX(int x)
         {
             x_ = x;
